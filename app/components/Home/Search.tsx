@@ -3,14 +3,16 @@
 import React from 'react'
 import { Autocomplete, AutocompleteItem, Input } from "@nextui-org/react";
 import { BiSearch } from 'react-icons/bi';
+import restaurants from "./data.json"
 
-const restaurants = [
-  { value: '1', label: 'Restaurant One' },
-  { value: '2', label: 'Restaurant Two' },
-  { value: '3', label: 'Restaurant Three' },
-  { value: '4', label: 'Dinemore' },
 
-];
+interface Restaurant {
+    label: string;
+    key: string;
+    pricings: string;
+    ratings: string;
+    desc: string;
+}
 
 export default function Search() {
     return (
@@ -22,7 +24,7 @@ export default function Search() {
                 startContent={<BiSearch />}
             >
                 {restaurants.map((restaurant) => (
-                    <AutocompleteItem key={restaurant.value} value={restaurant.value}>
+                    <AutocompleteItem key={restaurant.key} value={restaurant.key}>
                         {restaurant.label}
                     </AutocompleteItem>
                 ))}
