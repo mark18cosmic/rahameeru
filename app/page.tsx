@@ -14,7 +14,7 @@ export default function Home() {
     <main className="m-4 flex flex-col gap-8">
       <Navbar />
       <Search />
-      <Carousel images={images}/>
+      <Carousel/>
     </main>
   );
 }
