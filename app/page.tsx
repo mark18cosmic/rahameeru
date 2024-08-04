@@ -12,10 +12,10 @@ const images = [
 
 export default function Home() {
   return (
-    <main className="m-4 md:m-6 flex flex-col gap-8">
+    <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8">
       <Navbar />
       <Search />
-      <Carousel/>
+      <Carousel />
       <PopularRestaurants />
     </main>
   );

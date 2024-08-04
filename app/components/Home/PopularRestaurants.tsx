@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import restaurantData from './data.json'
 import RestaurantCard from '../restaurantCard/restaurantCard'
