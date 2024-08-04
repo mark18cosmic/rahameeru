@@ -16,6 +16,16 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
+    colors: {
+      'root-100': '',
+      'root-200': '',
+      'root-300': '',
+      'root-400': '',
+      'root-500': '',
+      'root-600': '',
+      'root-700': '',
+      'root-800': '',
+    }
   },
   plugins: [nextui()],
 };
