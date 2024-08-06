@@ -4,11 +4,6 @@ import Search from "./components/Home/Search";
 import Carousel from "./components/carousel/Carousel";
 import PopularRestaurants from "./components/Home/PopularRestaurants";
 
-const images = [
-  '/public/banner/mgg-vitchakorn-vBOxsZrfiCw-unsplash.jpg',
-  '/public/banner/mgg-vitchakorn-vBOxsZrfiCw-unsplash.jpg'
-]
-
 
 export default function Home() {
   return (
@@ -16,7 +11,10 @@ export default function Home() {
       <Navbar />
       <Search />
       <Carousel />
-      <PopularRestaurants />
+      <PopularRestaurants label={"Featured Restaurants"} />
+      <PopularRestaurants label={"Popular Today"} />
+      <PopularRestaurants label={"Date Spots"} />
+
     </main>
   );
 }

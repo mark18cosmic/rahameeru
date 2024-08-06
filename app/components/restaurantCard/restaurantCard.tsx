@@ -9,24 +9,22 @@ import ReviewButton from '@/app/components/buttons/Review'
 interface RestaurantProps {
     label: string;
     key: string;
-    pricings: string;
     ratings: string;
-    desc: string;
     image: string;
 }
 
-const RestaurantCard: React.FC<RestaurantProps> = ({ label, ratings, desc, image }) => {
+const RestaurantCard: React.FC<RestaurantProps> = ({ label, ratings,  image }) => {
     return (
-        <Card isPressable isHoverable>
+        <Card isPressable isHoverable className='w-[200px] md:w-[300px]'>
             <CardBody>
-                <div className='flex flex-col'>
-                    <div>
-                        <Image src={image} alt='null' width={150} height={100} className='object-cover rounded-xl md:w-full' />
+                <div className='flex flex-col gap-2'>
+                    <div className='flex justify-center items-center'>
+                        <Image src={image} alt='null' width={180} height={150} className='object-cover rounded-xl md:w-full' />
                     </div>
-                    <div className='flex flex-col gap-2'>
-                        <div className='flex flex-row mt-1 p-1 gap-2 justify-between mb-2'>
-                            <h2 className="font-semibold md:text-large text-small">{label}</h2>
-                            <p className="text-medium md:text-large flex flex-row items-center gap-1 text-root-500">{ratings}<FaStar /></p>
+                    <div className='flex flex-col my-2'>
+                        <div className='flex flex-row mt-1 p-1 gap-2 items-center justify-between mb-2'>
+                            <h2 className="font-semibold md:text-large text-sm">{label}</h2>
+                            <p className="text-sm md:text-large flex flex-row items-center gap-1 text-root-500">{ratings}<FaStar /></p>
                         </div>
                         <div className='flex justify-end'>
                             <ReviewButton />
