@@ -26,6 +26,9 @@ function Navbar() {
                     <DropdownItem key="contact">
                         Contact us
                     </DropdownItem>
+                    <DropdownItem key="logout" className='text-root-500' color='danger'>
+                        Log Out
+                    </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         </div>
