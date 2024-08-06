@@ -17,7 +17,7 @@ interface RestaurantProps {
 
 const RestaurantCard: React.FC<RestaurantProps> = ({ label, ratings, image, location }) => {
     return (
-        <Card isPressable isHoverable className='w-[200px] md:w-[300px]'>
+        <Card isPressable isHoverable className='w-[200px] shadow-sm md:w-[300px]'>
             <CardBody>
                 <div className='flex flex-col gap-2'>
                     <div className='flex justify-center items-center'>

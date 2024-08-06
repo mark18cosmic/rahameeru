@@ -22,6 +22,7 @@ export default function Search() {
                 variant="bordered"
                 allowsCustomValue
                 startContent={<BiSearch />}
+                selectorIcon={""}
             >
                 {restaurants.map((restaurant) => (
                     <AutocompleteItem key={restaurant.key} value={restaurant.key}>
