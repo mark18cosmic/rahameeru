@@ -5,7 +5,8 @@
         "pricings": "$$",
         "ratings": "4.5",
         "desc": "A beachfront seafood restaurant offering a variety of fresh catches and a stunning ocean view.",
-        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1"
+        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1",
+        "location": "Male'"
     },
     {
         "label": "Chicking",
@@ -13,7 +14,8 @@
         "pricings": "$",
         "ratings": "4.2",
         "desc": "Cozy diner nestled in the hills, known for its hearty breakfast and warm hospitality.",
-        "image": "https://imgs.search.brave.com/kC7lkirauwTm4q0jilOMtNzHdyEPw606uxiFuw573Ac/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Y2hpY2tpbmcubnov/aW1hZ2VzL2NoaWNr/aW5nLWNsLnBuZw"
+        "image": "https://imgs.search.brave.com/kC7lkirauwTm4q0jilOMtNzHdyEPw606uxiFuw573Ac/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Y2hpY2tpbmcubnov/aW1hZ2VzL2NoaWNr/aW5nLWNsLnBuZw",
+        "location": "Hlm"
     },
     {
         "label": "MaryBrown",
@@ -21,7 +23,8 @@
         "pricings": "$$$",
         "ratings": "4.7",
         "desc": "Chic downtown spot offering a fusion of international cuisines in a modern setting.",
-        "image": "https://imgs.search.brave.com/9lB5FhEKLztE6QTQtkxE3HX6_VEf9aTQf1SwCEZ01BU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vbWFycnli/cm93bnVhZS5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjQv/MDEvaWNvbi1tYi5w/bmc_cmVzaXplPTE1/MCwxNTAmc3NsPTE"
+        "image": "https://imgs.search.brave.com/9lB5FhEKLztE6QTQtkxE3HX6_VEf9aTQf1SwCEZ01BU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vbWFycnli/cm93bnVhZS5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjQv/MDEvaWNvbi1tYi5w/bmc_cmVzaXplPTE1/MCwxNTAmc3NsPTE",
+        "location": "Male'"
     },
     {
         "label": "GrillHut",
@@ -29,7 +32,8 @@
         "pricings": "$$$",
         "ratings": "4.9",
         "desc": "Farm-to-table experience with an emphasis on organic and locally-sourced ingredients.",
-        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1"
+        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1",
+        "location": "Hlm"
     },
     {
         "label": "Bakerloo",
@@ -37,7 +41,8 @@
         "pricings": "$$",
         "ratings": "4.3",
         "desc": "Authentic Indian cuisine with a modern twist, featuring bold flavors and a vibrant atmosphere.",
-        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1"
+        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1",
+        "location": "Male'"
     },
     {
         "label": "Palato",
@@ -45,7 +50,8 @@
         "pricings": "$$",
         "ratings": "4.6",
         "desc": "Italian restaurant specializing in handmade pasta and traditional recipes passed down through generations.",
-        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1"
+        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1",
+        "location": "Hlm"
     },
     {
         "label": "Pizza Hut",
@@ -53,7 +59,8 @@
         "pricings": "$$$",
         "ratings": "4.8",
         "desc": "Elegant sushi bar offering a wide selection of fresh sushi and sashimi, paired with sake and Japanese whiskey.",
-        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1"
+        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1",
+        "location": "Male'"
     },
     {
         "label": "Olive Garden",
@@ -61,7 +68,8 @@
         "pricings": "$",
         "ratings": "4.1",
         "desc": "Casual eatery serving gourmet burgers, fries, and shakes in a fun and relaxed environment.",
-        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1"
+        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1",
+        "location": "Hlm"
     },
     {
         "label": "SubTown",
@@ -69,7 +77,8 @@
         "pricings": "$$",
         "ratings": "4.4",
         "desc": "Vegan restaurant offering creative plant-based dishes that are both delicious and nutritious.",
-        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1"
+        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1",
+        "location": "Male'"
     },
     {
         "label": "Jelly Pizza",
@@ -77,6 +86,7 @@
         "pricings": "$",
         "ratings": "4.0",
         "desc": "Lively taqueria serving authentic Mexican street food, including tacos, burritos, and quesadillas.",
-        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1"
+        "image": "https://image.winudf.com/v2/image1/Y29tLmRhaXRvbm4uZGluZW1vcmVfaWNvbl8xNjUwMTg4MjI4XzA1Mw/icon.png?w=140&fakeurl=1",
+        "location": "Hlm"
     }
 ]

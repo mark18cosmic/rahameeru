@@ -7,7 +7,7 @@ import { FaArrowRight } from "react-icons/fa6";
 function ReviewButton() {
     return (
         <div className='md:w-full'>
-            <Button className='bg-root-500 text-white md:text-large font-semibold flex flex-row items-center md:w-full'>Review <FaArrowRight /></Button>
+            <Button className='bg-root-500 text-white md:text-large font-semibold flex flex-row items-center'>Review <FaArrowRight /></Button>
         </div>
     )
 }
