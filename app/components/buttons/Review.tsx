@@ -4,37 +4,29 @@ import { Button } from '@nextui-org/react'
 import React, {useState} from 'react'
 import { FaArrowRight } from "react-icons/fa6";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input } from "@nextui-org/react";
+import { FaStar } from "react-icons/fa6";
 
-const { isOpen, onOpen, onOpenChange } = useDisclosure();
-const [rating, setRating] = useState(0);
-const [reviewTitle, setReviewTitle] = useState('');
-const [reviewText, setReviewText] = useState('');
+
+
 
 const Rating = () => {
+    const [rating, setRating] = useState(0);
     return (
-        <>
-        {[1, 2, 3, 4, 5].map(star => (
-                                <svg
-                                    key={star}
-                                    className={`w-6 h-6 cursor-pointer ${rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    onClick={() => setRating(star)}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M11.049 2.927C11.3 2.37 11.701 2 12.15 2c.45 0 .85.37 1.1.927l1.02 2.057a1.45 1.45 0 001.08.817l2.23.325a1.45 1.45 0 01.805 2.478l-1.62 1.575a1.45 1.45 0 00-.41 1.287l.384 2.238a1.45 1.45 0 01-2.091 1.529L12 14.347l-2.005 1.054a1.45 1.45 0 01-2.091-1.529l.384-2.238a1.45 1.45 0 00-.41-1.287L6.47 7.537a1.45 1.45 0 01.805-2.478l2.23-.325a1.45 1.45 0 001.08-.817l1.02-2.057z"
-                                    />
-                                </svg>
-                            ))}</>
-    )
+      <>
+        <div className="flex flex-row">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <FaStar className={`w-6 h-6 cursor-pointer ${rating >= star ? 'text-root-500' : 'text-root-100'}`}
+            onClick={() => setRating(star)}/>
+          ))}
+        </div>
+      </>
+    );
 }
 
 function ReviewButton() {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [reviewTitle, setReviewTitle] = useState('');
+    const [reviewText, setReviewText] = useState('');
     return (
         <div className='md:w-full'>
             <Button className='bg-root-500 text-white md:text-large font-semibold flex flex-row items-center' onPress={onOpen}>Review <FaArrowRight /></Button>
