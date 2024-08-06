@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@nextui-org/react'
+import { Button, Textarea } from '@nextui-org/react'
 import React, {useState} from 'react'
 import { FaArrowRight } from "react-icons/fa6";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input } from "@nextui-org/react";
@@ -28,33 +28,63 @@ function ReviewButton() {
     const [reviewTitle, setReviewTitle] = useState('');
     const [reviewText, setReviewText] = useState('');
     return (
-        <div className='md:w-full'>
-            <Button className='bg-root-500 text-white md:text-large font-semibold flex flex-row items-center' onPress={onOpen}>Review <FaArrowRight /></Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='center' backdrop='blur'>
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">Write a Review</ModalHeader>
-                            <ModalBody>
-                            <div>
-                                   <label className="block text-sm font-medium text-gray-700">Rating:</label>
-                                    <Rating/>
-                            </div>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button variant="light" onPress={onClose}>
-                                    Cancel
-                                </Button>
-                                <Button className='bg-root-500 text-white' onPress={onClose}>
-                                    Save Review
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </div>
-    )
+      <div className="md:w-full">
+        <Button
+          className="bg-root-500 text-white md:text-large font-semibold flex flex-row items-center"
+          onPress={onOpen}
+        >
+          Review <FaArrowRight />
+        </Button>
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          placement="center"
+          backdrop="blur"
+        >
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">
+                  Write a Review
+                </ModalHeader>
+                <ModalBody>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Rating:
+                    </label>
+                    <Rating />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="review-text"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Review:
+                    </label>
+                    <Textarea
+                      id="review-text"
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                      placeholder="Write your detailed review here"
+                      variant='bordered'
+                      className='max-w-lg'
+                    />
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button variant="light" onPress={onClose}>
+                    Cancel
+                  </Button>
+                  <Button className="bg-root-500 text-white" onPress={onClose}>
+                    Save Review
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      </div>
+    );
 }
 
 export default ReviewButton
@@ -109,16 +139,16 @@ export default ReviewButton
                 //         />
                 //     </div>
 
-                //     <div>
-                //         <label htmlFor="review-text" className="block text-sm font-medium text-gray-700">Review:</label>
-                //         <Textarea
-                //             id="review-text"
-                //             value={reviewText}
-                //             onChange={(e) => setReviewText(e.target.value)}
-                //             placeholder="Write your detailed review here"
-                //             rows={5}
-                //         />
-                //     </div>
+                    // <div>
+                    //     <label htmlFor="review-text" className="block text-sm font-medium text-gray-700">Review:</label>
+                    //     <Textarea
+                    //         id="review-text"
+                    //         value={reviewText}
+                    //         onChange={(e) => setReviewText(e.target.value)}
+                    //         placeholder="Write your detailed review here"
+                    //         rows={5}
+                    //     />
+                    // </div>
 
                 //     <div>
                 //         <label htmlFor="name" className="block text-sm font-medium text-gray-700">Your Name:</label>
