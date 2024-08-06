@@ -15,7 +15,7 @@ const Rating = () => {
       <>
         <div className="flex flex-row">
           {[1, 2, 3, 4, 5].map((star) => (
-            <FaStar className={`w-6 h-6 cursor-pointer ${rating >= star ? 'text-root-500' : 'text-root-100'}`}
+            <FaStar key={star} className={`w-6 h-6 cursor-pointer ${rating >= star ? 'text-root-500' : 'text-root-100'}`}
             onClick={() => setRating(star)}/>
           ))}
         </div>
@@ -37,7 +37,7 @@ function ReviewButton() {
                             <ModalHeader className="flex flex-col gap-1">Write a Review</ModalHeader>
                             <ModalBody>
                             <div>
-                                   <label htmlFor="rating" className="block text-sm font-medium text-gray-700">Rating:</label>
+                                   <label className="block text-sm font-medium text-gray-700">Rating:</label>
                                     <Rating/>
                             </div>
                             </ModalBody>
