@@ -15,6 +15,7 @@ export interface RestaurantProps {
     image: string;
     location: string;
     desc: string;
+    badges: string[];
 }
 
 const RestaurantCard: React.FC<RestaurantProps> = ({ label, ratings, image, location }) => {

@@ -9,6 +9,7 @@ interface RestaurantParams {
 import { getRestaurantsData } from '@/app/utils/getRestaurantData';
 import { notFound } from 'next/navigation';
 import Navbar from '../components/Navbar';
+import Badge from '../components/badges/Badge';
 
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
@@ -21,10 +22,15 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
     }
 
     return (
-        <>
+      <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8">
         <Navbar />
         <p>{restaurant.label}</p>
-        </>
+        <div>
+          {restaurant.badges.map((badge) => (
+            <Badge key={badge} label={badge} />
+          ))}{" "}
+        </div>
+      </main>
     );
 }
 
