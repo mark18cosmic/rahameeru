@@ -3,7 +3,7 @@
 import React from 'react'
 import { Autocomplete, AutocompleteItem, Input } from "@nextui-org/react";
 import { BiSearch } from 'react-icons/bi';
-import restaurants from "./data.json"
+import restaurants from "@/app/api/data.json"
 
 
 interface Restaurant {

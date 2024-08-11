@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import restaurantData from './data.json'
+import restaurantData from '@/app/api/data.json'
 import RestaurantCard from '../restaurantCard/restaurantCard'
 
 interface TitlesProps {
