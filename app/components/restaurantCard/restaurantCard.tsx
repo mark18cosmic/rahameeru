@@ -7,12 +7,13 @@ import { FaStar } from "react-icons/fa6";
 import ReviewButton from '@/app/components/buttons/Review'
 import { HiOutlineLocationMarker } from "react-icons/hi";
 
-interface RestaurantProps {
+export interface RestaurantProps {
     label: string;
     key: string;
     ratings: string;
     image: string;
     location: string;
+    desc: string;
 }
 
 const RestaurantCard: React.FC<RestaurantProps> = ({ label, ratings, image, location }) => {
