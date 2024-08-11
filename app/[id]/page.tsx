@@ -8,6 +8,7 @@ interface RestaurantParams {
 
 import { getRestaurantsData } from '@/app/utils/getRestaurantData';
 import { notFound } from 'next/navigation';
+import Navbar from '../components/Navbar';
 
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
@@ -20,13 +21,10 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
     }
 
     return (
-        <div>
-            <h1>{restaurant.label}</h1>
-            <p>{restaurant.desc}</p>
-            <p>Rating: {restaurant.ratings}</p>
-            <Image src={restaurant.image} alt={restaurant.label} width={200} height={200} />
-            <p>Location: {restaurant.location}</p>
-        </div>
+        <>
+        <Navbar />
+        <p>{restaurant.label}</p>
+        </>
     );
 }
 
