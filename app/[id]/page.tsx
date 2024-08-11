@@ -36,5 +36,4 @@ export async function generateStaticParams() {
     return restaurants.map((restaurant) => ({
         id: restaurant.label,
     }));
-    console.log(restaurants)
 }
