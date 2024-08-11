@@ -18,7 +18,7 @@ export default function Search() {
     return (
         <div className="w-full">
             <Autocomplete
-                label="Find Restaurant"
+                placeholder="Find Restaurant"
                 variant="bordered"
                 allowsCustomValue
                 startContent={<BiSearch />}
