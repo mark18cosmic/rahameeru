@@ -11,6 +11,9 @@ import { notFound } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import Badge from '../components/badges/Badge';
 import { FaStar } from "react-icons/fa6";
+import MapButton from '../components/buttons/MapButton';
+import Review from '../components/buttons/Review';
+import { HiOutlineLocationMarker } from 'react-icons/hi';
 
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
@@ -25,7 +28,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
     return (
         <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8">
             <div className='flex items-center justify-center'>
-                <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover'/>
+                <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover' />
             </div>
             <div className='flex flex-row items-center justify-between'>
                 <div>
@@ -45,8 +48,14 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
                     <p className='font-light'>{restaurant.desc}</p>
                 </div>
             </div>
-            <div>
-
+            <div className='flex flex-row items-center justify-between'>
+                <div>
+                    <p className='flex items-center flex-row'><HiOutlineLocationMarker /> {restaurant.location}</p>
+                </div>
+                <div className='flex flex-row gap-2 md:gap-4'>
+                    <MapButton />
+                    <Review />
+                </div>
             </div>
         </main>
     );
