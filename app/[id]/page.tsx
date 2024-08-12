@@ -35,11 +35,17 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
                     ))}{" "}
                 </div>
                 <div>
-                    <p className='flex items-center text-root-500'>{restaurant.ratings} <FaStar /></p>
+                    <p className='flex items-center text-root-500 text-lg'>{restaurant.ratings} <FaStar /></p>
                 </div>
             </div>
-            <p>{restaurant.label}</p>
-
+            <div className='flex flex-col'>
+                <div>
+                    <h3>{restaurant.label}</h3>
+                </div>
+                <div>
+                    <p>{restaurant.desc}</p>
+                </div>
+            </div>
         </main>
     );
 }
@@ -52,9 +58,5 @@ export async function generateStaticParams() {
     }));
 }
 
-// image
-// badges // rating
-// restaurant name
-// description
 // location // buttons
 // latest reviews
