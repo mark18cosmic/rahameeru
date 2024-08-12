@@ -65,7 +65,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
 export async function generateStaticParams() {
     const restaurants: RestaurantProps[] = getRestaurantsData(); // Type the restaurants array
     return restaurants.map((restaurant) => ({
-        id: restaurant.label,
+        id: restaurant.label.toLowerCase().replace(/ /g, '-'),
     }));
 }
 
