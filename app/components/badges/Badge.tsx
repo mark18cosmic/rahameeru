@@ -9,7 +9,7 @@ interface BadgeProps {
 
 const Badge: React.FC<BadgeProps> = ({ label }) => {
     return (
-        <Chip className='bg-root-300 mx-1 md:mx-4 my-1' size='md'>
+        <Chip className='bg-root-300 mx-1 md:mx-3 my-1' size='md'>
             {label}
         </Chip>
     )

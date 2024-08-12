@@ -9,7 +9,7 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@
 
 function Navbar() {
     return (
-        <div className='flex flex-row justify-between items-center'>
+        <div className='flex flex-row justify-between items-center m-4 md:m-6'>
             <div>
                 <Link href="/">
                     <Image src={logo} alt='RahaMeeru' width={160} />

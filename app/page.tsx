@@ -8,7 +8,6 @@ import PopularRestaurants from "./components/Home/PopularRestaurants";
 export default function Home() {
   return (
     <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8">
-      <Navbar />
       <Search />
       <Carousel />
       <PopularRestaurants label={"Featured Restaurants"} />
