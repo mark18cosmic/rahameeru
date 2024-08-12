@@ -4,7 +4,7 @@ import { TiLocationArrowOutline } from "react-icons/ti";
 const MapButton = () => {
     return (
         <div className='md:w-full'>
-            <Button className='bg-white border md:text-large font-semibold flex flex-row items-center'><TiLocationArrowOutline size={25} /> Find in Maps</Button>
+            <Button className='bg-white border md:text-large font-semibold flex flex-row items-center'>Find in Maps <TiLocationArrowOutline /></Button>
 
         </div>
     )
