@@ -6,7 +6,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input } from "@nextui-org/react";
 import { FaStar } from "react-icons/fa6";
 
-const Rating = () => {
+export const Rating = () => {
     const [rating, setRating] = useState(0);
     return (
       <>

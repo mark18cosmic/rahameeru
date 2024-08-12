@@ -10,6 +10,7 @@ import { getRestaurantsData } from '@/app/utils/getRestaurantData';
 import { notFound } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import Badge from '../components/badges/Badge';
+import { Rating } from '../components/buttons/Review';
 
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
@@ -22,15 +23,24 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
     }
 
     return (
-      <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8">
-        <Navbar />
-        <p>{restaurant.label}</p>
-        <div>
-          {restaurant.badges.map((badge) => (
-            <Badge key={badge} label={badge} />
-          ))}{" "}
-        </div>
-      </main>
+        <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8">
+            <Navbar />
+            <div className='flex items-center justify-center'>
+                <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover'/>
+            </div>
+            <div className='flex flex-row justify-between'>
+                <div>
+                    {restaurant.badges.map((badge) => (
+                        <Badge key={badge} label={badge} />
+                    ))}{" "}
+                </div>
+                <div>
+                    <Rating />
+                </div>
+            </div>
+            <p>{restaurant.label}</p>
+
+        </main>
     );
 }
 
@@ -41,3 +51,10 @@ export async function generateStaticParams() {
         id: restaurant.label,
     }));
 }
+
+// image
+// badges // rating
+// restaurant name
+// description
+// location // buttons
+// latest reviews
