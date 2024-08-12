@@ -28,14 +28,14 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
             <div className='flex items-center justify-center'>
                 <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover'/>
             </div>
-            <div className='flex flex-row justify-between'>
+            <div className='flex flex-row items-center justify-between'>
                 <div>
                     {restaurant.badges.map((badge) => (
                         <Badge key={badge} label={badge} />
                     ))}{" "}
                 </div>
                 <div>
-                    <p className='flex items-center'>{restaurant.ratings} <FaStar /></p>
+                    <p className='flex items-center text-root-500'>{restaurant.ratings} <FaStar /></p>
                 </div>
             </div>
             <p>{restaurant.label}</p>
