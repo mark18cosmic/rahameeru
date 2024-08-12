@@ -10,7 +10,7 @@ import { getRestaurantsData } from '@/app/utils/getRestaurantData';
 import { notFound } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import Badge from '../components/badges/Badge';
-import { Rating } from '../components/buttons/Review';
+import { FaStar } from "react-icons/fa6";
 
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
@@ -35,7 +35,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
                     ))}{" "}
                 </div>
                 <div>
-                    <Rating />
+                    <p className='flex items-center'>{restaurant.ratings} <FaStar /></p>
                 </div>
             </div>
             <p>{restaurant.label}</p>
