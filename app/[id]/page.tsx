@@ -42,7 +42,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
             </div>
             <div className='flex flex-col gap-2'>
                 <div>
-                    <h3 className='text-xl'>{restaurant.label}</h3>
+                    <h3 className='text-xl font-semibold'>{restaurant.label}</h3>
                 </div>
                 <div>
                     <p className='font-light'>{restaurant.desc}</p>
@@ -50,7 +50,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
             </div>
             <div className='flex flex-row items-center justify-between'>
                 <div>
-                    <p className='flex items-center flex-row'><HiOutlineLocationMarker /> {restaurant.location}</p>
+                    <p className='flex items-center gap-1 flex-row'><HiOutlineLocationMarker /> {restaurant.location}</p>
                 </div>
                 <div className='flex flex-row gap-2 md:gap-4'>
                     <MapButton />
