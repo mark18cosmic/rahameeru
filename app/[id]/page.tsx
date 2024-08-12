@@ -19,7 +19,7 @@ import { HiOutlineLocationMarker } from 'react-icons/hi';
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
     const { id } = params;
     const restaurants: RestaurantProps[] = getRestaurantsData(); // Type the restaurants array
-    const restaurant = restaurants.find((r: RestaurantProps) => r.label === id); // Type the restaurant parameter
+    const restaurant = restaurants.find((r: RestaurantProps) => r.label.toLowerCase() === id); // Type the restaurant parameter
 
     if (!restaurant) {
         notFound();
