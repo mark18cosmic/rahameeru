@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { Autocomplete, AutocompleteItem, Input } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { BiSearch } from 'react-icons/bi';
 import restaurants from "@/app/api/data.json"
 import Link from 'next/link';
