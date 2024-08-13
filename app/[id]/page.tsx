@@ -14,6 +14,7 @@ import Review, { RatingIcon } from '../components/buttons/Review';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import ReviewList from '../components/Review/ReviewList';
 import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
@@ -27,10 +28,10 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
 
     return (
         <>
-            <Head>
-                <title>{restaurant.label} | RahaMeeru</title>
-                <meta property="og:title" content={`${restaurant.label} | RahaMeeru`} />
-            </Head>
+            <NextSeo
+                title={`${restaurant.label} | Rahameeru`}
+                description={restaurant.desc}
+            />
             <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
                 <div className='flex items-center justify-center'>
                     <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover' />
