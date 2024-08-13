@@ -20,22 +20,24 @@ function Navbar() {
                 <Search key={""} label={""} ratings={""} image={""} location={""} desc={""} badges={[]} />
 
             </div>
-            <Dropdown>
-                <DropdownTrigger>
-                    <Avatar className='rounded-full'/>
-                </DropdownTrigger>
-                <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem key="profile">Profile</DropdownItem>
-                    <DropdownItem key="myreviews">My Reviews</DropdownItem>
-                    <DropdownItem key="request">Request Restaurant</DropdownItem>
-                    <DropdownItem key="contact">
-                        Contact us
-                    </DropdownItem>
-                    <DropdownItem key="logout" className='text-root-500' color='danger'>
-                        Log Out
-                    </DropdownItem>
-                </DropdownMenu>
-            </Dropdown>
+            <div className='m-1'>
+                <Dropdown>
+                    <DropdownTrigger>
+                        <Avatar className='rounded-full' />
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="Static Actions">
+                        <DropdownItem key="profile">Profile</DropdownItem>
+                        <DropdownItem key="myreviews">My Reviews</DropdownItem>
+                        <DropdownItem key="request">Request Restaurant</DropdownItem>
+                        <DropdownItem key="contact">
+                            Contact us
+                        </DropdownItem>
+                        <DropdownItem key="logout" className='text-root-500' color='danger'>
+                            Log Out
+                        </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+            </div>
         </div>
     )
 }

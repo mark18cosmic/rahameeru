@@ -42,7 +42,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
             </div>
             <div className='flex flex-col gap-2'>
                 <div>
-                    <h3 className='text-xl font-semibold'>{restaurant.label}</h3>
+                    <h3 className='text-xl md:text-2xl font-semibold'>{restaurant.label}</h3>
                 </div>
                 <div>
                     <p className='font-light'>{restaurant.desc}</p>
