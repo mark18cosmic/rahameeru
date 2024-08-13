@@ -10,7 +10,7 @@ interface TitlesProps {
 
 const PopularRestaurants: React.FC<TitlesProps> = ({ label }) => {
     return (
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4 text-black'>
             <div>
                 <h2 className='font-semibold text-2xl md:text-4xl'>{label}</h2>
             </div>

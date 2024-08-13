@@ -22,7 +22,8 @@ const config: Config = {
       'root-700': '#C12314',
       'root-800': '#A02014',
       'white': '#FFFFFF',
-      'gray': '#D4D4D8'
+      'gray': '#D4D4D8',
+      'black': '#333333:',
     }
   },
   plugins: [nextui()],
