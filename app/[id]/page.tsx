@@ -12,7 +12,7 @@ import Navbar from '../components/Navbar';
 import Badge from '../components/badges/Badge';
 import { FaStar } from "react-icons/fa6";
 import MapButton from '../components/buttons/MapButton';
-import Review from '../components/buttons/Review';
+import Review, { RatingIcon } from '../components/buttons/Review';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 
 // Fetch data for the specific restaurant
@@ -37,7 +37,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
                     ))}{" "}
                 </div>
                 <div>
-                    <p className='flex items-center gap-1 text-root-500 text-lg'>{restaurant.ratings} <FaStar /></p>
+                        <RatingIcon key={''} label={''} ratings={restaurant.ratings} image={''} location={''} desc={''} badges={[]} />
                 </div>
             </div>
             <div className='flex flex-col gap-2'>

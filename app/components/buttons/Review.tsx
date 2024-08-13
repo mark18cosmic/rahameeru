@@ -5,6 +5,7 @@ import React, {useState} from 'react'
 import { FaArrowRight } from "react-icons/fa6";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input } from "@nextui-org/react";
 import { FaStar } from "react-icons/fa6";
+import { RestaurantProps } from '../restaurantCard/restaurantCard';
 
 export const Rating = () => {
     const [rating, setRating] = useState(0);
@@ -18,6 +19,13 @@ export const Rating = () => {
         </div>
       </>
     );
+}
+
+export const RatingIcon: React.FC<RestaurantProps> = ({ratings}) => {
+  return (
+    <p className='flex items-center gap-1 text-root-500 text-lg'>{ratings} <FaStar /></p>
+
+  )
 }
 
 function ReviewButton() {
