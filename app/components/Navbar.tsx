@@ -10,7 +10,7 @@ import { Search } from './Home/Search'
 
 function Navbar() {
     return (
-        <div className='flex flex-row justify-between gap-2 items-center m-4 md:m-6'>
+        <div className='flex flex-row justify-between gap-3 md:gap-6 items-center m-4 md:m-6'>
             <div>
                 <Link href="/">
                     <Image src={logo} alt='RahaMeeru' width={160} />
@@ -22,7 +22,7 @@ function Navbar() {
             </div>
             <Dropdown>
                 <DropdownTrigger>
-                    <Avatar />
+                    <Avatar className='rounded-full'/>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
                     <DropdownItem key="profile">Profile</DropdownItem>
