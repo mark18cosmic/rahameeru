@@ -10,13 +10,13 @@ import { Search } from './Home/Search'
 
 function Navbar() {
     return (
-        <div className='flex flex-row justify-between items-center m-4 md:m-6'>
+        <div className='flex flex-row justify-between gap-2 items-center m-4 md:m-6'>
             <div>
                 <Link href="/">
                     <Image src={logo} alt='RahaMeeru' width={160} />
                 </Link>
             </div>
-            <div>
+            <div className='md:w-full'>
                 <Search key={""} label={""} ratings={""} image={""} location={""} desc={""} badges={[]} />
 
             </div>
