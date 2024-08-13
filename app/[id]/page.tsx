@@ -28,10 +28,6 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
 
     return (
         <>
-            <NextSeo
-                title={`${restaurant.label} | Rahameeru`}
-                description={restaurant.desc}
-            />
             <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
                 <div className='flex items-center justify-center'>
                     <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover' />
