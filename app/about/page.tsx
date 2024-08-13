@@ -2,7 +2,9 @@ import React from 'react'
 
 const AboutPage = () => {
   return (
-    <div>AboutPage</div>
+    <div className='min-h-screen m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black'>
+        
+    </div>
   )
 }
 

@@ -12,7 +12,7 @@ const ReviewCard: React.FC<RestaurantProps> = ({ratings}) => {
                         <p className='font-medium'>@Maakumbe</p>
                     </div>
                     <div>
-                        <RatingIcon key={''} label={''} ratings={'5'} image={''} location={''} desc={''} badges={[]} />
+                        <RatingIcon key={''} label={''} ratings={''} image={''} location={''} desc={''} badges={[]} />
                     </div>
                 </div>
                 <div>

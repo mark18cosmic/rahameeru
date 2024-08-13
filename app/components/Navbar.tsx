@@ -23,7 +23,7 @@ function Navbar() {
             <div className='m-1'>
                 <Dropdown>
                     <DropdownTrigger>
-                        <Avatar className='rounded-full' />
+                        <Avatar className='rounded-full cursor-pointer' />
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Static Actions">
                         <DropdownItem key="profile">Profile</DropdownItem>
