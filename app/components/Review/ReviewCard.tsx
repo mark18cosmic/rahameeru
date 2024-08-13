@@ -6,17 +6,17 @@ import { RestaurantProps } from '../restaurantCard/restaurantCard'
 const ReviewCard: React.FC<RestaurantProps> = ({ratings}) => {
     return (
         <Card>
-            <CardBody>
+            <CardBody className='flex flex-col gap-2'>
                 <div className='flex flex-row justify-between items-center'>
                     <div>
-                        <p>@Maakumbe</p>
+                        <p className='font-medium'>@Maakumbe</p>
                     </div>
                     <div>
-                        <RatingIcon key={''} label={''} ratings={ratings} image={''} location={''} desc={''} badges={[]} />
+                        <RatingIcon key={''} label={''} ratings={'5'} image={''} location={''} desc={''} badges={[]} />
                     </div>
                 </div>
                 <div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident sapiente dolore obcaecati voluptates optio laborum aliquid voluptatem molestias quo perspiciatis reprehenderit quae similique dicta non inventore ut, a alias? Aliquam!</p>
+                    <p className='text-md font-light md:text-lg'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident sapiente dolore obcaecati voluptates optio laborum aliquid voluptatem molestias quo perspiciatis reprehenderit quae similique dicta non inventore ut, a alias? Aliquam!</p>
                 </div>
             </CardBody>
         </Card>
