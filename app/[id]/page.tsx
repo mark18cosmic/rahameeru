@@ -14,7 +14,6 @@ import Review, { RatingIcon } from '../components/buttons/Review';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import ReviewList from '../components/Review/ReviewList';
 import Head from 'next/head';
-import { NextSeo } from 'next-seo';
 
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {

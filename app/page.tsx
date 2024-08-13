@@ -1,6 +1,5 @@
 import Carousel from "./components/carousel/Carousel";
 import PopularRestaurants from "./components/Home/PopularRestaurants";
-import { NextSeo } from "next-seo";
 
 
 export default function Home() {
