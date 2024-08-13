@@ -29,6 +29,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
         <>
             <Head>
                 <title>{restaurant.label} | RahaMeeru</title>
+                <meta property="og:title" content={`${restaurant.label} | RahaMeeru`} />
             </Head>
             <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
                 <div className='flex items-center justify-center'>
