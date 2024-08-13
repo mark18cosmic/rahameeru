@@ -7,7 +7,7 @@ import restaurants from "@/app/api/data.json"
 import Link from 'next/link';
 import { RestaurantProps } from '../restaurantCard/restaurantCard';
 
-export const Search: React.FC<RestaurantProps> = ({label}) => {
+export const Search: React.FC<RestaurantProps> = ({ label }) => {
     return (
         <div className="w-full">
             <Autocomplete

@@ -8,12 +8,11 @@ interface RestaurantParams {
 
 import { getRestaurantsData } from '@/app/utils/getRestaurantData';
 import { notFound } from 'next/navigation';
-import Navbar from '../components/Navbar';
 import Badge from '../components/badges/Badge';
-import { FaStar } from "react-icons/fa6";
 import MapButton from '../components/buttons/MapButton';
 import Review, { RatingIcon } from '../components/buttons/Review';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
+import ReviewList from '../components/Review/ReviewList';
 
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
@@ -37,7 +36,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
                     ))}{" "}
                 </div>
                 <div>
-                        <RatingIcon key={''} label={''} ratings={restaurant.ratings} image={''} location={''} desc={''} badges={[]} />
+                    <RatingIcon key={''} label={''} ratings={restaurant.ratings} image={''} location={''} desc={''} badges={[]} />
                 </div>
             </div>
             <div className='flex flex-col gap-2'>
@@ -56,6 +55,9 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
                     <MapButton />
                     <Review />
                 </div>
+            </div>
+            <div>
+                <ReviewList />
             </div>
         </main>
     );

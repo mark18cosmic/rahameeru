@@ -1,8 +1,5 @@
-import Image from "next/image";
-import Navbar from "./components/Navbar";
 import Carousel from "./components/carousel/Carousel";
 import PopularRestaurants from "./components/Home/PopularRestaurants";
-import { Search } from "./components/Home/Search";
 
 
 export default function Home() {
