@@ -1,9 +1,12 @@
 import React from 'react'
 import { Card, CardBody } from '@nextui-org/react'
 import { RatingIcon } from '../buttons/Review'
-import { RestaurantProps } from '../restaurantCard/restaurantCard'
 
-const ReviewCard: React.FC<RestaurantProps> = ({ratings}) => {
+interface ReviewProps {
+    ratings: string;
+}
+
+const ReviewCard: React.FC<ReviewProps> = ({}) => {
     return (
         <Card>
             <CardBody className='flex flex-col gap-2'>
