@@ -22,9 +22,9 @@ export const SignUp = () => {
 
     return (
         <div className='flex flex-col gap-3'>
-            <Input className='bg-white' label="Username" type="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-            <Input className='bg-white' label="Email" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-            <Input className='bg-white' label="Password" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+            <Input className='bg-white' label="Username" labelPlacement='outside' type="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+            <Input className='bg-white' label="Email" labelPlacement='outside' type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+            <Input className='bg-white' label="Password" labelPlacement='outside' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
             <Button onClick={handleSignUp} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Signup</Button>
         </div>
     );
