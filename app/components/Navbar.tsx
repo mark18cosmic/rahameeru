@@ -37,10 +37,10 @@ function Navbar() {
                  </Link>
              </div>
  
-             {/* Search Bar */}
+             {/* Search Bar */} {user ? (<div />) : (
              <div className='md:w-full'>
                  <Search key={""} label={""} ratings={""} image={""} location={""} desc={""} badges={[]} />
-             </div>
+             </div>)}
  
              {/* User Avatar or Auth Buttons */}
              <div className='m-1'>
