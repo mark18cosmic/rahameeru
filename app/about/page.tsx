@@ -1,10 +1,12 @@
 import React from 'react'
 import Login from '../components/authentication/Login'
+import Signup from '../components/authentication/Signup'
 
 const AboutPage = () => {
   return (
     <div className='min-h-screen m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black'>
-        <Login />
+      <Login />
+      <Signup />
     </div>
   )
 }
