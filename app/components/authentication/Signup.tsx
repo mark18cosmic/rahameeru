@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react';
 import { signUp } from '@/app/api/auth/signup';
 
