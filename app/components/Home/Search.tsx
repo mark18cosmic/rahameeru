@@ -16,6 +16,7 @@ export const Search: React.FC<RestaurantProps> = ({ label }) => {
                 allowsCustomValue
                 startContent={<BiSearch />}
                 selectorIcon={""}
+                className='bg-white'
             >
                 {restaurants.map((restaurant) => (
                     <AutocompleteItem key={restaurant.key} value={restaurant.key}>
