@@ -12,7 +12,7 @@ export const SignUp = () => {
 
     const handleSignUp = async () => {
         try {
-            await signUp(email, password);
+            await signUp(email, password, username);
             alert('Sign-up successful!');
         } catch (error) {
             console.error(error);
