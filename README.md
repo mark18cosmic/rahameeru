@@ -24,8 +24,8 @@ Push Notifications: Get notified about new reviews, responses, and promotions.
 
 ## Tech Stack
 - Frontend: Next.js, NextUI
-- Backend: Xata (Database)
-- Hosting: Personal Server
+- Backend: Firebase (Database)
+- Hosting: Vercel & Docker
 - Styling: CSS, NextUI Components
 
 ## Usage
