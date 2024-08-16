@@ -72,8 +72,6 @@ export async function generateStaticParams() {
     const paths = restaurants.map((restaurant: { label: string; }) => ({
         params: { id: restaurant.label.replace(/\s+/g, '-').toLowerCase() },
     }));
-
-    return { paths, fallback: 'blocking' }; // Adjust fallback behavior if needed
 }
 
 // location // buttons
