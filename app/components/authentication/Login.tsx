@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { logIn } from '@/app/api/auth/login';
-import { Button, Card, CardBody, CardHeader, Input, Link } from '@nextui-org/react';
+import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 
 const SignIn = () => {
@@ -24,7 +25,7 @@ const SignIn = () => {
   };
 
   return (
-    <Card className='w-1/2'>
+    <Card className='w-full md:w-1/2'>
       <CardHeader className='flex justify-center items-center'>
         <h2 className='text-xl md:text-2xl font-semibold'>Login</h2>
       </CardHeader>
@@ -32,9 +33,9 @@ const SignIn = () => {
         <div className='flex flex-col gap-3'>
           <Input variant='bordered' labelPlacement='outside' label="Email" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
           <div>
-            <div className='flex justify-between flex-row'>
+            <div className='flex justify-between flex-row text-tiny'>
               <label>Password</label>
-              <Link className='text-root-500 text-tiny'>
+              <Link className='text-root-500' href=''>
                 Forgot Password
               </Link>
             </div>
