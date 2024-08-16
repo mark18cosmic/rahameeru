@@ -40,7 +40,11 @@ export const SignUp = () => {
                             Password
                             <Tooltip
                                 placement="top"
-                                content="Password should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, and one number"
+                                content={
+                                    <div className="px-1 py-2">
+                                        <div className="">Password should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number.</div>
+                                    </div>
+                                }
                             >
                                 <span className="cursor-pointer">
                                     <BsQuestionCircle />
