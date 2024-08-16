@@ -17,11 +17,12 @@ import ReviewList from '../components/Review/ReviewList';
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
     const { id } = params;
-    const restaurants: RestaurantProps[] = getRestaurantsData(); // Type the restaurants array
-    const restaurant = restaurants.find((r: RestaurantProps) => r.label.toLowerCase() === id); // Type the restaurant parameter
+    const formattedLabel = id.replace(/-/g, ' '); // Convert dashes back to spaces
+    const restaurants: RestaurantProps[] = getRestaurantsData(); // Get restaurant data
+    const restaurant = restaurants.find((r: RestaurantProps) => r.label.toLowerCase() === formattedLabel.toLowerCase());
 
     if (!restaurant) {
-        notFound();
+        notFound(); // Handle case when restaurant is not found
     }
 
     return (
