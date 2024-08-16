@@ -29,7 +29,7 @@ export const SignUp = () => {
         <Card className='w-1/2'>
             <CardBody>
                 <CardHeader className='flex justify-center items-center'>
-                    <h2 className='text-xl md:text-2xl'>Create an Account</h2>
+                    <h2 className='text-xl md:text-2xl font-semibold'>Create an Account</h2>
                 </CardHeader>
                 <div className='flex flex-col gap-3'>
                     <Input variant='bordered' label="Username" labelPlacement='outside' type="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />

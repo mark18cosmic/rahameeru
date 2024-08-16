@@ -26,7 +26,7 @@ const SignIn = () => {
   return (
     <Card className='w-1/2'>
       <CardHeader className='flex justify-center items-center'>
-        <h2 className='text-xl md:text-2xl'>Login</h2>
+        <h2 className='text-xl md:text-2xl font-semibold'>Login</h2>
       </CardHeader>
       <CardBody>
         <div className='flex flex-col gap-3'>
