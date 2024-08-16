@@ -19,14 +19,14 @@ export const Search: React.FC<RestaurantProps> = ({ label }) => {
                 className='bg-white'
             >
                 {restaurants.map((restaurant) => (
-                    <AutocompleteItem key={restaurant.key} value={restaurant.key}>
-                        <Link href={`/${label}`}>
+                    <Link href={`/${encodeURIComponent(label.replace(/\s+/g, '-').toLowerCase())}`} >
+                        <AutocompleteItem key={restaurant.key} value={restaurant.key}>
                             {restaurant.label}
+                        </AutocompleteItem>
                         </Link>
-                    </AutocompleteItem>
                 ))}
-            </Autocomplete>
-        </div>
+        </Autocomplete>
+        </div >
     )
 }
 
