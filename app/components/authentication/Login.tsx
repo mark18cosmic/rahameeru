@@ -18,7 +18,7 @@ const SignIn = () => {
     try {
       await logIn(email, password);
       alert('Sign-in successful!');
-      router.back()
+      router.push('/')
     } catch (error) {
       console.error(error);
       alert('Error during sign-in');
@@ -39,7 +39,7 @@ const SignIn = () => {
             <p className='text-black text-small md:text-medium'>Dont have an account? <Link href={"/signup"} className='text-root-500'>Create One</Link></p>
           </div>
           <br />
-          <GoogleSignIn />
+          {/* <GoogleSignIn />  coming soon */}
         </div>
       </CardBody>
     </Card>

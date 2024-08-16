@@ -20,7 +20,7 @@ export const SignUp = () => {
             alert('Sign-up successful!');
 
             // Redirect to previous page after successful sign-up
-            router.back(); // This takes the user to the previous page
+            router.push('/'); // This takes the user to the previous page
         } catch (error) {
             console.error(error);
             alert('Error during sign-up');
