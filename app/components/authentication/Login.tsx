@@ -35,7 +35,7 @@ const SignIn = () => {
           <Input variant='bordered' labelPlacement='outside' label="Password" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
           <Button onClick={handleSignIn} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Login</Button>
           <div className='flex flex-row justify-between'>
-            <p className='text-black'>Dont have and account? <Link href={"/signup"} className='text-root-500'>Create One</Link></p>
+            <p className='text-black text-small md:text-medium'>Dont have an account? <Link href={"/signup"} className='text-root-500'>Create One</Link></p>
             <Link href={''} className='text-root-500'>Forgot Password</Link>
           </div>
         </div>

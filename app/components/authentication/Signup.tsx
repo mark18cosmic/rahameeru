@@ -56,7 +56,7 @@ export const SignUp = () => {
                     } labelPlacement='outside' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                     <Button onClick={handleSignUp} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Signup</Button>
                     <div>
-                        <p>Already have an account? <Link href={"/login"} className='text-root-500'>Login</Link></p>
+                        <p className='text-small md:text-medium text-centered'>Already have an account? <Link href={"/login"} className='text-root-500'>Login</Link></p>
                     </div>
                 </div>
             </CardBody>
