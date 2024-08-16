@@ -24,14 +24,14 @@ const SignIn = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <h2>Login</h2>
+    <Card className='w-full'>
+      <CardHeader className='flex justify-center items-center'>
+        <h2 className='text-xl md:text-2xl'>Login</h2>
       </CardHeader>
       <CardBody>
         <div className='flex flex-col gap-3'>
-          <Input className='' labelPlacement='outside' label="Email" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-          <Input className='' labelPlacement='outside' label="Password" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+          <Input variant='bordered' labelPlacement='outside' label="Email" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+          <Input variant='bordered' labelPlacement='outside' label="Password" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
           <Button onClick={handleSignIn} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Login</Button>
         </div>
       </CardBody>

@@ -5,7 +5,7 @@ const LoginPage = () => {
   return (
     <>
     <main className='m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black'>
-        <div className='flex justify-center items-center'>
+        <div className='flex justify-center items-center w-1/2'>
             <SignIn />
         </div>
     </main>
