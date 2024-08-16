@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { signInWithGoogle } from '@/app/firebase/firebaseConfig'; // Make sure to import the function correctly
 
 const GoogleSignIn = () => {
