@@ -18,7 +18,7 @@ import ReviewList from '../components/Review/ReviewList';
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
     const { id } = params;
     const formattedLabel = decodeURIComponent(id.replace(/-/g, ' ')); // Convert dashes back to spaces
-    const restaurants: RestaurantProps[] = getRestaurantsData(); // Get restaurant data
+    const restaurants: RestaurantProps[] = getRestaurantsData();
     const restaurant = restaurants.find((r: RestaurantProps) => r.label.toLowerCase() === formattedLabel.toLowerCase());
 
     if (!restaurant) {
@@ -68,10 +68,12 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
 
 // Generate paths for all restaurants
 export async function generateStaticParams() {
-    const restaurants: RestaurantProps[] = getRestaurantsData(); // Type the restaurants array
-    return restaurants.map((restaurant) => ({
-        id: restaurant.label.toLowerCase(),
+    const restaurants = getRestaurantsData(); // Ensure the data is available at build time
+    const paths = restaurants.map((restaurant: { label: string; }) => ({
+        params: { id: restaurant.label.replace(/\s+/g, '-').toLowerCase() },
     }));
+
+    return { paths, fallback: 'blocking' }; // Adjust fallback behavior if needed
 }
 
 // location // buttons
