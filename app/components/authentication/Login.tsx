@@ -25,23 +25,16 @@ const SignIn = () => {
   };
 
   return (
-    <Card className='w-full md:w-1/2'>
-      <CardHeader className='flex justify-center items-center'>
+    <Card className='w-1/2'>
+      <CardHeader className='flex justify-center'>
         <h2 className='text-xl md:text-2xl font-semibold'>Login</h2>
       </CardHeader>
       <CardBody>
-        <div className='flex flex-col gap-3'>
+        <div className='flex flex-col justify-center gap-3'>
           <Input variant='bordered' labelPlacement='outside' label="Email" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-          <div>
-            <div className='flex justify-between flex-row text-tiny'>
-              <label>Password</label>
-              <Link className='text-root-500' href=''>
-                Forgot Password
-              </Link>
-            </div>
-            <Input variant='bordered' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-          </div>
+          <Input variant='bordered' labelPlacement='outside' label="Password" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
           <Button onClick={handleSignIn} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Login</Button>
+          <Link href={''} className='text-root-500'>Forgot Password</Link>
         </div>
       </CardBody>
     </Card>
