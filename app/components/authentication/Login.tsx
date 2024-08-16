@@ -25,7 +25,7 @@ const SignIn = () => {
   };
 
   return (
-    <Card className='w-full h-full md:w-1/2'>
+    <Card className='w-full h-full p-2 md:w-1/2'>
       <CardHeader className='flex justify-center'>
         <h2 className='text-xl md:text-2xl font-semibold'>Login</h2>
       </CardHeader>
