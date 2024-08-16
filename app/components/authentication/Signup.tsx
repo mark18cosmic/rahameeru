@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { signUp } from '@/app/api/auth/signup';
-import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
+import { Button, Card, CardBody, CardHeader, Input, Tooltip } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
+import { BsQuestionCircle } from "react-icons/bs";
 
 export const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -34,7 +35,14 @@ export const SignUp = () => {
                 <div className='flex flex-col gap-3'>
                     <Input variant='bordered' label="Username" labelPlacement='outside' type="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
                     <Input variant='bordered' label="Email" labelPlacement='outside' type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-                    <Input variant='bordered' label="Password" labelPlacement='outside' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                    <Input variant='bordered' label={
+                        <div className="flex justify-between items-center">
+                            Password
+                            <Tooltip content="Password should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number">
+                                <BsQuestionCircle />
+                            </Tooltip>
+                        </div>
+                    } labelPlacement='outside' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                     <Button onClick={handleSignUp} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Signup</Button>
                 </div>
             </CardBody>
