@@ -7,7 +7,8 @@ import Image from 'next/image'
 import { Avatar } from '@nextui-org/react'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { Search } from './Home/Search'
-import { User, getAuth, onAuthStateChanged } from 'firebase/auth';
+import { User, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/app/firebase/firebaseConfig'
 import AuthButtons from '@/app/components/buttons/Login'; // Import your sign-in/up buttons component
 
 function Navbar() {
@@ -15,17 +16,15 @@ function Navbar() {
      const [user, setUser] = useState<User | null>(null);
 
      useEffect(() => {
-         const auth = getAuth();
-         const unsubscribe = onAuthStateChanged(auth, (user) => {
-             if (user) {
-                 setUser(user); // Set the signed-in user, which is of type 'User'
-             } else {
-                 setUser(null); // Set state back to 'null' if no user is signed in
-             }
-         });
- 
-         // Clean up the subscription on component unmount
-         return () => unsubscribe();
+       const unsubscribe = onAuthStateChanged(auth, (user) => {
+         if (user) {
+           setUser(user);
+         } else {
+           setUser(null);
+         }
+       });
+   
+       return () => unsubscribe();
      }, []);
  
      return (
