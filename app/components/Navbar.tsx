@@ -44,14 +44,14 @@ function Navbar() {
              {/* Logo */}
              <div>
                  <Link href="/">
-                     <Image src={logo} alt='RahaMeeru' width={160} />
+                     <Image src={logo} alt='RahaMeeru' width={500} />
                  </Link>
              </div>
  
-             {/* Search Bar */} {user ? (<div />) : (
+             {/* Search Bar */} {user ?  (
              <div className='md:w-full'>
                  <Search key={""} label={""} ratings={""} image={""} location={""} desc={""} badges={[]} />
-             </div>)}
+             </div>) : null}
  
              {/* User Avatar or Auth Buttons */}
              <div className='m-1'>
