@@ -41,7 +41,7 @@ export const SignUp = () => {
                             <Tooltip
                                 placement="top"
                                 content={
-                                    <div className="px-1 py-2">
+                                    <div className="px-1 py-2 w-1/2">
                                         <div className="">Password should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number.</div>
                                     </div>
                                 }
