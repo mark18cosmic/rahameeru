@@ -5,6 +5,7 @@ import { logIn } from '@/app/api/auth/login';
 import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import GoogleSignIn from './googleSignin';
 
 
 const SignIn = () => {
@@ -36,8 +37,9 @@ const SignIn = () => {
           <Button onClick={handleSignIn} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Login</Button>
           <div className='flex flex-row justify-between'>
             <p className='text-black text-small md:text-medium'>Dont have an account? <Link href={"/signup"} className='text-root-500'>Create One</Link></p>
-            <Link href={''} className='text-root-500 text-small md:text-medium'>Forgot Password</Link>
           </div>
+          <br />
+          <GoogleSignIn />
         </div>
       </CardBody>
     </Card>
