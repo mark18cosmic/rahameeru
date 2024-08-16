@@ -38,8 +38,13 @@ export const SignUp = () => {
                     <Input variant='bordered' label={
                         <div className="flex gap-2 items-center">
                             Password
-                            <Tooltip placement='top' content="Password should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number">
-                                <BsQuestionCircle />
+                            <Tooltip
+                                placement="top"
+                                content="Password should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, and one number"
+                            >
+                                <span className="cursor-pointer">
+                                    <BsQuestionCircle />
+                                </span>
                             </Tooltip>
                         </div>
                     } labelPlacement='outside' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
