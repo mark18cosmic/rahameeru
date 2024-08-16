@@ -17,7 +17,7 @@ import ReviewList from '../components/Review/ReviewList';
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
     const { id } = params;
-    const formattedLabel = id.replace(/-/g, ' '); // Convert dashes back to spaces
+    const formattedLabel = decodeURIComponent(id.replace(/-/g, ' ')); // Convert dashes back to spaces
     const restaurants: RestaurantProps[] = getRestaurantsData(); // Get restaurant data
     const restaurant = restaurants.find((r: RestaurantProps) => r.label.toLowerCase() === formattedLabel.toLowerCase());
 
