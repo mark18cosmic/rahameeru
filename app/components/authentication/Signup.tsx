@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { signUp } from '@/app/api/auth/signup';
 import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export const SignUp = () => {
     const [username, setUsername] = useState('');
