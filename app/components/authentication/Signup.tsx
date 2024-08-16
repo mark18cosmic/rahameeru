@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { signUp } from '@/app/api/auth/signup';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
 
 export const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -21,12 +21,19 @@ export const SignUp = () => {
     };
 
     return (
-        <div className='flex flex-col gap-3'>
-            <Input className='' label="Username" labelPlacement='outside' type="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-            <Input className='' label="Email" labelPlacement='outside' type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-            <Input className='' label="Password" labelPlacement='outside' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-            <Button onClick={handleSignUp} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Signup</Button>
-        </div>
+        <Card>
+            <CardBody>
+            <CardHeader>
+                <h2>Create an Account</h2>
+            </CardHeader>
+                <div className='flex flex-col gap-3'>
+                    <Input className='' label="Username" labelPlacement='outside' type="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+                    <Input className='' label="Email" labelPlacement='outside' type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+                    <Input className='' label="Password" labelPlacement='outside' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                    <Button onClick={handleSignUp} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Signup</Button>
+                </div>
+            </CardBody>
+        </Card>
     );
 };
 
