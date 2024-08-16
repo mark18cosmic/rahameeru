@@ -11,11 +11,12 @@ import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/app/firebase/firebaseConfig'
 import AuthButtons from '@/app/components/buttons/Login'; // Import your sign-in/up buttons component
 import { logout } from '../api/auth/logout'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 
 function Navbar() {
      // Use 'User | null' to properly type the state
      const [user, setUser] = useState<User | null>(null);
+     const router = useRouter()
 
      useEffect(() => {
        const unsubscribe = onAuthStateChanged(auth, (user) => {
