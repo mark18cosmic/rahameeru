@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { signUp } from '@/app/api/auth/signup';
-import { Button, Card, CardBody, CardHeader, Input, Tooltip } from '@nextui-org/react';
+import { Button, Card, CardBody, CardHeader, Checkbox, Input, Tooltip } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { BsQuestionCircle } from "react-icons/bs";
+import Link from 'next/link';
 
 export const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -54,6 +55,9 @@ export const SignUp = () => {
                         </div>
                     } labelPlacement='outside' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                     <Button onClick={handleSignUp} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Signup</Button>
+                    <div>
+                        <p>Already have an account? <Link href={"/login"} className='text-root-500'>Login</Link></p>
+                    </div>
                 </div>
             </CardBody>
         </Card>
