@@ -32,9 +32,9 @@ const SignIn = () => {
         <div className='flex flex-col gap-3'>
           <Input variant='bordered' labelPlacement='outside' label="Email" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
           <div>
-            <div>
+            <div className='flex justify-between flex-row'>
               <label>Password</label>
-              <Link className='text-root-500'>
+              <Link className='text-root-500 text-tiny'>
                 Forgot Password
               </Link>
             </div>
