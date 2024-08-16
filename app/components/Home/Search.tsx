@@ -20,7 +20,7 @@ export const Search: React.FC<RestaurantProps> = ({ label }) => {
             >
                 {restaurants.map((restaurant) => (
                     <Link href={`/${encodeURIComponent(label.replace(/\s+/g, '-').toLowerCase())}`} key={restaurant.key}>
-                        <AutocompleteItem key={restaurant.key} value={restaurant.key}>
+                        <AutocompleteItem value={restaurant.key} key={''}>
                             {restaurant.label}
                         </AutocompleteItem>
                         </Link>
