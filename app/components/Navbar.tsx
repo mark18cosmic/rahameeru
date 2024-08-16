@@ -44,7 +44,7 @@ function Navbar() {
              {/* Logo */}
              <div>
                  <Link href="/">
-                     <Image src={logo} alt='RahaMeeru' width={500} />
+                     <Image src={logo} alt='RahaMeeru' width={150} className=''/>
                  </Link>
              </div>
  
