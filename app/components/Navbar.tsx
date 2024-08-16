@@ -10,6 +10,8 @@ import { Search } from './Home/Search'
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/app/firebase/firebaseConfig'
 import AuthButtons from '@/app/components/buttons/Login'; // Import your sign-in/up buttons component
+import { logout } from '../api/auth/logout'
+import router from 'next/router'
 
 function Navbar() {
      // Use 'User | null' to properly type the state
@@ -26,6 +28,15 @@ function Navbar() {
    
        return () => unsubscribe();
      }, []);
+     const handleLogout = async () => {
+        try {
+          await logout();
+          setUser(null); // Clear user state
+          router.push('/'); // Redirect to the homepage after logout
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      };
  
      return (
          <div className='flex flex-row justify-between gap-3 md:gap-6 items-center m-4 md:m-6'>
@@ -53,7 +64,7 @@ function Navbar() {
                              <DropdownItem key="myreviews">My Reviews</DropdownItem>
                              <DropdownItem key="request">Request Restaurant</DropdownItem>
                              <DropdownItem key="contact">Contact us</DropdownItem>
-                             <DropdownItem key="logout" className='text-root-500' color='danger'>
+                             <DropdownItem key="logout" className='text-root-500' color='danger' onClick={handleLogout}>
                                  Log Out
                              </DropdownItem>
                          </DropdownMenu>

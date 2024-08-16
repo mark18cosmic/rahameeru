@@ -3,22 +3,27 @@
 import { useState } from 'react';
 import { signUp } from '@/app/api/auth/signup';
 import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
+import { useRouter } from 'next/router';
 
 export const SignUp = () => {
     const [username, setUsername] = useState('');
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const router = useRouter();
 
     const handleSignUp = async () => {
         try {
-            await signUp(email, password, username);
-            alert('Sign-up successful!');
+          await signUp(email, password, username); // Make sure your signUp function also supports username if necessary
+          alert('Sign-up successful!');
+    
+          // Redirect to previous page after successful sign-up
+          router.back(); // This takes the user to the previous page
         } catch (error) {
-            console.error(error);
-            alert('Error during sign-up');
+          console.error(error);
+          alert('Error during sign-up');
         }
-    };
+      };
 
     return (
         <Card>

@@ -3,16 +3,20 @@
 import { useState } from 'react';
 import { logIn } from '@/app/api/auth/login';
 import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
+import { useRouter } from 'next/router';
 
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
+
 
   const handleSignIn = async () => {
     try {
       await logIn(email, password);
       alert('Sign-in successful!');
+      router.back()
     } catch (error) {
       console.error(error);
       alert('Error during sign-in');
