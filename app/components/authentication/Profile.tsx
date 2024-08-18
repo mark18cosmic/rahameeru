@@ -1,4 +1,6 @@
 // /components/Profile.tsx or /pages/profile.tsx
+'use client'
+
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
