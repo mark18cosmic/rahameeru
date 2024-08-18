@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect } from 'react'
 import Profile from '../components/authentication/Profile'
 import testFirestoreConnection from '../components/Rating/DisplayRating';
