@@ -6,7 +6,7 @@ interface ReviewProps {
     ratings: string;
 }
 
-const ReviewCard: React.FC<ReviewProps> = ({}) => {
+const ReviewCard: React.FC<ReviewProps> = ({ratings}) => {
     return (
         <Card>
             <CardBody className='flex flex-col gap-2'>
@@ -15,7 +15,7 @@ const ReviewCard: React.FC<ReviewProps> = ({}) => {
                         <p className='font-medium'>@Maakumbe</p>
                     </div>
                     <div>
-                        <RatingIcon key={''} label={''} ratings={''} image={''} location={''} desc={''} badges={[]} />
+                        <RatingIcon key={''} label={''} ratings={ratings} image={''} location={''} desc={''} badges={[]} />
                     </div>
                 </div>
                 <div>
