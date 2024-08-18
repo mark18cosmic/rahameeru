@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import ReviewList from '../Review/ReviewList';
+import {DisplayRating} from '../Rating/DisplayRating';
 
 const Profile = () => {
   const [username, setUsername] = useState('');
@@ -25,6 +26,7 @@ const Profile = () => {
       <h1 className='text-2xl'>Welcome, {username ? username : 'Guest'}!</h1>
       <h2>My reviews</h2>
       <ReviewList />
+      <DisplayRating restaurantId={''} />
     </div>
   );
 };
