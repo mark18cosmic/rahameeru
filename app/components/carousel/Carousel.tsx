@@ -1,12 +1,13 @@
 'use client'
 
 import { Carousel } from "@material-tailwind/react";
+import type { CarouselProps } from "@material-tailwind/react";
 
-export function CarouselDefault() {
+export function CarouselDefault(props: CarouselProps) {
   return (
-    <Carousel className="rounded-xl" autoplay={true} // Optional: autoplay feature
-      loop={true} // Optional: infinite loop
-      transition={{ duration: 1 }}>
+    <Carousel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="rounded-xl" autoplay={true} // Optional: autoplay feature
+    loop={true} // Optional: infinite loop
+    transition={{ duration: 1 }} {...props}>
       <img
         src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80"
         alt="image 1"
