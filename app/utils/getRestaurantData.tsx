@@ -1,9 +1,14 @@
-import path from 'path';
-import fs from 'fs';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/app/firebase/firebaseConfig"; // Ensure this path is correct
 
-export function getRestaurantsData() {
-    const filePath = path.join(process.cwd(), './app/api/data.json'); // Adjust path as needed
-    const jsonData = fs.readFileSync(filePath, 'utf-8');
-    const data = JSON.parse(jsonData);
-    return data;
+export async function getRestaurantsData() {
+    const restaurantsCollection = collection(db, "restaurants");
+    const querySnapshot = await getDocs(restaurantsCollection);
+    
+    const restaurants = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
+
+    return restaurants;
 }
