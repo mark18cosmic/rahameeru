@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <div>
-        <CarouselDefault />
+        <CarouselDefault children={undefined} />
         <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
           <PopularRestaurants label={"Featured Restaurants"} />
           <PopularRestaurants label={"Popular Today"} />
