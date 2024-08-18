@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import ReviewList from '../Review/ReviewList';
 
 const Profile = () => {
   const [username, setUsername] = useState('');
@@ -21,7 +22,9 @@ const Profile = () => {
 
   return (
     <div>
-      <h1>Welcome, {username ? username : 'Guest'}!</h1>
+      <h1 className='text-2xl'>Welcome, {username ? username : 'Guest'}!</h1>
+      <h2>My reviews</h2>
+      <ReviewList />
     </div>
   );
 };

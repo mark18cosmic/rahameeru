@@ -12,5 +12,4 @@ const ReviewList = () => {
     </div>
   )
 }
-
 export default ReviewList
