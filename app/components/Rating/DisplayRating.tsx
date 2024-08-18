@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, getDocs, collection } from 'firebase/firestore';
 import { db } from '@/app/firebase/firebaseConfig';
 
 export const DisplayRating = ({ restaurantId }: { restaurantId: string }) => {
@@ -38,8 +38,6 @@ export const DisplayRating = ({ restaurantId }: { restaurantId: string }) => {
 };
 
 // Test Firestore initialization
-import { collection, getDocs } from "firebase/firestore";
-
 const testFirestoreConnection = async () => {
   try {
     const querySnapshot = await getDocs(collection(db, "restaurants")); // Example collection
