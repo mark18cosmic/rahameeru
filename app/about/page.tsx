@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Profile from '../components/authentication/Profile'
+import testFirestoreConnection from '../components/Rating/DisplayRating';
 
 const AboutPage = () => {
+  useEffect(() => {
+    testFirestoreConnection();
+  }, [])
   return (
     <div className='min-h-screen m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black'>
       <Profile />
