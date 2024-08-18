@@ -2,9 +2,3 @@
     border-radius: 15px;
     /* overflow: hidden; */
 }
-
-.carousel .control-dots .dot:active {
-    border-radius: 0% !important;
-    width: 20px !important;
-    height: 5px !important;
-  }
