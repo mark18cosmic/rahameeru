@@ -59,7 +59,6 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
                     </div>
                 </div>
                 <div>
-                    <h2 className='font-semibold text-2xl md:text-4xl'>Recent Reviews</h2>
                     <ReviewList />
                 </div>
             </main></>

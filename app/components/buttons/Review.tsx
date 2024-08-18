@@ -23,7 +23,7 @@ export const Rating = () => {
 
 export const RatingIcon: React.FC<RestaurantProps> = ({ ratings }) => {
   return (
-    <p className='flex items-center gap-1 text-root-500 text-lg'>{ratings} <FaStar /></p>
+    <p className='flex items-center text-root-500 text-lg'>{ratings} <FaStar /></p>
 
   )
 }
