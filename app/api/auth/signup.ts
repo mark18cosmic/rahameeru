@@ -12,6 +12,7 @@ export const signUp = async (email: string, password: string, username: string) 
     });
 
     console.log('User signed up successfully:', user);
+    console.log(username)
   } catch (error) {
     console.error('Error during sign-up:', error);
     throw error;
