@@ -1,14 +1,12 @@
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/app/firebase/firebaseConfig"; // Ensure this path is correct
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/app/firebase/firebaseConfig'; // Adjust the import to your actual config path
+import { RestaurantProps } from '../components/restaurantCard/restaurantCard';
 
 export async function getRestaurantsData() {
-    const restaurantsCollection = collection(db, "restaurants");
-    const querySnapshot = await getDocs(restaurantsCollection);
-    
+    const querySnapshot = await getDocs(collection(db, 'restaurants'));
     const restaurants = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
     }));
-
-    return restaurants;
+    return restaurants as unknown as RestaurantProps[];
 }

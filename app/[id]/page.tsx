@@ -16,9 +16,11 @@ import ReviewList from '../components/Review/ReviewList';
 
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
+
+    
     const { id } = params;
     const formattedLabel = decodeURIComponent(id.replace(/-/g, ' ')); // Convert dashes back to spaces
-    const restaurants: RestaurantProps[] = getRestaurantsData();
+    const restaurants: RestaurantProps[] = await getRestaurantsData();
     const restaurant = restaurants.find((r: RestaurantProps) => r.label.toLowerCase() === formattedLabel.toLowerCase());
 
     if (!restaurant) {
@@ -67,7 +69,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
 
 // Generate paths for all restaurants
 export async function generateStaticParams() {
-    const restaurants: RestaurantProps[] = getRestaurantsData(); // Type the restaurants array
+    const restaurants: RestaurantProps[] = await getRestaurantsData(); // Type the restaurants array
     return restaurants.map((restaurant) => ({
         id: restaurant.label.replace(/\s+/g, '-').toLowerCase(),
     }));
