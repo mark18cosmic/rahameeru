@@ -1,4 +1,6 @@
 // Define the type for a restaurant
+'use client'
+
 import Image from 'next/image';
 import { RestaurantProps } from '../components/restaurantCard/restaurantCard';
 // Define the type for params
