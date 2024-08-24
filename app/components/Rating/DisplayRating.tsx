@@ -29,7 +29,7 @@ export const DisplayRating = ({ restaurantId }: { restaurantId: string }) => {
   return (
     <div>
       {averageRating !== null ? (
-        <p>Average Rating: {averageRating.toFixed(1)} / 5</p>
+        <p>Average Rating: {averageRating.toFixed(1)}</p>
       ) : (
         <p>No ratings yet</p>
       )}
