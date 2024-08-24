@@ -17,54 +17,61 @@ import ReviewList from '../components/Review/ReviewList';
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
 
-    
     const { id } = params;
     const formattedLabel = decodeURIComponent(id.replace(/-/g, ' ')); // Convert dashes back to spaces
-    const restaurants: RestaurantProps[] = await getRestaurantsData();
-    const restaurant = restaurants.find((r: RestaurantProps) => r.label.toLowerCase() === formattedLabel.toLowerCase());
+    try {
+        const restaurants: RestaurantProps[] = await getRestaurantsData();
+        const restaurant = restaurants.find((r) => r.label.toLowerCase() === formattedLabel.toLowerCase());
 
-    if (!restaurant) {
-        notFound(); // Handle case when restaurant is not found
+        if (!restaurant) {
+            notFound(); // Handle case when restaurant is not found
+            return null;
+        }
+
+        return (
+            <>
+                <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
+                    <div className='flex items-center justify-center'>
+                        <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover' />
+                    </div>
+                    <div className='flex flex-row items-center justify-between'>
+                        <div>
+                            {restaurant.badges.map((badge) => (
+                                <Badge key={badge} label={badge} />
+                            ))}{" "}
+                        </div>
+                        <div>
+                            <RatingIcon key={''} label={''} ratings={restaurant.ratings} image={''} location={''} desc={''} badges={[]} />
+                        </div>
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                        <div>
+                            <h3 className='text-xl md:text-2xl font-semibold'>{restaurant.label}</h3>
+                        </div>
+                        <div>
+                            <p className='font-light'>{restaurant.desc}</p>
+                        </div>
+                    </div>
+                    <div className='flex flex-row items-center justify-between'>
+                        <div>
+                            <p className='flex items-center gap-1 flex-row'><HiOutlineLocationMarker /> {restaurant.location}</p>
+                        </div>
+                        <div className='flex flex-row gap-2 md:gap-4'>
+                            <MapButton />
+                            <Review />
+                        </div>
+                    </div>
+                    <div>
+                        <ReviewList />
+                    </div>
+                </main></>
+        );
+    } catch (error) {
+        console.error("Failed to fetch restaurants:", error);
+        notFound(); // Handle error case
+        return null;
     }
 
-    return (
-        <>
-            <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
-                <div className='flex items-center justify-center'>
-                    <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover' />
-                </div>
-                <div className='flex flex-row items-center justify-between'>
-                    <div>
-                        {restaurant.badges.map((badge) => (
-                            <Badge key={badge} label={badge} />
-                        ))}{" "}
-                    </div>
-                    <div>
-                        <RatingIcon key={''} label={''} ratings={restaurant.ratings} image={''} location={''} desc={''} badges={[]} />
-                    </div>
-                </div>
-                <div className='flex flex-col gap-2'>
-                    <div>
-                        <h3 className='text-xl md:text-2xl font-semibold'>{restaurant.label}</h3>
-                    </div>
-                    <div>
-                        <p className='font-light'>{restaurant.desc}</p>
-                    </div>
-                </div>
-                <div className='flex flex-row items-center justify-between'>
-                    <div>
-                        <p className='flex items-center gap-1 flex-row'><HiOutlineLocationMarker /> {restaurant.location}</p>
-                    </div>
-                    <div className='flex flex-row gap-2 md:gap-4'>
-                        <MapButton />
-                        <Review />
-                    </div>
-                </div>
-                <div>
-                    <ReviewList />
-                </div>
-            </main></>
-    );
 }
 
 // Generate paths for all restaurants
