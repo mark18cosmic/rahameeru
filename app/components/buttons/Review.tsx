@@ -1,16 +1,12 @@
 import { Button, Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
 import React, { useState } from 'react';
 import { FaArrowRight, FaStar } from "react-icons/fa6";
-import { addReview } from '@/app/api/review/review';
+import { ReviewProps, addReview } from '@/app/api/review/review';
 import { Rating } from '../Rating/Rating';
 
-// Define the props for ReviewButton
-interface ReviewButtonProps {
-  restaurantId: string;
-  userId: string;
-}
 
-function ReviewButton({ restaurantId, userId }: ReviewButtonProps) {
+
+function ReviewButton({ restaurantId, userId }: ReviewProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(0);
