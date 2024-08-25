@@ -4,6 +4,7 @@ import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
         <NextUIProvider>
           <Navbar />
           {children}
+          <Analytics />
           <Footer />
         </NextUIProvider>
 
