@@ -76,6 +76,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
 
 }
 
+'use server'
 // Generate paths for all restaurants
 export async function generateStaticParams() {
     const restaurants: RestaurantProps[] = await getRestaurantsData(); // Type the restaurants array
