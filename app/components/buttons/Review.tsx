@@ -1,36 +1,38 @@
-'use client'
+import { Button, Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
+import React, { useState } from 'react';
+import { FaArrowRight, FaStar } from "react-icons/fa6";
+import { addReview } from '@/app/api/review/review';
+import { Rating } from '../Rating/Rating';
 
-import { Button, Textarea } from '@nextui-org/react'
-import React, { useState } from 'react'
-import { FaArrowRight } from "react-icons/fa6";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input } from "@nextui-org/react";
-import { FaStar } from "react-icons/fa6";
-import { RestaurantProps } from '../restaurantCard/restaurantCard';
-
-export const Rating = () => {
-  const [rating, setRating] = useState(0);
-  return (
-    <>
-      <div className="flex flex-row">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <FaStar key={star} className={`w-6 h-6 cursor-pointer ${rating >= star ? 'text-root-500' : 'text-root-100'}`}
-            onClick={() => setRating(star)} />
-        ))}
-      </div>
-    </>
-  );
+// Define the props for ReviewButton
+interface ReviewButtonProps {
+  restaurantId: string;
+  userId: string;
 }
 
-export const RatingIcon: React.FC<RestaurantProps> = ({ ratings }) => {
-  return (
-    <p className='flex items-center text-root-500 text-lg'>{ratings} <FaStar /></p>
-
-  )
-}
-
-function ReviewButton() {
+function ReviewButton({ restaurantId, userId }: ReviewButtonProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [reviewText, setReviewText] = useState('');
+  const [rating, setRating] = useState(0);
+
+  const handleSaveReview = async () => {
+    const review = {
+      rating,
+      name: "John Doe",  // Replace with actual user name if available
+      content: reviewText,
+      userId: userId,
+      restaurantId: restaurantId,
+      createdAt: new Date(),
+    };
+
+    try {
+      await addReview(review);
+      onOpenChange();  // Close the modal after saving
+    } catch (error) {
+      console.error("Error adding review: ", error);
+    }
+  };
+
   return (
     <div className="md:w-full">
       <Button
@@ -56,7 +58,10 @@ function ReviewButton() {
                   <label className="block text-sm font-medium text-gray-700">
                     Rating:
                   </label>
-                  <Rating />
+                  <Rating
+                    rating={rating}
+                    setRating={setRating}
+                  />
                 </div>
                 <div>
                   <label
@@ -79,7 +84,7 @@ function ReviewButton() {
                 <Button variant="light" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button className="bg-root-500 text-white" onPress={onClose}>
+                <Button className="bg-root-500 text-white" onPress={handleSaveReview}>
                   Save Review
                 </Button>
               </ModalFooter>
@@ -91,4 +96,4 @@ function ReviewButton() {
   );
 }
 
-export default ReviewButton
+export default ReviewButton;
