@@ -4,6 +4,8 @@ import { FaArrowRight, FaStar } from "react-icons/fa6";
 import { ReviewProps, addReview } from '@/app/api/review/review';
 import { Rating } from '../Rating/Rating';
 import { RestaurantProps } from '../restaurantCard/restaurantCard';
+import { auth, db } from '@/app/firebase/firebaseConfig';
+import { collection, addDoc } from 'firebase/firestore';
 
 export const RatingIcon: React.FC<RestaurantProps> = ({ ratings }) => {
   return (
@@ -12,26 +14,45 @@ export const RatingIcon: React.FC<RestaurantProps> = ({ ratings }) => {
   )
 }
 
-function ReviewButton({ restaurantId, userId }: ReviewProps) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+const ReviewButton: React.FC<ReviewProps> = ({ restaurantId }) => {
+  const { isOpen, onOpen, onOpenChange,onClose } = useDisclosure();
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSaveReview = async () => {
-    const review = {
-      rating,
-      name: "John Doe",  // Replace with actual user name if available
-      content: reviewText,
-      userId: userId,
-      restaurantId: restaurantId,
-      createdAt: new Date(),
-    };
+    setLoading(true);
+    setError(null);
 
     try {
-      await addReview(review);
-      onOpenChange();  // Close the modal after saving
-    } catch (error) {
-      console.error("Error adding review: ", error);
+      const user = auth.currentUser;
+
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+
+      const review = {
+        rating,
+        name: user.displayName || 'Anonymous',
+        content: reviewText,
+        userId: user.uid,
+        restaurantId,
+        createdAt: new Date(),
+      };
+
+      const reviewsCollection = collection(db, 'reviews');
+      await addDoc(reviewsCollection, review);
+      // Optionally reset form fields
+      setReviewText('');
+      setRating(0);
+      // Close modal
+      onClose();
+    } catch (err) {
+      console.error('Error saving review:', err);
+      setError('Failed to save review. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
