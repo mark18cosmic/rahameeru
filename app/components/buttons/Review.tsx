@@ -38,7 +38,7 @@ const ReviewButton: React.FC<ReviewProps> = ({ restaurantId }) => {
         content: reviewText,
         userId: user.uid,
         restaurantId,
-        createdAt: new Date(),
+      
       };
 
       const reviewsCollection = collection(db, 'reviews');

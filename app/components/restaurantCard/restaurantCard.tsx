@@ -12,7 +12,7 @@ import { getRestaurantsData } from '@/app/utils/getRestaurantData';
 export interface RestaurantProps {
     label: string;
     key: string;
-    ratings: string;
+    ratings: number;
     image: string;
     location: string;
     desc: string;

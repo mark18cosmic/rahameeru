@@ -1,14 +1,15 @@
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "@/app/firebase/firebaseConfig";  // Assuming you've already set up Firebase
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/app/firebase/firebaseConfig"; // Assuming you've already set up Firebase
+import Review from "@/app/components/buttons/Review";
 
 export interface ReviewProps {
-    rating: number;
-    name: string;
-    content: string;
-    userId: string;
-    restaurantId: string;
-    createdAt?: Date; // Optional since it will be set to new Date() by default
-  }
+  id: string;
+  rating: number;
+  name: string;
+  content: string;
+  restaurantId: string;
+  userId: string // Optional since it will be set to new Date() by default
+}
 
 export const addReview = async (review: ReviewProps) => {
   try {
@@ -16,13 +17,31 @@ export const addReview = async (review: ReviewProps) => {
       rating: review.rating,
       name: review.name,
       content: review.content,
-      userId: review.userId,  // Optional if linking reviews to users
-      restaurantId: review.restaurantId,  // Optional if linking reviews to restaurants
-      createdAt: new Date()
+      userId: review.userId, // Optional if linking reviews to users
+      restaurantId: review.restaurantId, // Optional if linking reviews to restaurants
     });
     console.log("Review added!");
   } catch (e) {
     console.error("Error adding review: ", e);
+  }
+};
+
+export const getReviewsByRestaurant = async (restaurantId: string) => {
+  try {
+    const reviewsCollection = collection(db, "reviews");
+    const q = query(
+      reviewsCollection,
+      where("restaurantId", "==", restaurantId)
+    );
+    const snapshot = await getDocs(q);
+    const reviews = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as unknown as ReviewProps[]; // Ensure data matches the Review type
+    return reviews;
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
+    return [];
   }
 };
 
