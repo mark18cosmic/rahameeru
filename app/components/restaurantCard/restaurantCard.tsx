@@ -4,9 +4,10 @@ import React from 'react'
 import { Card, CardBody, } from '@nextui-org/react'
 import Image from 'next/image'
 import { FaStar } from "react-icons/fa6";
-import ReviewButton from '@/app/components/buttons/Review'
+import Badge from '@/app/components/badges/Badge'
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import Link from 'next/link';
+import { getRestaurantsData } from '@/app/utils/getRestaurantData';
 
 export interface RestaurantProps {
     label: string;
@@ -18,7 +19,10 @@ export interface RestaurantProps {
     badges: string[];
 }
 
-const RestaurantCard: React.FC<RestaurantProps> = ({ label, ratings, image, location }) => {
+const RestaurantCard: React.FC<RestaurantProps> = async ({ label, ratings, image, location, }) => {
+
+    const restaurant: RestaurantProps[] = await getRestaurantsData();
+
     return (
         <Link href={`/${encodeURIComponent(label.replace(/\s+/g, '-').toLowerCase())}`}>
             <Card isPressable isHoverable className='w-[200px] shadow-sm md:w-[300px]'>
@@ -35,7 +39,7 @@ const RestaurantCard: React.FC<RestaurantProps> = ({ label, ratings, image, loca
                             <div className='flex flex-row justify-between'>
                                 <span className='flex flex-row items-center gap-1 md:text-medium text-sm'><HiOutlineLocationMarker /> {location}</span>
                                 <div className='flex justify-end'>
-                                    <ReviewButton />
+                                    
                                 </div>
                             </div>
                         </div>

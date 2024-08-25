@@ -43,7 +43,7 @@ function Navbar() {
         <div className='flex flex-row justify-between gap-3 md:gap-6 items-center m-4 md:m-6'>
             {/* Logo */}
             <div>
-                <Link href="/">
+                <Link href={"/"}>
                     <Image src={logo} alt='RahaMeeru' width={150} className='' />
                 </Link>
             </div>
