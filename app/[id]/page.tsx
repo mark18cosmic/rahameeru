@@ -9,75 +9,90 @@ interface RestaurantParams {
 }
 
 import { getRestaurantsData } from '@/app/utils/getRestaurantData';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import Badge from '../components/badges/Badge';
 import MapButton from '../components/buttons/MapButton';
 import Review, { RatingIcon } from '../components/buttons/Review';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import ReviewList from '../components/Review/ReviewList';
 import { Metadata } from 'next';
+import { useState, useEffect } from 'react';
 
 
 // Fetch data for the specific restaurant
-export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
+export default  function RestaurantDetail({ params }: { params: RestaurantParams }) {
+    const [restaurant, setRestaurant] = useState<RestaurantProps | null>(null);
+    const [error, setError] = useState<boolean>(false);
+    const router = useRouter();
 
-    const { id } = params;
-    const formattedLabel = decodeURIComponent(id.replace(/-/g, ' ')); // Convert dashes back to spaces
-    
-    try {
-        const restaurants: RestaurantProps[] = await getRestaurantsData();
-        const restaurant = restaurants.find((r) => r.label.toLowerCase() === formattedLabel.toLowerCase());
+    useEffect(() => {
+        const fetchRestaurant = async () => {
+            const { id } = params;
+            const formattedLabel = decodeURIComponent(id.replace(/-/g, ' '));
 
-        if (!restaurant) {
-            notFound(); // Handle case when restaurant is not found
-            return notFound;
-        }
+            try {
+                const restaurants: RestaurantProps[] = await getRestaurantsData();
+                const foundRestaurant = restaurants.find(
+                    (r) => r.label.toLowerCase() === formattedLabel.toLowerCase()
+                );
 
-        return (
-            <>
-                <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
-                    <div className='flex items-center justify-center'>
-                        <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover' />
-                    </div>
-                    <div className='flex flex-row items-center justify-between'>
-                        <div>
-                            {restaurant.badges.map((badge) => (
-                                <Badge key={badge} label={badge} />
-                            ))}{" "}
-                        </div>
-                        <div>
-                            <RatingIcon key={''} label={''} ratings={restaurant.ratings} image={''} location={''} desc={''} badges={[]} />
-                        </div>
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                        <div>
-                            <h3 className='text-xl md:text-2xl font-semibold'>{restaurant.label}</h3>
-                        </div>
-                        <div>
-                            <p className='font-light'>{restaurant.desc}</p>
-                        </div>
-                    </div>
-                    <div className='flex flex-row items-center justify-between'>
-                        <div>
-                            <p className='flex items-center gap-1 flex-row'><HiOutlineLocationMarker /> {restaurant.location}</p>
-                        </div>
-                        <div className='flex flex-row gap-2 md:gap-4'>
-                            <MapButton />
-                            <Review />
-                        </div>
+                if (!foundRestaurant) {
+                    setError(true);
+                    router.push('/404'); // Redirect to 404 page
+                } else {
+                    setRestaurant(foundRestaurant);
+                }
+            } catch (error) {
+                setError(true);
+                router.push('/404'); // Handle fetch error
+            }
+        };
+
+        fetchRestaurant();
+    }, [params, router]);
+
+    if (error) return <div>Restaurant not found</div>;
+    if (!restaurant) return <div>Loading...</div>;
+    return (
+        <>
+            <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
+                <div className='flex items-center justify-center'>
+                    <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover' />
+                </div>
+                <div className='flex flex-row items-center justify-between'>
+                    <div>
+                        {restaurant.badges.map((badge) => (
+                            <Badge key={badge} label={badge} />
+                        ))}{" "}
                     </div>
                     <div>
-                        <ReviewList />
+                        <RatingIcon key={''} label={''} ratings={restaurant.ratings} image={''} location={''} desc={''} badges={[]} />
                     </div>
-                </main></>
-        );
-    } catch (error) {
-        console.error("Failed to fetch restaurants:", error);
-        notFound(); // Handle error case
-        return notFound;
-    }
+                </div>
+                <div className='flex flex-col gap-2'>
+                    <div>
+                        <h3 className='text-xl md:text-2xl font-semibold'>{restaurant.label}</h3>
+                    </div>
+                    <div>
+                        <p className='font-light'>{restaurant.desc}</p>
+                    </div>
+                </div>
+                <div className='flex flex-row items-center justify-between'>
+                    <div>
+                        <p className='flex items-center gap-1 flex-row'><HiOutlineLocationMarker /> {restaurant.location}</p>
+                    </div>
+                    <div className='flex flex-row gap-2 md:gap-4'>
+                        <MapButton />
+                        <Review />
+                    </div>
+                </div>
+                <div>
+                    <ReviewList />
+                </div>
+            </main></>
+    );
+} 
 
-}
 
 // Generate paths for all restaurants
 // export async function generateStaticParams() {
