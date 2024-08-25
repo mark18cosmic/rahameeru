@@ -3,8 +3,14 @@ import React, { useState } from 'react';
 import { FaArrowRight, FaStar } from "react-icons/fa6";
 import { ReviewProps, addReview } from '@/app/api/review/review';
 import { Rating } from '../Rating/Rating';
+import { RestaurantProps } from '../restaurantCard/restaurantCard';
 
+export const RatingIcon: React.FC<RestaurantProps> = ({ ratings }) => {
+  return (
+    <p className='flex items-center text-root-500 text-lg'>{ratings} <FaStar /></p>
 
+  )
+}
 
 function ReviewButton({ restaurantId, userId }: ReviewProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
