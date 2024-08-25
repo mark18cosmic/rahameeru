@@ -15,12 +15,15 @@ import MapButton from '../components/buttons/MapButton';
 import Review, { RatingIcon } from '../components/buttons/Review';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import ReviewList from '../components/Review/ReviewList';
+import { Metadata } from 'next';
+
 
 // Fetch data for the specific restaurant
 export default async function RestaurantDetail({ params }: { params: RestaurantParams }) {
 
     const { id } = params;
     const formattedLabel = decodeURIComponent(id.replace(/-/g, ' ')); // Convert dashes back to spaces
+    
     try {
         const restaurants: RestaurantProps[] = await getRestaurantsData();
         const restaurant = restaurants.find((r) => r.label.toLowerCase() === formattedLabel.toLowerCase());
