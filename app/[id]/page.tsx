@@ -76,14 +76,13 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
 
 }
 
-'use server'
 // Generate paths for all restaurants
-export async function generateStaticParams() {
-    const restaurants: RestaurantProps[] = await getRestaurantsData(); // Type the restaurants array
-    return restaurants.map((restaurant) => ({
-        id: restaurant.label.replace(/\s+/g, '-').toLowerCase(),
-    }));
-}
+// export async function generateStaticParams() {
+//     const restaurants: RestaurantProps[] = await getRestaurantsData(); // Type the restaurants array
+//     return restaurants.map((restaurant) => ({
+//         id: restaurant.label.replace(/\s+/g, '-').toLowerCase(),
+//     }));
+// }
 
 // location // buttons
 // latest reviews
