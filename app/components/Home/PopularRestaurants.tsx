@@ -18,7 +18,7 @@ const PopularRestaurants: React.FC<TitlesProps> = async ({ label }) => {
                 <div>
                     <h2 className='font-semibold text-2xl md:text-4xl'>{label}</h2>
                 </div>
-                <div className='flex overflow-x-scroll w-full scrollbar-hide gap-4'>
+                <div className='flex flex-row overflow-x-scroll w-full scrollbar-hide gap-4'>
                     <div className='flex flex-nowrap gap-4'>
                         {restaurants.map((restaurant) => (
                             <RestaurantCard
