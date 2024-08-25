@@ -27,7 +27,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
 
         if (!restaurant) {
             notFound(); // Handle case when restaurant is not found
-            return null;
+            return notFound;
         }
 
         return (
@@ -71,7 +71,7 @@ export default async function RestaurantDetail({ params }: { params: RestaurantP
     } catch (error) {
         console.error("Failed to fetch restaurants:", error);
         notFound(); // Handle error case
-        return null;
+        return notFound;
     }
 
 }
