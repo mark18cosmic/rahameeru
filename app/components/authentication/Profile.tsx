@@ -24,9 +24,6 @@ const Profile = () => {
   return (
     <div>
       <h1 className='text-2xl'>Welcome, {username ? username : 'Guest'}!</h1>
-      <h2>My reviews</h2>
-      <ReviewList restaurantId={''} />
-      <DisplayRating restaurantId={''} />
     </div>
   );
 };

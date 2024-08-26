@@ -61,7 +61,7 @@ function Navbar() {
                 {user ? (
                     <Dropdown>
                         <DropdownTrigger>
-                            <Avatar className='rounded-full cursor-pointer' src={user.photoURL || undefined} />
+                            <Avatar className='rounded-full cursor-pointer' src={''} />
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Static Actions">
                             <DropdownItem key="profile">Profile</DropdownItem>
