@@ -1,10 +1,12 @@
 import Carousel from "./components/carousel/Carousel";
 import PopularRestaurants from "./components/Home/PopularRestaurants";
+import Navbar from "./components/Navbar";
 
 
 export default function Home() {
   return (
     <>
+      <Navbar />
       <div>
         <div className="text-center text-white text-xl bg-root-500">
           <p>Page is currently in developement</p>

@@ -18,6 +18,7 @@ import ReviewList from '../components/Review/ReviewList';
 import { Metadata } from 'next';
 import { useState, useEffect } from 'react';
 import { Spinner } from '@nextui-org/react';
+import Navbar from '../components/Navbar';
 
 
 // Fetch data for the specific restaurant
@@ -62,6 +63,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
         ;
     return (
         <>
+            <Navbar />
             <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
                 <div className='flex items-center justify-center'>
                     <Image src={restaurant.image} alt={restaurant.label} width={500} height={500} className='rounded-lg object-cover' />
@@ -90,7 +92,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                     </div>
                     <div className='flex flex-row gap-2 md:gap-4'>
                         <MapButton />
-                        <Review rating={0} name={''} content={''} userId={''} restaurantId={restaurant.key} id={''}/>
+                        <Review rating={0} name={''} content={''} userId={''} restaurantId={restaurant.key} id={''} />
                     </div>
                 </div>
                 <div>
