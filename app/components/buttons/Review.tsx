@@ -1,18 +1,44 @@
 import { Button, Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaArrowRight, FaStar } from "react-icons/fa6";
-import { ReviewProps, addReview } from '@/app/api/review/review';
+import { ReviewProps, addReview, getRatingsByRestaurant } from '@/app/api/review/review';
 import { Rating } from '../Rating/Rating';
 import { RestaurantProps } from '../restaurantCard/restaurantCard';
 import { auth, db } from '@/app/firebase/firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
 
-export const RatingIcon: React.FC<RestaurantProps> = ({ ratings }) => {
-  return (
-    <p className='flex items-center text-root-500 text-lg'>{ratings} <FaStar /></p>
+export const RatingIcon: React.FC<RestaurantProps> = ({ key } : RestaurantProps) => {
+  const [averageRating, setAverageRating] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  )
-}
+  useEffect(() => {
+    const fetchRatings = async () => {
+      setLoading(true);
+      try {
+        const ratings = await getRatingsByRestaurant(key);
+        const totalRatings = ratings.length;
+        const sumOfRatings = ratings.reduce((acc, rating) => acc + rating, 0);
+        const average = totalRatings > 0 ? (sumOfRatings / totalRatings).toFixed(1) : 'N/A';
+        setAverageRating(average);
+      } catch (error) {
+        console.error('Error fetching ratings:', error);
+        setAverageRating('N/A');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRatings();
+  }, [key]);
+
+  if (loading) return <p>Loading...</p>;
+
+  return (
+    <p className='flex items-center text-root-500 text-lg'>
+      {averageRating} <FaStar />
+    </p>
+  );
+};
 
 const ReviewButton: React.FC<ReviewProps> = ({ restaurantId }) => {
   const { isOpen, onOpen, onOpenChange,onClose } = useDisclosure();

@@ -45,6 +45,23 @@ export const getReviewsByRestaurant = async (restaurantId: string) => {
   }
 };
 
+export const getRatingsByRestaurant = async (restaurantId: string): Promise<number[]> => {
+  const reviewsRef = collection(db, 'reviews');
+  const q = query(reviewsRef, where('restaurantId', '==', restaurantId));
+
+  const querySnapshot = await getDocs(q);
+  const ratings: number[] = [];
+
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    if (data.rating) {
+      ratings.push(data.rating);
+    }
+  });
+
+  return ratings;
+};
+
 // Example usage:
 // const newReview = {
 //   rating: 4,
