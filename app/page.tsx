@@ -8,8 +8,8 @@ export default function Home() {
     <>
       <Navbar />
       <div>
-        <div className="text-center text-white text-xl bg-root-500">
-          <p>Page is currently in developement</p>
+        <div className="text-center text-white p-3 text-xl bg-root-500">
+          <p>All data is test data</p>
         </div>
         <Carousel />
         <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
