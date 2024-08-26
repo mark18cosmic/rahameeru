@@ -10,7 +10,6 @@ import Link from 'next/link';
 import { getRestaurantsData } from '@/app/utils/getRestaurantData';
 
 export interface RestaurantProps {
-    rating: number;
     label: string;
     key: string;
     ratings: number;

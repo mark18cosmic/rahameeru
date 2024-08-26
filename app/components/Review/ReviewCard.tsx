@@ -17,7 +17,7 @@ const ReviewCard: React.FC<ReviewProps> = ({rating, name, content}) => {
                         <p className='font-medium'>@{name}</p>
                     </div>
                     <div>
-                        <RatingIcon key={''} label={''} ratings={rating} image={''} location={''} desc={''} badges={[]} rating={0} />
+                        <RatingIcon key={''} label={''} ratings={rating} image={''} location={''} desc={''} badges={[]} />
                     </div>
                 </div>
                 <div>
