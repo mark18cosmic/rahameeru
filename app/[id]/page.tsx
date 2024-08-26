@@ -75,7 +75,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                         ))}{" "}
                     </div>
                     <div>
-                        <RatingIcon key={''} label={''} ratings={restaurant.ratings} image={''} location={''} desc={''} badges={[]} />
+                        <RatingIcon key={''} label={''} ratings={restaurant.rating} image={''} location={''} desc={''} badges={[]} rating={0} />
                     </div>
                 </div>
                 <div className='flex flex-col gap-2'>

@@ -25,7 +25,7 @@ const PopularRestaurants: React.FC<TitlesProps> = async ({ label }) => {
                                 key={restaurant.label} // Using index as key (although using a unique ID is better if available)
                                 label={restaurant.label}
                                 image={restaurant.image}
-                                ratings={restaurant.ratings} location={restaurant.location} desc={''} badges={[]} />
+                                ratings={restaurant.ratings} location={restaurant.location} desc={''} badges={[]} rating={0} />
                         ))}
                     </div>
                 </div>

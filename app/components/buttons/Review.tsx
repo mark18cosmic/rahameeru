@@ -15,9 +15,9 @@ export const RatingIcon: React.FC<RestaurantProps> = ({ key } : RestaurantProps)
     const fetchRatings = async () => {
       setLoading(true);
       try {
-        const ratings = await getRatingsByRestaurant(key);
-        const totalRatings = ratings.length;
-        const sumOfRatings = ratings.reduce((acc, rating) => acc + rating, 0);
+        const rating = await getRatingsByRestaurant(key);
+        const totalRatings = rating.length;
+        const sumOfRatings = rating.reduce((acc, rating) => acc + rating, 0);
         const average = totalRatings > 0 ? (sumOfRatings / totalRatings).toFixed(1) : 'N/A';
         setAverageRating(average);
       } catch (error) {
