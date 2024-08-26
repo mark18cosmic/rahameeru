@@ -14,7 +14,7 @@ const ReviewCard: React.FC<ReviewProps> = ({rating, name, content}) => {
             <CardBody className='flex flex-col gap-2'>
                 <div className='flex flex-row justify-between items-center'>
                     <div>
-                        <p className='font-medium'>{name}</p>
+                        <p className='font-medium'>@{name}</p>
                     </div>
                     <div>
                         <RatingIcon key={''} label={''} ratings={rating} image={''} location={''} desc={''} badges={[]} />
