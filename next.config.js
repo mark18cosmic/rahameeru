@@ -3,8 +3,10 @@
 // })
 module.exports = ({
     images: {
-      domains: ['image.winudf.com', 'upload.wikimedia.org', 'imgs.search.brave.com'], // Replace with your actual image domain(s)
+      domains: ['image.winudf.com', 'upload.wikimedia.org', 'imgs.search.brave.com'],
+      unoptimized: true 
     },
+    output: 'export',
     // pwa: {
     //   dest: 'public',
     //   disable: process.env.NODE_ENV === 'development', // Disable PWA in development mode

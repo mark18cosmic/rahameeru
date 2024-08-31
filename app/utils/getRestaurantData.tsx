@@ -18,3 +18,9 @@ export async function getRestaurantsData(): Promise<RestaurantProps[]> {
     return restaurants;
 }
 
+export async function generateStaticParams() {
+    const restaurants: RestaurantProps[] = await getRestaurantsData();
+    return restaurants.map((restaurant) => ({
+        id: restaurant.label.replace(/\s+/g, '-').toLowerCase(),
+    }))
+}
