@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 export default function Home() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div>
         <div className="text-center text-white p-3 text-xl bg-root-500">
           <p>All data is test data</p>
