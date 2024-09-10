@@ -9,7 +9,7 @@ import { collection, addDoc } from 'firebase/firestore';
 
 export const RatingIcon: React.FC<RestaurantProps> = ({ ratings }) => {
   return (
-    <p className='flex items-center text-root-500 text-lg'>{ratings} <FaStar /></p>
+    <p className='flex items-center text-root-500 text-lg md:text-xl'>{ratings} <FaStar /></p>
 
   )
 }

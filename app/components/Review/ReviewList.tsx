@@ -32,7 +32,7 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ restaurantId }) => {
 
   return (
     <div className='flex flex-col gap-3'>
-      <h2 className='font-semibold text-2xl md:text-4xl'>Recent Reviews</h2>
+      <h2 className='font-semibold text-large md:text-2xl'>Recent Reviews</h2>
       <div className='grid md:grid-cols-2 gap-4'>
         {reviews.length === 0 ? (
           <p>No reviews yet.</p>
