@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 
 // Export metadata
 export const metadata: Metadata = {
-  title: 'Restaurant Details | Rahameeru',
+  title: 'Rahameeru',
   description: 'Find the best restaurants and review your favorite ones by simply creating an account on Rahameeru.',
 };
 

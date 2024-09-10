@@ -59,7 +59,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
     if (loading) {
         return (
             <div role="status" className='flex justify-center items-center h-screen'>
-                <Spinner />
+                <Spinner className='text-root-500'/>
             </div>
         );
     }
