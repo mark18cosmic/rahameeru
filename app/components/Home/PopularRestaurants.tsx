@@ -25,6 +25,7 @@ const PopularRestaurants: React.FC<TitlesProps> = ({ label }) => {
             } finally {
                 setLoading(false);
             }
+            console.log(restaurants)
         };
 
         fetchRestaurants();
