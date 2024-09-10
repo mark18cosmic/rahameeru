@@ -59,7 +59,7 @@ const ReviewButton: React.FC<ReviewProps> = ({ restaurantId }) => {
   return (
     <div className="md:w-full">
       <Button
-        className="bg-root-500 text-white md:text-large font-semibold flex flex-row items-center"
+        className="bg-root-500 text-white md:text-base text-sm font-semibold flex flex-row items-center"
         onPress={onOpen}
       >
         Review <FaArrowRight />
