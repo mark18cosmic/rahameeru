@@ -42,7 +42,7 @@ const PopularRestaurants: React.FC<TitlesProps> = ({ label }) => {
     return (
         <div className='flex flex-col gap-4 text-black'>
             <div>
-                <h2 className='font-semibold text-2xl md:text-4xl'>{label}</h2>
+                <h2 className='font-semibold text-xl md:text-3xl'>{label}</h2>
             </div>
             <div className='flex overflow-x-scroll w-full scrollbar-hide gap-4'>
                 <div className='flex flex-row gap-4'>
