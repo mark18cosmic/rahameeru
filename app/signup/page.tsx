@@ -6,7 +6,7 @@ const SignupPage = () => {
   return (
     <>
       {/* <Navbar /> */}
-      <main className='min-h-screen m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black'>
+      <main className='h-full m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black'>
         <div className='flex p-5 items-center justify-center'>
           <SignUp />
         </div>
