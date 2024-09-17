@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <footer className="bg-white rounded-lg shadow m-4 mt-10">
             <div className="w-full mx-auto max-w-screen-xl justify-center p-4 flex flex-col md:flex-row items-center md:justify-between">
-                <span className="text-sm text-gray-500 sm:text-center">© 2024 <a href="https://mark18cosmic.github.io" className="hover:underline">Ka1sh</a>. All Rights Reserved.
+                <span className="text-sm text-gray-500 sm:text-center">© 2024 <a href="https://rahameeru.com" className="hover:underline">Rahameeru</a>. All Rights Reserved.
                 </span>
                 <ul className="flex flex-wrap justify-center items-center mt-3 text-sm font-medium sm:mt-0">
                     <li>
