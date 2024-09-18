@@ -59,7 +59,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
     if (loading) {
         return (
             <div role="status" className='flex justify-center items-center h-screen'>
-                <Spinner className='text-root-500'/>
+                <Spinner className='text-root-500' />
             </div>
         );
     }
@@ -69,33 +69,39 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
         <>
             {/* <Navbar /> */}
             <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
-                <div className='flex items-center justify-center'>
-                    <Image src={restaurant!.image} alt={restaurant!.label} width={500} height={500} className='rounded-lg object-cover' />
-                </div>
-                <div className='flex flex-row items-center justify-between'>
+                {/* Image */}
+                <div className='flex-col md:flex-row'>
                     <div>
-                        {restaurant!.badges.map((badge) => (
-                            <Badge key={badge} label={badge} />
-                        ))}{" "}
+                        <div className='flex items-center justify-center'>
+                            <Image src={restaurant!.image} alt={restaurant!.label} width={500} height={500} className='rounded-lg object-cover' />
+                        </div>
+                        <div className='flex flex-row items-center justify-between'>
+                            <div>
+                                {restaurant!.badges.map((badge) => (
+                                    <Badge key={badge} label={badge} />
+                                ))}{" "}
+                            </div>
+                            <div>
+                                <RatingIcon
+                                    key={restaurant!.key}
+                                    label={restaurant!.label}
+                                    ratings={restaurant!.ratings}
+                                    image={restaurant!.image}
+                                    location={restaurant!.location}
+                                    desc={restaurant!.desc}
+                                    badges={restaurant!.badges}
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <RatingIcon
-                            key={restaurant!.key}
-                            label={restaurant!.label}
-                            ratings={restaurant!.ratings}
-                            image={restaurant!.image}
-                            location={restaurant!.location}
-                            desc={restaurant!.desc}
-                            badges={restaurant!.badges}
-                        />
-                    </div>
-                </div>
-                <div className='flex flex-col gap-2'>
-                    <div>
-                        <h3 className='text-xl md:text-2xl font-semibold'>{restaurant!.label}</h3>
-                    </div>
-                    <div>
-                        <p className='font-light'>{restaurant!.desc}</p>
+                    {/* Info */}
+                    <div className='flex flex-col gap-2'>
+                        <div>
+                            <h3 className='text-xl md:text-2xl font-semibold'>{restaurant!.label}</h3>
+                        </div>
+                        <div>
+                            <p className='font-light'>{restaurant!.desc}</p>
+                        </div>
                     </div>
                 </div>
                 <div className='flex flex-row items-center justify-between'>
