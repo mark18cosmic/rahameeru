@@ -71,7 +71,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
             <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
                 {/* Image */}
                 <div className='flex-col flex md:flex-row gap-5'>
-                    <div className='md:w-1/2'>
+                    <div className='md:w-1/2 gap-4'>
                         <div className='flex items-center justify-center'>
                             <Image src={restaurant!.image} alt={restaurant!.label} width={500} height={500} className='rounded-lg object-cover' />
                         </div>
