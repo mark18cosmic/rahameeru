@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import logo from "@/public/rahameeru-high-resolution-logo-transparent.png"
+import logo from "@/public/rahameeruLogo.jpg"
 import Image from 'next/image'
 import { Avatar } from '@nextui-org/react'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
