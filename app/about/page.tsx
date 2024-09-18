@@ -8,15 +8,14 @@ const AboutPage = () => {
 
   return (
     <div className='min-h-screen m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black'>
-      <div className='flex flex-col md:flex-row gap-4'>
-          <div className='flex flex-col gap-2 w-1/2'>
-            <h1>Who are we?</h1>
-            <p>At Rahameeru, we believe food is more than just a meal—it’s an adventure. Our platform connects you to the vibrant food culture of the Maldives, helping you explore, review, and enjoy the best culinary experiences the islands have to offer. Whether you’re a local or a traveler, Rahameeru is here to guide your taste buds to something amazing.</p>
-          </div>
-          {/* Image */}
-          <div className='w-1/2'>
-            <Image width={500} src={Banner1} alt='An image'/>
-          </div>
+      <div className='flex flex-col md:flex-row gap-4 justify-between items-center'>
+        <div className='w-1/2 object-fit rounded-xl'>
+          <Image width={500} src={Banner1} alt='An image' />
+        </div>
+        <div className='flex flex-col gap-2 w-1/2'>
+          <h1 className='text-lg md:text-2xl font-semibold'>Who are we?</h1>
+          <p>At Rahameeru, we believe food is more than just a meal—it’s an adventure. Our platform connects you to the vibrant food culture of the Maldives, helping you explore, review, and enjoy the best culinary experiences the islands have to offer. Whether you’re a local or a traveler, Rahameeru is here to guide your taste buds to something amazing.</p>
+        </div>
       </div>
     </div>
   )
