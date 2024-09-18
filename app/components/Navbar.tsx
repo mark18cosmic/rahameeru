@@ -40,7 +40,7 @@ function Navbar() {
     };
 
     return (
-        <div className='flex flex-row justify-between gap-3 md:gap-6 items-center m-3 md:m-5'>
+        <div className='flex flex-row justify-between gap-3 md:gap-6 items-center m-3'>
             {/* Logo */}
             <div>
                 <Link href={"/"}>

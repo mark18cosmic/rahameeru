@@ -1,16 +1,23 @@
 "use client"
 
 import React, { useEffect } from 'react'
-import Profile from '../components/authentication/Profile'
-import testFirestoreConnection from '../components/Rating/DisplayRating';
+import Banner1 from "@/public/banner/scott-webb-Pf6Mw9RTDUI-unsplash.jpg"
+import Image from 'next/image'
 
 const AboutPage = () => {
-  useEffect(() => {
-    testFirestoreConnection();
-  }, [])
+
   return (
     <div className='min-h-screen m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black'>
-      <Profile />
+      <div className='flex flex-col md:flex-row gap-4'>
+          <div className='flex flex-col gap-2 w-1/2'>
+            <h1>Who are we?</h1>
+            <p>At Rahameeru, we believe food is more than just a meal—it’s an adventure. Our platform connects you to the vibrant food culture of the Maldives, helping you explore, review, and enjoy the best culinary experiences the islands have to offer. Whether you’re a local or a traveler, Rahameeru is here to guide your taste buds to something amazing.</p>
+          </div>
+          {/* Image */}
+          <div className='w-1/2'>
+            <Image width={500} src={Banner1} alt='An image'/>
+          </div>
+      </div>
     </div>
   )
 }
