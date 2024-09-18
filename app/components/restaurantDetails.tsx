@@ -95,23 +95,25 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                         </div>
                     </div>
                     {/* Info */}
-                    <div className='flex flex-col gap-2 md:w-1/2 md:items-center'>
-                        <div>
-                            <h3 className='text-xl md:text-2xl font-semibold'>{restaurant!.label}</h3>
+                    <div className=' md:w-1/2 md:justify-center'>
+                        <div className='flex flex-col gap-2'>
+                            <div>
+                                <h3 className='text-xl md:text-2xl font-semibold'>{restaurant!.label}</h3>
+                            </div>
+                            <div>
+                                <p className='font-light'>{restaurant!.desc}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p className='font-light'>{restaurant!.desc}</p>
-                        </div>
-                    </div>
-                    <div className='flex flex-row items-center justify-between'>
-                        <div>
-                            <p className='flex items-center gap-1 flex-row'>
-                                <HiOutlineLocationMarker /> {restaurant!.location}
-                            </p>
-                        </div>
-                        <div className='flex flex-row gap-2 md:gap-4'>
-                            <MapButton />
-                            <Review rating={0} name={''} content={''} userId={''} restaurantId={restaurant!.key} id={''} />
+                        <div className='flex flex-row items-center justify-between'>
+                            <div>
+                                <p className='flex items-center gap-1 flex-row'>
+                                    <HiOutlineLocationMarker /> {restaurant!.location}
+                                </p>
+                            </div>
+                            <div className='flex flex-row gap-2 md:gap-4'>
+                                <MapButton />
+                                <Review rating={0} name={''} content={''} userId={''} restaurantId={restaurant!.key} id={''} />
+                            </div>
                         </div>
                     </div>
                 </div>
