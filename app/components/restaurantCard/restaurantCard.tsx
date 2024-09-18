@@ -14,6 +14,8 @@ export interface RestaurantProps {
     image: string;
     location: string;
     desc: string;
+    phone: string;
+    email: string;
     badges: string[];
 }
 

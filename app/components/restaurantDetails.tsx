@@ -87,8 +87,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                             image={restaurant!.image}
                             location={restaurant!.location}
                             desc={restaurant!.desc}
-                            badges={restaurant!.badges}
-                        />
+                            badges={restaurant!.badges} phone={''} email={''}                        />
                     </div>
                 </div>
                 <div className='flex flex-col gap-2'>

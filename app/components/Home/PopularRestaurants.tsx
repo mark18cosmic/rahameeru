@@ -54,8 +54,7 @@ const PopularRestaurants: React.FC<TitlesProps> = ({ label }) => {
                             ratings={restaurant.ratings}
                             location={restaurant.location}
                             desc={restaurant.desc}
-                            badges={restaurant.badges}
-                        />
+                            badges={restaurant.badges} phone={''} email={''}                        />
                     ))}
                 </div>
             </div>
