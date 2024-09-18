@@ -14,6 +14,8 @@ export async function getRestaurantsData(): Promise<RestaurantProps[]> {
         image: doc.data().image || '',
         location: doc.data().location || '',
         badges: doc.data().badges || [],
+        phone: doc.data().phone || '', // New phone field
+        email: doc.data().email || '', // New email field
     })) as RestaurantProps[];
     return restaurants;
 }
