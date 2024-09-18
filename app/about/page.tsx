@@ -10,17 +10,17 @@ const AboutPage = () => {
   return (
     <div className='min-h-screen m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black'>
       {/* Who are we */}
-      <div className='flex flex-col mt-5 md:flex-row justify-between items-center'>
+      <div className='flex flex-col mt-5 gap-4 md:flex-row justify-between items-center'>
         <div className='w-1/2 object-fit rounded-xl'>
           <Image width={1000} src={Banner1} alt='An image' />
         </div>
         <div className='flex flex-col gap-2 w-1/2'>
-          <h1 className='text-lg md:text-2xl font-semibold'>Who are we?</h1>
-          <p>At Rahameeru, we believe food is more than just a meal—it’s an adventure. Our platform connects you to the vibrant food culture of the Maldives, helping you explore, review, and enjoy the best culinary experiences the islands have to offer. Whether you’re a local or a traveler, Rahameeru is here to guide your taste buds to something amazing.</p>
+          <h1 className='text-xl font-semibold text-center text-gray-600 sm:text-2xl md:text-3xl my-3'>Who are we?</h1>
+          <p className='text-base text-gray-700 sm:text-lg md:text-xl leading-relaxed text-center mb-6'>At Rahameeru, we believe food is more than just a meal—it’s an adventure. Our platform connects you to the vibrant food culture of the Maldives, helping you explore, review, and enjoy the best culinary experiences the islands have to offer. Whether you’re a local or a traveler, Rahameeru is here to guide your taste buds to something amazing.</p>
         </div>
       </div>
       {/* Cards */}
-      <div className='flex flex-col mt-5 md:flex-row justify-between items-center'>
+      <div className='flex flex-col gap-4 mt-5 md:flex-row justify-between'>
         {/* 1 */}
         <div className='w-1/2'>
           <Card>
