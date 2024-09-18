@@ -12,7 +12,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'
 const Carousel: React.FC = () => {
   return (
     <ResponsiveCarousel showArrows={false} showStatus={false} autoPlay={true} infiniteLoop={true} className='rounded-xl'>
-      <Image src={Banner1} alt='image' className='md:h-[450px] h-[350px] object-cover' />
+      <Image src={Banner2} alt='image' className='md:h-[450px] h-[350px] object-cover' />
       <Image src={Banner2} alt='image' className='md:h-[450px] h-[350px] object-cover' />
     </ResponsiveCarousel>
   );
