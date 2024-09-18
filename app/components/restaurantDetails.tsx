@@ -95,7 +95,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                         </div>
                     </div>
                     {/* Info */}
-                    <div className=' md:w-1/2 md:justify-center'>
+                    <div className=' md:w-1/2 flex md:justify-center gap-3'>
                         <div className='flex flex-col gap-2'>
                             <div>
                                 <h3 className='text-xl md:text-2xl font-semibold'>{restaurant!.label}</h3>
@@ -117,7 +117,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                         </div>
                     </div>
                 </div>
-                <div>
+                <div className='mt-4'>
                     <ReviewList restaurantId={restaurant!.key} />
                 </div>
             </main>
