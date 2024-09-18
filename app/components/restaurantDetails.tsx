@@ -11,6 +11,7 @@ import { HiOutlineLocationMarker } from 'react-icons/hi';
 import ReviewList from '../components/Review/ReviewList';
 import { useState, useEffect } from 'react';
 import { Spinner } from '@nextui-org/react';
+import Info from './buttons/Info';
 // import Navbar from '../components/Navbar';
 
 // Define the type for params
@@ -91,8 +92,9 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                     </div>
                 </div>
                 <div className='flex flex-col gap-2'>
-                    <div>
+                    <div className='flex flex-row items-center justify-between'>
                         <h3 className='text-xl md:text-2xl font-semibold'>{restaurant!.label}</h3>
+                        <Info />
                     </div>
                     <div>
                         <p className='font-light'>{restaurant!.desc}</p>
