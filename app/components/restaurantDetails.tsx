@@ -93,7 +93,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                 <div className='flex flex-col gap-2'>
                     <div className='flex flex-row items-center justify-between'>
                         <h3 className='text-xl md:text-2xl font-semibold'>{restaurant!.label}</h3>
-                        <Info />
+                        <Info restaurantId={''} />
                     </div>
                     <div>
                         <p className='font-light'>{restaurant!.desc}</p>
