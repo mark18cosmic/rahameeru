@@ -70,7 +70,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
             {/* <Navbar /> */}
             <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
                 {/* Image */}
-                <div className='flex-col flex md:flex-row'>
+                <div className='flex-col flex md:flex-row gap-5'>
                     <div className='md:w-1/2'>
                         <div className='flex items-center justify-center'>
                             <Image src={restaurant!.image} alt={restaurant!.label} width={500} height={500} className='rounded-lg object-cover' />
@@ -95,7 +95,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                         </div>
                     </div>
                     {/* Info */}
-                    <div className='flex flex-col gap-2 md:w-1/2'>
+                    <div className='flex flex-col gap-2 md:w-1/2 md:items-center'>
                         <div>
                             <h3 className='text-xl md:text-2xl font-semibold'>{restaurant!.label}</h3>
                         </div>
@@ -103,16 +103,16 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                             <p className='font-light'>{restaurant!.desc}</p>
                         </div>
                     </div>
-                </div>
-                <div className='flex flex-row items-center justify-between'>
-                    <div>
-                        <p className='flex items-center gap-1 flex-row'>
-                            <HiOutlineLocationMarker /> {restaurant!.location}
-                        </p>
-                    </div>
-                    <div className='flex flex-row gap-2 md:gap-4'>
-                        <MapButton />
-                        <Review rating={0} name={''} content={''} userId={''} restaurantId={restaurant!.key} id={''} />
+                    <div className='flex flex-row items-center justify-between'>
+                        <div>
+                            <p className='flex items-center gap-1 flex-row'>
+                                <HiOutlineLocationMarker /> {restaurant!.location}
+                            </p>
+                        </div>
+                        <div className='flex flex-row gap-2 md:gap-4'>
+                            <MapButton />
+                            <Review rating={0} name={''} content={''} userId={''} restaurantId={restaurant!.key} id={''} />
+                        </div>
                     </div>
                 </div>
                 <div>
