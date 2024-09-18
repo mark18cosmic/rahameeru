@@ -44,11 +44,6 @@ const Info: React.FC<InfoProps> = ({ phone, email }) => {
                                     </div>
                                 </div>
                             </ModalBody>
-                            <ModalFooter>
-                                <Button className="bg-root-500 text-white" onPress={onClose}>
-                                    Close
-                                </Button>
-                            </ModalFooter>
                         </>
                     )}
                 </ModalContent>
