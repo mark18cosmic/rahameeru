@@ -27,8 +27,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest"></link>
         <link rel="icon" href="/favicon.ico" />
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3567729252312652"
-          crossorigin="anonymous"></script>
+        <meta name="google-adsense-account" content="ca-pub-3567729252312652"/>
       </head>
       <body className={inter.className}>
         <NextUIProvider>
