@@ -12,6 +12,7 @@ import ReviewList from '../components/Review/ReviewList';
 import { useState, useEffect } from 'react';
 import { Spinner } from '@nextui-org/react';
 import Info from './buttons/Info';
+import RestaurantTabs from './Tabs/restaurantDetailTabs';
 // import Navbar from '../components/Navbar';
 
 // Define the type for params
@@ -111,7 +112,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                     </div>
                 </div>
                 <div>
-                    <ReviewList restaurantId={restaurant!.key} />
+                    <RestaurantTabs/>
                 </div>
             </main>
         </>
