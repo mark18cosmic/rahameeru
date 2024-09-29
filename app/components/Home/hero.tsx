@@ -33,7 +33,7 @@ const Hero = () => {
                 </div>
 
                 {/* Right side: Image */}
-                <div className="hidden md:w-1/2 ml-auto lg:mt-0 rounded-xl lg:flex">
+                <div className="hidden justify-end md:w-1/2 ml-auto lg:mt-0 rounded-xl lg:flex">
                     <Image src={HeroImage} alt="restaurant mockup" />
                 </div>
             </div>
