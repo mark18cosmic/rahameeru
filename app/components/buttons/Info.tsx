@@ -10,6 +10,8 @@ import {
 } from "@nextui-org/modal";
 import { useDisclosure, Button } from '@nextui-org/react';
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import Link from 'next/link';
+import { PhoneMultiFactorGenerator } from 'firebase/auth';
 
 interface InfoProps {
     phone: string;
@@ -34,14 +36,14 @@ const Info: React.FC<InfoProps> = ({ phone, email }) => {
                                     {/* Phone */}
                                     <div>
                                         <h1 className='font-medium text-sm md:text-lg'>Phone Number</h1>
-                                        <p className='text-gray-600'>{phone}</p>
+                                        <Link href={`tel:${phone}`} className='text-blue-600 hover:underline'>{phone}</Link>
                                     </div>
 
-                                    {/* Email */}
+                                    {/* Email
                                     <div>
                                         <h1 className='font-medium text-sm md:text-lg'>Email</h1>
                                         <p className='text-gray-600'>{email}</p>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </ModalBody>
                         </>
