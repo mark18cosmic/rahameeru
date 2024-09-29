@@ -14,7 +14,7 @@ const Hero = () => {
                 {/* Left side: Text and Buttons */}
                 <div className="w-full lg:w-1/2">
                     <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl">
-                        <span className='text-5xl md:text-6xl'>Discover </span>the Best Restaurants in the Maldives
+                        Discover the Best Restaurants in the Maldives
                     </h1>
                     <p className="mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl">
                         Rahameeru helps you explore top-rated dining spots, read authentic reviews, and share your experiences. Join us in discovering the best places to eat around the islands!
@@ -40,12 +40,12 @@ const Hero = () => {
                             <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/8104578/pexels-photo-8104578.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
                         </div>
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1600727/pexels-photo-1600727.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
                         </div>
                     </div>
                     <div className="grid gap-4">
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1603898/pexels-photo-1603898.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/64208/pexels-photo-64208.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
                         </div>
                         <div>
                             <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/723198/pexels-photo-723198.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
@@ -59,7 +59,7 @@ const Hero = () => {
                             <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" />
                         </div>
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" />
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/936611/pexels-photo-936611.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" />
                         </div>
                     </div>
                 </div>
