@@ -25,6 +25,7 @@ const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) =>
                             Latest Reviews
                         </span>
                     }
+                    className={activeTab === 'latest-reviews' ? 'underline text-root-500' : 'underline text-black'}
                 >
                     <ReviewsList restaurantId={restaurantId} />
                 </Tab>
@@ -35,10 +36,24 @@ const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) =>
                             Popular Restaurants
                         </span>
                     }
+                    className={activeTab === 'popular-restaurants' ? 'underline text-root-500' : 'underline text-black'}
                 >
                     <PopularRestaurants label="Popular Restaurants" />
                 </Tab>
             </Tabs>
+
+            {/* Custom underline styling */}
+            <style jsx>{`
+                .underline {
+                    border-bottom: 2px solid transparent; /* Default state */
+                }
+                .underline.text-root-500 {
+                    border-color: var(--nextui-colors-root-500); /* Active state */
+                }
+                .underline.text-black {
+                    border-color: transparent; /* Inactive state */
+                }
+            `}</style>
         </div>
     );
 };
