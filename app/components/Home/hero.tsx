@@ -55,10 +55,10 @@ const Hero = () => {
                     </div>
                     <div className="grid gap-4">
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg" alt="" />
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg" alt="Restaurant Image" />
                         </div>
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/936611/pexels-photo-936611.jpeg" alt="" />
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/936611/pexels-photo-936611.jpeg" alt="Restaurant Image" />
                         </div>
                     </div>
                 </div>
