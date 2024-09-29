@@ -24,6 +24,12 @@ const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) =>
                 >
                     <ReviewsList restaurantId={restaurantId} />
                 </Tab>
+                <Tab 
+                key="menu"
+                title={<span className={`text-sm md:text-lg`}>Menu</span>}
+                >
+                    <h1>Coming Soon</h1>
+                </Tab>
                 <Tab
                     key="popular-restaurants"
                     title={<span className={`text-sm md:text-lg`}>Popular Restaurants</span>}
