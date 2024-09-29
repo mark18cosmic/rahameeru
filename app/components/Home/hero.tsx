@@ -37,29 +37,29 @@ const Hero = () => {
                 <div className="hidden lg:grid lg:w-1/2 grid-cols-3 gap-4 ml-10">
                     <div className="grid gap-4">
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/8104578/pexels-photo-8104578.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/8104578/pexels-photo-8104578.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
                         </div>
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
-                        </div>
-                    </div>
-                    <div className="grid gap-4">
-                        <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/64208/pexels-photo-64208.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
-                        </div>
-                        <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/723198/pexels-photo-723198.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
-                        </div>
-                        <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/808941/pexels-photo-808941.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Restaurant Image" />
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
                         </div>
                     </div>
                     <div className="grid gap-4">
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" />
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/64208/pexels-photo-64208.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
                         </div>
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/936611/pexels-photo-936611.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" />
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/723198/pexels-photo-723198.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
+                        </div>
+                        <div>
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/808941/pexels-photo-808941.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Restaurant Image" />
+                        </div>
+                    </div>
+                    <div className="grid gap-4">
+                        <div>
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" />
+                        </div>
+                        <div>
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/936611/pexels-photo-936611.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" />
                         </div>
                     </div>
                 </div>
