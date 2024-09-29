@@ -10,8 +10,8 @@ const Hero = () => {
     return (
         <section className="bg-white">
             <div className="container mx-auto px-4 py-8 lg:py-12 flex flex-col lg:flex-row lg:items-center">
-                {/* Left side: Text and Buttons with Fade-in Animation */}
-                <div className="w-full lg:w-1/2 animate-drip-expand">
+                {/* Left side: Text and Buttons */}
+                <div className="w-full lg:w-1/2">
                     <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl">
                         Discover the Best Restaurants in the Maldives
                     </h1>
@@ -32,7 +32,7 @@ const Hero = () => {
                     </div>
                 </div>
 
-                {/* Right side: Image Grid with Hover and Pulse Animations */}
+                {/* Right side: Image Grid */}
                 <div className="hidden lg:grid lg:w-1/2 grid-cols-3 gap-4 ml-10">
                     <div className="grid gap-4">
                         <div>
@@ -63,6 +63,7 @@ const Hero = () => {
                     </div>
                 </div>
             </div>
+            <hr />
         </section>
     );
 };
