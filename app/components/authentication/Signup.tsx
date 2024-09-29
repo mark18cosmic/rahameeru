@@ -28,7 +28,7 @@ export const SignUp = () => {
     };
 
     return (
-        <Card className='p-2'>
+        <Card className='w-full md:w-1/2 p-2'>
             <CardBody>
                 <CardHeader className='flex justify-center items-center'>
                     <h2 className='text-xl md:text-2xl font-semibold'>Create an Account</h2>
