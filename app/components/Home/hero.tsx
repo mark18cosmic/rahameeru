@@ -9,9 +9,9 @@ import Link from 'next/link';
 const Hero = () => {
     return (
         <section className="bg-white">
-            <div className="container mx-auto px-4 py-8 lg:py-16 flex flex-col lg:flex-row lg:items-center">
+            <div className="container mx-auto px-4 py-8 lg:py-12 flex flex-col lg:flex-row lg:items-center">
                 {/* Left side: Text and Buttons with Fade-in Animation */}
-                <div className="w-full lg:w-1/2 animate-appearance-in">
+                <div className="w-full lg:w-1/2 animate-drip-expand">
                     <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl">
                         Discover the Best Restaurants in the Maldives
                     </h1>
