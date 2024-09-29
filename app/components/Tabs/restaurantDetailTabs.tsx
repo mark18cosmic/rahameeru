@@ -1,50 +1,30 @@
 'use client'
 
 import { useState } from 'react';
+import { Tabs, Tab } from '@nextui-org/react';
 import PopularRestaurants from '@/app/components/Home/PopularRestaurants';
 import ReviewsList from '@/app/components/Review/ReviewList';
-import { Tabs, Tab } from "@nextui-org/tabs";
 
-interface RestaurantTabsProps {
-    restaurantId: string; // Expecting restaurantId as a prop
-}
-
-const RestaurantTabs: React.FC<RestaurantTabsProps> = ({ restaurantId }) => {
-    const [activeTab, setActiveTab] = useState('latest-reviews'); // State to manage active tab
+const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) => {
+    const [activeTab, setActiveTab] = useState('latest-reviews');
 
     return (
-        <div className="flex flex-col gap-4 m-4">
-            {/* Tab Headers */}
-            <Tabs className="flex justify-around mb-4" variant='underlined'>
-                <Tab
-                    className={`font-medium text-sm md:text-lg 
-                        ${activeTab === 'latest-reviews' ? 'text-root-500' : 'text-black'}`}
-                    onClick={() => setActiveTab('latest-reviews')}
-                >
-                    Recent Reviews
+        <div className="flex flex-col gap-4">
+            {/* NextUI Tabs Component */}
+            <Tabs
+                aria-label="Restaurant tabs"
+                selectedKey={activeTab}
+                onSelectionChange={(key) => setActiveTab(key as string)}
+                className="flex justify-around"
+                variant="underlined"
+            >
+                <Tab key="latest-reviews" title="Latest Reviews" className="text-sm md:text-lg">
+                    <ReviewsList restaurantId={restaurantId} />
                 </Tab>
-                <Tab
-                    className={`rounded-lg font-medium text-sm md:text-lg 
-                        ${activeTab === 'popular-restaurants' ? 'text-root-500' : 'text-black'}`}
-                    onClick={() => setActiveTab('popular-restaurants')}
-                >
-                    Popular Restaurants
+                <Tab key="popular-restaurants" title="Popular Restaurants" className="text-sm md:text-lg">
+                    <PopularRestaurants label="Popular Restaurants" />
                 </Tab>
             </Tabs>
-
-            {/* Tab Content */}
-            <div>
-                {activeTab === 'latest-reviews' && (
-                    <div>
-                        <ReviewsList restaurantId={restaurantId} />
-                    </div>
-                )}
-                {activeTab === 'popular-restaurants' && (
-                    <div>
-                        <PopularRestaurants label="Popular Restaurants" />
-                    </div>
-                )}
-            </div>
         </div>
     );
 };
