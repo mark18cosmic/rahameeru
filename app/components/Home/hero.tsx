@@ -32,7 +32,7 @@ const Hero = () => {
                 </div>
 
                 {/* Right side: Image */}
-                <div className="hidden md:w-1/2 lg:mt-0 lg:col-span-5 rounded-xl lg:flex">
+                <div className="hidden md:w-1/2 ml-auto lg:mt-0 lg:col-span-5 rounded-xl lg:flex">
                     <Image src={HeroImage} alt="restaurant mockup" />
                 </div>
             </div>
