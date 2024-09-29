@@ -28,7 +28,7 @@ export const SignUp = () => {
     };
 
     return (
-        <Card className='w-full md:w-1/2 p-2'>
+        <Card className='p-2'>
             <CardBody>
                 <CardHeader className='flex justify-center items-center'>
                     <h2 className='text-xl md:text-2xl font-semibold'>Create an Account</h2>
@@ -37,7 +37,7 @@ export const SignUp = () => {
                     <Input variant='bordered' label="Username" labelPlacement='outside' type="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
                     <Input variant='bordered' label="Email" labelPlacement='outside' type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                     <Input variant='bordered' label={
-                        <div className="flex gap-2 items-center">
+                    <div className="flex gap-2 items-center">
                             Password
                             <Tooltip
                                 placement="top"
