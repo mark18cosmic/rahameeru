@@ -50,13 +50,16 @@ const Hero = () => {
                         <div>
                             <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/723198/pexels-photo-723198.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
                         </div>
+                        <div>
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/808941/pexels-photo-808941.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Restaurant Image" />
+                        </div>
                     </div>
                     <div className="grid gap-4">
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""/>
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" />
                         </div>
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt=""/>
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" />
                         </div>
                     </div>
                 </div>
