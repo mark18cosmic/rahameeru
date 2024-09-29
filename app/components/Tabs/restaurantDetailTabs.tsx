@@ -15,7 +15,7 @@ const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) =>
                 aria-label="Restaurant tabs"
                 selectedKey={activeTab}
                 onSelectionChange={(key) => setActiveTab(key as string)}
-                variant="bordered"
+                variant="underlined"
                 className="flex justify-around"
             >
                 <Tab
