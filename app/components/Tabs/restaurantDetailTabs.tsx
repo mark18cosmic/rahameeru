@@ -9,7 +9,7 @@ const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) =>
     const [activeTab, setActiveTab] = useState('latest-reviews');
 
     return (
-        <div className="flex flex-col gap-4 m-4">
+        <div className="flex flex-col gap-4">
             {/* NextUI Tabs Component */}
             <Tabs
                 aria-label="Restaurant tabs"
