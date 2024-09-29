@@ -58,9 +58,6 @@ const Hero = () => {
                         <div>
                             <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg" alt=""/>
                         </div>
-                        <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg" alt=""/>
-                        </div>
                     </div>
                 </div>
             </div>
