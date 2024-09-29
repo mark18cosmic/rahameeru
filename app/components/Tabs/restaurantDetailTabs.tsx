@@ -4,7 +4,11 @@ import { useState } from 'react';
 import PopularRestaurants from '@/app/components/Home/PopularRestaurants';
 import ReviewsList from '@/app/components/Review/ReviewList';
 
-const RestaurantTabs: React.FC = () => {
+interface RestaurantTabsProps {
+    restaurantId: string; // Expecting restaurantId as a prop
+}
+
+const RestaurantTabs: React.FC<RestaurantTabsProps> = ({ restaurantId }) => {
     const [activeTab, setActiveTab] = useState('latest-reviews'); // State to manage active tab
 
     return (
@@ -31,7 +35,7 @@ const RestaurantTabs: React.FC = () => {
             <div>
                 {activeTab === 'latest-reviews' && (
                     <div>
-                        <ReviewsList restaurantId={''} />
+                        <ReviewsList restaurantId={restaurantId} />
                     </div>
                 )}
                 {activeTab === 'popular-restaurants' && (

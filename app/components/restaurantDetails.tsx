@@ -112,7 +112,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                     </div>
                 </div>
                 <div>
-                    <RestaurantTabs/>
+                    <RestaurantTabs restaurantId={restaurant!.key}/>
                 </div>
             </main>
         </>
