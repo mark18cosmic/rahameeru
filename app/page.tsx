@@ -15,8 +15,6 @@ export default function Home() {
           <PopularRestaurants label={"Featured Restaurants"} />
         </main>
       </div>
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3567729252312652"
-        crossOrigin="anonymous"></script>
     </>
   );
 }

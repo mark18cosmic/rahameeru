@@ -115,8 +115,6 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                     <RestaurantTabs restaurantId={restaurant!.key} />
                 </div>
             </main>
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3567729252312652"
-                crossOrigin="anonymous"></script>
         </>
     );
 }
