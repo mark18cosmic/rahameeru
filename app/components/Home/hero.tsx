@@ -14,7 +14,7 @@ const Hero = () => {
                 {/* Left side: Text and Buttons */}
                 <div className="w-full lg:w-1/2">
                     <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl">
-                        <span className='text-root-800'>Discover </span>the Best Restaurants in the Maldives
+                        <span className='text-5xl'>Discover </span>the Best Restaurants in the Maldives
                     </h1>
                     <p className="mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl">
                         Rahameeru helps you explore top-rated dining spots, read authentic reviews, and share your experiences. Join us in discovering the best places to eat around the islands!
