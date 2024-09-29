@@ -19,16 +19,19 @@ const Hero = () => {
                     <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl">
                         Rahameeru helps you explore top-rated dining spots, read authentic reviews, and share your experiences. Join us in discovering the best places to eat around the islands!
                     </p>
-                    <Button
-                        className="bg-root-500 text-white md:text-base text-sm font-semibold flex flex-row items-center"
-                    >Get started<FaArrowRight /></Button>
-                    <Button className='bg-white border-black border text-black text-sm md:text-base font-semibold flex flex-row items-center'>Contact us <FaPhoneAlt /></Button>
+                    <div className='flex gap-2 md:gap-4'>
+                        <Button
+                            className="bg-root-500 text-white md:text-base text-sm font-semibold flex flex-row items-center"
+                        >Get started<FaArrowRight /></Button>
+
+                        <Button className='bg-white border-black border text-black text-sm md:text-base font-semibold flex flex-row items-center'>Contact us</Button>
+                    </div>
 
 
                 </div>
 
                 {/* Right side: Image */}
-                <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
+                <div className="hidden lg:mt-0 lg:col-span-5 rounded-xl lg:flex">
                     <Image src={HeroImage} alt="restaurant mockup" />
                 </div>
             </div>
