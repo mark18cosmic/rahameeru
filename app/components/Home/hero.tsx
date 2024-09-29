@@ -3,6 +3,9 @@
 import Image from 'next/image';
 import React from 'react';
 import HeroImage from "@/public/banner/alex-haney-CAhjZmVk5H4-unsplash.jpg"
+import { Button } from '@nextui-org/react';
+import { FaArrowRight } from 'react-icons/fa6';
+import { FaPhoneAlt } from 'react-icons/fa';
 
 const Hero = () => {
     return (
@@ -16,15 +19,12 @@ const Hero = () => {
                     <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl">
                         Rahameeru helps you explore top-rated dining spots, read authentic reviews, and share your experiences. Join us in discovering the best places to eat around the islands!
                     </p>
-                    <a href="/signup" className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-root-500 hover:bg-root-600 focus:ring-4 focus:ring-root-300">
-                        Get Started
-                        <svg className="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                    </a>
-                    <a href="/contact-us" className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100">
-                        Contact Us
-                    </a>
+                    <Button
+                        className="bg-root-500 text-white md:text-base text-sm font-semibold flex flex-row items-center"
+                    >Get started<FaArrowRight /></Button>
+                    <Button className='bg-white border-black border text-black text-sm md:text-base font-semibold flex flex-row items-center'>Contact us <FaPhoneAlt /></Button>
+
+
                 </div>
 
                 {/* Right side: Image */}
