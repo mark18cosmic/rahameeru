@@ -20,7 +20,7 @@ const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) =>
             >
                 <Tab
                     key="latest-reviews"
-                    title={<span className={`text-sm md:text-lg`}>Latest Reviews</span>}
+                    title={<span className={`text-sm md:text-lg`}>Reviews</span>}
                 >
                     <ReviewsList restaurantId={restaurantId} />
                 </Tab>
