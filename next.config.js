@@ -3,7 +3,7 @@
 // })
 module.exports = ({
     images: {
-      domains: ['image.winudf.com', 'upload.wikimedia.org', 'imgs.search.brave.com', 'brandslogos.com'],
+      domains: ['image.winudf.com', 'upload.wikimedia.org', 'imgs.search.brave.com', 'brandslogos.com', 'images.pexels.com'],
       unoptimized: true 
     },
     output: 'export',

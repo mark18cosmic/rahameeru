@@ -37,26 +37,26 @@ const Hero = () => {
                 <div className="hidden lg:grid lg:w-1/2 grid-cols-3 gap-4 ml-10">
                     <div className="grid gap-4">
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg" alt="Restaurant Image" />
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/8104578/pexels-photo-8104578.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
                         </div>
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" alt="Restaurant Image" />
-                        </div>
-                    </div>
-                    <div className="grid gap-4">
-                        <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" alt="Restaurant Image" />
-                        </div>
-                        <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" alt="Restaurant Image" />
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1600727/pexels-photo-1600727.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
                         </div>
                     </div>
                     <div className="grid gap-4">
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg" alt=""/>
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1603898/pexels-photo-1603898.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
                         </div>
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg" alt=""/>
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/723198/pexels-photo-723198.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Restaurant Image" />
+                        </div>
+                    </div>
+                    <div className="grid gap-4">
+                        <div>
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""/>
+                        </div>
+                        <div>
+                            <Image className="h-auto max-w-full rounded-lg" src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt=""/>
                         </div>
                     </div>
                 </div>
