@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ReviewProps, getReviewsByRestaurant } from '@/app/api/review/review';
+import { Spinner } from '@nextui-org/react';
 import ReviewCard from './ReviewCard';
 
 
@@ -27,7 +28,11 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ restaurantId }) => {
     fetchReviews();
   }, [restaurantId]);
 
-  if (loading) return <p>Loading reviews...</p>;
+  if (loading) return (
+    <div role="status" className='flex justify-center items-center h-screen'>
+      <Spinner className='text-root-500' />
+    </div>
+  );;
   if (error) return <p>{error}</p>;
 
   return (
