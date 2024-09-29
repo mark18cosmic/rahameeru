@@ -107,7 +107,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                         </p>
                     </div>
                     <div className='flex flex-row gap-2 md:gap-4'>
-                        <MapButton />
+                        <MapButton phone={restaurant!.phone} email={''}/>
                         <Review rating={0} name={''} content={''} userId={''} restaurantId={restaurant!.key} id={''} />
                     </div>
                 </div>

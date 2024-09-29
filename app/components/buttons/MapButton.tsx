@@ -4,7 +4,7 @@ import React from 'react'
 import { FaPhoneAlt } from "react-icons/fa";
 import { InfoProps } from './Info';
 
-const MapButton = (phone:string) => {
+const MapButton: React.FC<InfoProps> = (phone) => {
     return (
         <div className='md:w-full'>
             <Link href={`tel:${phone}`}>
