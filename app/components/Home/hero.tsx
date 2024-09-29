@@ -34,10 +34,14 @@ const Hero = () => {
 
                 {/* Right side: Image Grid - Hidden on Mobile */}
                 <div className="hidden md:flex md:w-1/2 rounded-xl justify-center">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-3 gap-4">
                         <div className="grid gap-4">
                             <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg" alt="restaurant-1" />
                             <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" alt="restaurant-2" />
+                        </div>
+                        <div className="grid gap-4">
+                            <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" alt="restaurant-3" />
+                            <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg" alt="restaurant-4" />
                         </div>
                         <div className="grid gap-4">
                             <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" alt="restaurant-3" />
