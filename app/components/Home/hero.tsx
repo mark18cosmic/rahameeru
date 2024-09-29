@@ -13,7 +13,7 @@ const Hero = () => {
         <section className="bg-white">
             <div className="flex justify-between max-w-screen-xl px-4 py-8 m-4 md:m-6 lg:gap-8 xl:gap-0 lg:py-16">
                 {/* Left side: Heading and Buttons */}
-                <div className="md:w-1/2 place-self-center">
+                <div className="md:w-full place-self-center">
                     <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl">
                         <span className='text-root-800'>Discover </span>the Best Restaurants in the Maldives
                     </h1>
@@ -33,8 +33,23 @@ const Hero = () => {
                 </div>
 
                 {/* Right side: Image */}
-                <div className="hidden justify-end md:w-1/2 ml-auto lg:mt-0 rounded-xl lg:flex">
-                    <Image src={HeroImage} alt="restaurant mockup" />
+                <div className="hidden justify-end ml-auto lg:mt-0 rounded-xl lg:flex">
+
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="grid gap-4">
+                            <div>
+                                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg" alt="" />
+                            </div>
+                            <div>
+                                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" alt="" />
+                            </div>
+                            <div>
+                                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" alt="" />
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </section>
