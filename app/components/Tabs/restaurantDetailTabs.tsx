@@ -32,9 +32,9 @@ const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) =>
                 </Tab>
                 <Tab
                     key="popular-restaurants"
-                    title={<span className={`text-sm md:text-lg`}>Popular Restaurants</span>}
+                    title={<span className={`text-sm md:text-lg`}>You may also like</span>}
                 >
-                    <PopularRestaurants label="Popular Restaurants" />
+                    <PopularRestaurants label="You may also like" />
                 </Tab>
             </Tabs>
         </div>
