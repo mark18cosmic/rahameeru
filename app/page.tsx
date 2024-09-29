@@ -14,6 +14,9 @@ export default function Home() {
         <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
           <PopularRestaurants label={"Featured Restaurants"} />
         </main>
-      </div></>
+      </div>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3567729252312652"
+        crossOrigin="anonymous"></script>
+    </>
   );
 }

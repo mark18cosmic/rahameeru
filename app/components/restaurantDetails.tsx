@@ -61,7 +61,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
     if (loading) {
         return (
             <div role="status" className='flex justify-center items-center h-screen'>
-                <Spinner className='text-root-500'/>
+                <Spinner className='text-root-500' />
             </div>
         );
     }
@@ -88,13 +88,13 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                             image={restaurant!.image}
                             location={restaurant!.location}
                             desc={restaurant!.desc}
-                            badges={restaurant!.badges} phone={''} email={''}                        />
+                            badges={restaurant!.badges} phone={''} email={''} />
                     </div>
                 </div>
                 <div className='flex flex-col gap-2'>
                     <div className='flex flex-row items-center justify-between'>
                         <h3 className='text-xl md:text-2xl font-semibold'>{restaurant!.label}</h3>
-                        <Info  phone={restaurant!.phone} email={restaurant!.email} />
+                        <Info phone={restaurant!.phone} email={restaurant!.email} />
                     </div>
                     <div>
                         <p className='font-light'>{restaurant!.desc}</p>
@@ -107,14 +107,16 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
                         </p>
                     </div>
                     <div className='flex flex-row gap-2 md:gap-4'>
-                        <MapButton phone={restaurant!.phone} email={''}/>
+                        <MapButton phone={restaurant!.phone} email={''} />
                         <Review rating={0} name={''} content={''} userId={''} restaurantId={restaurant!.key} id={''} />
                     </div>
                 </div>
                 <div>
-                    <RestaurantTabs restaurantId={restaurant!.key}/>
+                    <RestaurantTabs restaurantId={restaurant!.key} />
                 </div>
             </main>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3567729252312652"
+                crossOrigin="anonymous"></script>
         </>
     );
 }
