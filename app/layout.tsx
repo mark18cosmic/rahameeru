@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Rahameeru | Find the best places to eat near you",
-  description: "Discover the best restaurants in Malé and Hulhumalé on Rahameeru! Create an account to explore top-rated dining spots, review your favorites, and find the perfect place for every occasion—from affordable eats to luxury dining or the ideal date night. Start exploring the Maldives' restaurant scene now",
+  description: "Discover the best restaurants in Malé and Hulhumalé with Rahameeru! Create an account to explore top-rated dining spots and review your favorites. Find the perfect place for every occasion—whether it’s affordable eats, luxury dining, or a romantic date night. Start exploring the Maldives' culinary scene today!w",
 };
 
 export default function RootLayout({
