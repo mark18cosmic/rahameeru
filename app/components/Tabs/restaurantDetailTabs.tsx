@@ -15,43 +15,30 @@ const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) =>
                 aria-label="Restaurant tabs"
                 selectedKey={activeTab}
                 onSelectionChange={(key) => setActiveTab(key as string)}
-                variant="underlined"
+                variant="bordered"
                 className="flex justify-around"
             >
                 <Tab
                     key="latest-reviews"
-                    title={
-                        <span className={`text-sm md:text-lg ${activeTab === 'latest-reviews' ? 'text-root-500' : 'text-black'}`}>
-                            Latest Reviews
-                        </span>
-                    }
-                    className={activeTab === 'latest-reviews' ? 'underline text-root-500' : 'underline text-black'}
+                    title={<span className={`text-sm md:text-lg ${activeTab === 'latest-reviews' ? 'text-root-500' : 'text-black'}`}>Latest Reviews</span>}
                 >
                     <ReviewsList restaurantId={restaurantId} />
                 </Tab>
                 <Tab
                     key="popular-restaurants"
-                    title={
-                        <span className={`text-sm md:text-lg ${activeTab === 'popular-restaurants' ? 'text-root-500' : 'text-black'}`}>
-                            Popular Restaurants
-                        </span>
-                    }
-                    className={activeTab === 'popular-restaurants' ? 'underline text-root-500' : 'underline text-black'}
+                    title={<span className={`text-sm md:text-lg ${activeTab === 'popular-restaurants' ? 'text-root-500' : 'text-black'}`}>Popular Restaurants</span>}
                 >
                     <PopularRestaurants label="Popular Restaurants" />
                 </Tab>
             </Tabs>
 
-            {/* Custom underline styling */}
+            {/* Custom Underline Styling */}
             <style jsx>{`
-                .underline {
+                .nextui-tabs .nextui-tab {
                     border-bottom: 2px solid transparent; /* Default state */
                 }
-                .underline.text-root-500 {
-                    border-color: var(--nextui-colors-root-500); /* Active state */
-                }
-                .underline.text-black {
-                    border-color: transparent; /* Inactive state */
+                .nextui-tabs .nextui-tab[data-state="active"] {
+                    border-bottom: 2px solid var(--nextui-colors-root-500); /* Active state */
                 }
             `}</style>
         </div>
