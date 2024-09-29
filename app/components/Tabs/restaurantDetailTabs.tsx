@@ -20,15 +20,21 @@ const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) =>
             >
                 <Tab
                     key="latest-reviews"
-                    title="Latest Reviews"
-                    className={`text-sm md:text-lg ${activeTab === 'latest-reviews' ? 'text-root-500' : 'text-black'}`}
+                    title={
+                        <span className={`text-sm md:text-lg ${activeTab === 'latest-reviews' ? 'text-root-500' : 'text-black'}`}>
+                            Latest Reviews
+                        </span>
+                    }
                 >
                     <ReviewsList restaurantId={restaurantId} />
                 </Tab>
                 <Tab
                     key="popular-restaurants"
-                    title="Popular Restaurants"
-                    className={`text-sm md:text-lg ${activeTab === 'popular-restaurants' ? 'text-root-500' : 'text-black'}`}
+                    title={
+                        <span className={`text-sm md:text-lg ${activeTab === 'popular-restaurants' ? 'text-root-500' : 'text-black'}`}>
+                            Popular Restaurants
+                        </span>
+                    }
                 >
                     <PopularRestaurants label="Popular Restaurants" />
                 </Tab>
