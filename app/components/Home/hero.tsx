@@ -33,10 +33,32 @@ const Hero = () => {
                 </div>
 
                 {/* Right side: Image */}
-                <div className="hidden justify-end ml-auto lg:mt-0 rounded-xl lg:flex">
+                <div className="hidden ml-auto lg:mt-0 rounded-xl lg:flex">
 
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="grid gap-4">
+                            <div>
+                                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg" alt="" />
+                            </div>
+                            <div>
+                                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" alt="" />
+                            </div>
+                            <div>
+                                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" alt="" />
+                            </div>
+                        </div>
+                        <div className="grid gap-4">
+                            <div>
+                                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg" alt="" />
+                            </div>
+                            <div>
+                                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" alt="" />
+                            </div>
+                            <div>
+                                <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" alt="" />
+                            </div>
+                        </div>
                         <div className="grid gap-4">
                             <div>
                                 <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg" alt="" />
