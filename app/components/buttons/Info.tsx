@@ -13,7 +13,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import Link from 'next/link';
 import { PhoneMultiFactorGenerator } from 'firebase/auth';
 
-interface InfoProps {
+export interface InfoProps {
     phone: string;
     email: string;
 }
