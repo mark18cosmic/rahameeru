@@ -31,7 +31,7 @@ const Info: React.FC<InfoProps> = ({ phone, email }) => {
                             <ModalHeader className="flex flex-col gap-1 text-lg md:text-2xl">
                                 Contact Information
                             </ModalHeader>
-                            <ModalBody className='pb-4'>
+                            <ModalBody className='pb-4 mb-4'>
                                 <div className='flex flex-col gap-3 md:gap-6'>
                                     {/* Phone */}
                                     <div>

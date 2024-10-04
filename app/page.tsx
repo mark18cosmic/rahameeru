@@ -13,6 +13,8 @@ export default function Home() {
         <Hero />
         <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
           <PopularRestaurants label={"Featured Restaurants"} />
+          <PopularRestaurants label={"Fast Food Restaurants"} />
+          <PopularRestaurants label={"Recently Added Restaurants"} />
         </main>
       </div>
     </>
