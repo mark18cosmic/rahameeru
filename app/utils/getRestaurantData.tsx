@@ -22,7 +22,8 @@ export async function getRestaurantsData(): Promise<RestaurantProps[]> {
 
 export async function generateStaticParams() {
     const restaurants: RestaurantProps[] = await getRestaurantsData();
+
     return restaurants.map((restaurant) => ({
-        id: restaurant.label.replace(/\s+/g, '-').toLowerCase(),
-    }))
+        id: restaurant.label.replace(/\s+/g, '-').toLowerCase(), // Convert label to a slug format
+    }));
 }
