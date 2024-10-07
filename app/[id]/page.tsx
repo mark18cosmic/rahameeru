@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     // Return metadata based on the found restaurant
     if (restaurant) {
         return {
-            title: `${restaurant.label} - Rahameeru`,
+            title: `${restaurant.label} | Rahameeru`,
             description: `Discover ${restaurant.label} and review your favorite places on Rahameeru.`,
         };
     }

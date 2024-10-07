@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 const Hero = () => {
     return (
-        <section className="bg-white">
+        <section className="">
             <div className="container mx-auto px-4 py-8 lg:py-12 flex flex-col lg:flex-row lg:items-center">
                 {/* Left side: Text and Buttons */}
                 <div className="w-full lg:w-1/2">
