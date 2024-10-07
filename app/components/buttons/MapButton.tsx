@@ -2,9 +2,8 @@ import { Button } from '@nextui-org/react'
 import Link from 'next/link';
 import React from 'react'
 import { FaPhoneAlt } from "react-icons/fa";
-import { InfoProps } from './Info';
 
-const MapButton: React.FC<InfoProps> = (phone) => {
+const MapButton = ({ phone }: { phone: string }) => {
     return (
         <div className='md:w-full'>
             <Link href={`tel:${phone}`}>

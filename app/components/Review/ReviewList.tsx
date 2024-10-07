@@ -39,7 +39,7 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ restaurantId }) => {
     <div className='flex flex-col gap-3'>
       <div className='grid md:grid-cols-2 gap-4'>
         {reviews.length === 0 ? (
-          <p>No reviews yet.</p>
+          <p>No reviews yet. Be the first!</p>
         ) : (
           reviews.map(review => (
             <ReviewCard
