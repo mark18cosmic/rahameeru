@@ -8,7 +8,7 @@ const MapButton: React.FC<InfoProps> = (phone) => {
     return (
         <div className='md:w-full'>
             <Link href={`tel:${phone}`}>
-                <Button className='bg-white border-black border text-black text-sm md:text-base font-semibold flex flex-row items-center'>Call <FaPhoneAlt /></Button>
+                <Button className='bg-white border-black border text-black text-sm md:text-base font-semibold flex flex-row items-center'>Order <FaPhoneAlt /></Button>
             </Link>
         </div>
     )
