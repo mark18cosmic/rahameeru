@@ -43,7 +43,7 @@ export const Search: React.FC = () => {
         <div className="w-full">
             <Input
                 type="text"
-                placeholder="Find Restaurant"
+                placeholder="What are you craving...?"
                 value={query}
                 variant='bordered'
                 onChange={handleSearch}
