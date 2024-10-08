@@ -11,7 +11,7 @@ const About = () => {
                 <h1 className="text-4xl font-extrabold mb-6 text-center">About Rahameeru</h1>
                 <p className="text-lg text-gray-600 mb-8 text-center">
                     At Rahameeru, we are passionate about connecting food lovers with the best dining experiences in the Maldives. 
-                    Whether you&apos;'re looking for a cozy cafe, a luxury restaurant, or hidden gems, we&apos;ve got you covered!
+                    Whether you&apos;re looking for a cozy cafe, a luxury restaurant, or hidden gems, we&apos;ve got you covered!
                 </p>
                 <div className="flex justify-center mb-8">
                     <Image
