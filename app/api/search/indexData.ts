@@ -2,7 +2,7 @@ import { algoliasearch } from 'algoliasearch';
 import { getDocs, collection } from 'firebase/firestore';
 import { db } from '@/app/firebase/firebaseConfig'; // Adjust the path to your Firebase config
 
-const client = algoliasearch('WSKDUTHG0R', '4974bf75a1ba4f880103bd8fceeeb148');
+const client = algoliasearch('WSKDUTHG0R', 'e0c465246489200063ce8f21590f3067');
 
 const indexData = async () => {
   try {
