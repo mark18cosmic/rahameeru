@@ -28,7 +28,7 @@ export const Search: React.FC = () => {
         includeScore: true,
         threshold: 0.3, // Sensitivity of the search
     });
-    const ListboxWrapper = ( children: any ) => (
+    const ListboxWrapper = ( {children} : any ) => (
         <div className="w-full max-w-[960px] border-small px-1 py-2 rounded-small border-default-200 ">
             {children}
         </div>
