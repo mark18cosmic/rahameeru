@@ -50,29 +50,29 @@ export const Search: React.FC = () => {
                 className=""
             />
 
-            <div className="relative mt-4">
-                {results.length > 0 ? (
-                    <div className="absolute z-10 w-full bg-white shadow-lg rounded-lg max-h-64 overflow-y-auto space-y-2">
-                        {results.map((restaurant) => (
-                            <a
-                                key={restaurant.label}
-                                href={`/${restaurant.label.replace(/\s+/g, '-').toLowerCase()}`}
-                                className="block bg-gray-100 hover:bg-gray-200 transition-colors duration-300 p-2 rounded-md"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <img
-                                        src={restaurant.image}
-                                        alt={restaurant.label}
-                                        className="w-10 h-10 object-cover rounded-full"
-                                    />
-                                    <span className="font-semibold text-gray-800">
-                                        {restaurant.label}
-                                    </span>
-                                </div>
-                            </a>
-                        ))}
-                    </div>
-                ) : <div className='hidden'></div>}
+            <div className="relative mt-3">
+
+                <div className="absolute z-10 w-full bg-white shadow-lg rounded-lg max-h-64 overflow-y-auto space-y-2">
+                    {results.map((restaurant) => (
+                        <a
+                            key={restaurant.label}
+                            href={`/${restaurant.label.replace(/\s+/g, '-').toLowerCase()}`}
+                            className="block bg-gray-100 hover:bg-gray-200 transition-colors duration-300 p-2 rounded-md"
+                        >
+                            <div className="flex items-center gap-3">
+                                <img
+                                    src={restaurant.image}
+                                    alt={restaurant.label}
+                                    className="w-10 h-10 object-cover rounded-full"
+                                />
+                                <span className="font-semibold text-gray-800">
+                                    {restaurant.label}
+                                </span>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+                )
             </div>
 
         </div>
