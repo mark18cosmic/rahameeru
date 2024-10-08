@@ -54,23 +54,21 @@ export const Search: React.FC = () => {
                 {results.length > 0 ? (
                     <div className="bg-white shadow-lg rounded-lg p-4 space-y-2">
                         {results.map((restaurant) => (
-                            <ListboxItem key={restaurant.key}>
-                                <a
-                                    key={restaurant.label}
-                                    href={`/${restaurant.label.replace(/\s+/g, '-').toLowerCase()}`}
-                                    className="block bg-gray-100 hover:bg-gray-200 transition-colors duration-300 p-2 rounded-md"
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <img
-                                            src={restaurant.image}
-                                            alt={restaurant.label}
-                                            className="w-10 h-10 object-cover rounded-full"
-                                        />
-                                        <span className="font-semibold text-gray-800">
-                                            {restaurant.label}
-                                        </span>
-                                    </div>
-                                </a>
+                            <ListboxItem
+                                key={restaurant.label}
+                                href={`/${restaurant.label.replace(/\s+/g, '-').toLowerCase()}`}
+                                className="block bg-gray-100 hover:bg-gray-200 transition-colors duration-300 p-2 rounded-md"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <img
+                                        src={restaurant.image}
+                                        alt={restaurant.label}
+                                        className="w-10 h-10 object-cover rounded-full"
+                                    />
+                                    <span className="font-semibold text-gray-800">
+                                        {restaurant.label}
+                                    </span>
+                                </div>
                             </ListboxItem>
                         ))}
                     </div>
