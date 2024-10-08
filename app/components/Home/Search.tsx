@@ -50,9 +50,9 @@ export const Search: React.FC = () => {
                 className=""
             />
 
-            <div className="mt-4">
+            <div className="relative mt-4">
                 {results.length > 0 ? (
-                    <div className="bg-white shadow-lg rounded-lg p-4 space-y-2">
+                    <div className="absolute z-10 w-full bg-white shadow-lg rounded-lg max-h-64 overflow-y-auto space-y-2">
                         {results.map((restaurant) => (
                             <a
                                 key={restaurant.label}
@@ -72,7 +72,7 @@ export const Search: React.FC = () => {
                             </a>
                         ))}
                     </div>
-                ) : <div className='hidden'></div> }
+                ) : <div className='hidden'></div>}
             </div>
 
         </div>
