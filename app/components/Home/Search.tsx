@@ -72,7 +72,7 @@ export const Search: React.FC = () => {
                         </a>
                     ))}
                 </div>
-                )
+
             </div>
 
         </div>
