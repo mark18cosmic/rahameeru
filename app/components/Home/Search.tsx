@@ -1,33 +1,65 @@
-"use client"
+import React, { useState, useEffect } from 'react';
+import Fuse from 'fuse.js';
+import { getRestaurantsData } from '@/app/utils/getRestaurantData'; // Import your function
+import { RestaurantProps } from '../restaurantCard/restaurantCard'; // Adjust the path
 
-import React from 'react'
-import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
-import { BiSearch } from 'react-icons/bi';
-import restaurants from "@/app/api/data.json"
-import Link from 'next/link';
-import { RestaurantProps } from '../restaurantCard/restaurantCard';
+export const Search: React.FC = () => {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<RestaurantProps[]>([]);
+  const [restaurants, setRestaurants] = useState<RestaurantProps[]>([]);
 
-export const Search: React.FC<RestaurantProps> = ({ label }) => {
-    return (
-        <div className="w-full">
-            <Autocomplete
-                placeholder="Find Restaurant"
-                variant="bordered"
-                allowsCustomValue
-                startContent={<BiSearch />}
-                selectorIcon={""}
-                className='bg-white'
-            >
-                {restaurants.map((restaurant) => (
-                    <AutocompleteItem key={restaurant.key} value={restaurant.key}>
-                        <Link href={`/${encodeURIComponent(restaurant.label.replace(/\s+/g, '-').toLowerCase())}`}
-                            passHref>
-                            {restaurant.label}
-                        </Link>
-                    </AutocompleteItem>
-                ))}
-            </Autocomplete>
-        </div>
-    )
-}
+  // Fetch restaurant data on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      const restaurantData = await getRestaurantsData();
+      setRestaurants(restaurantData);
+    };
 
+    fetchData();
+  }, []);
+
+  // Initialize Fuse.js with restaurant data once fetched
+  const fuse = new Fuse(restaurants, {
+    keys: ['label', 'badges'], // Search fields
+    includeScore: true,
+    threshold: 0.3, // Sensitivity of the search
+  });
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchQuery = e.target.value;
+    setQuery(searchQuery);
+
+    if (searchQuery.trim()) {
+      const fuseResults = fuse.search(searchQuery);
+      setResults(fuseResults.map(result => result.item));
+    } else {
+      setResults([]); // Clear results if query is empty
+    }
+  };
+
+  return (
+    <div className="w-full">
+      <input
+        type="text"
+        placeholder="Find Restaurant"
+        value={query}
+        onChange={handleSearch}
+        className="w-full p-2 border"
+      />
+      
+      <div>
+        {results.length > 0 ? (
+          results.map((restaurant) => (
+            <div key={restaurant.label}>
+              <a href={`/${restaurant.label.replace(/\s+/g, '-').toLowerCase()}`}>
+                {restaurant.label}
+              </a>
+            </div>
+          ))
+        ) : (
+          <p>No results found</p>
+        )}
+      </div>
+    </div>
+  );
+};
