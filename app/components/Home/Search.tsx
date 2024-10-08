@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
 import { getRestaurantsData } from '@/app/utils/getRestaurantData'; // Import your function
