@@ -5,7 +5,7 @@ import Fuse from 'fuse.js';
 import { getRestaurantsData } from '@/app/utils/getRestaurantData'; // Import your function
 import { RestaurantProps } from '../restaurantCard/restaurantCard'; // Adjust the path
 import { Input } from '@nextui-org/react';
-import { Listbox, ListboxSection, ListboxItem } from "@nextui-org/listbox";
+import { Listbox, ListboxItem } from "@nextui-org/listbox";
 
 export const Search: React.FC = () => {
     const [query, setQuery] = useState('');
