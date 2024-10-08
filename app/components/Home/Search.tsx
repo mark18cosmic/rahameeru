@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
 import { getRestaurantsData } from '@/app/utils/getRestaurantData'; // Import your function
 import { RestaurantProps } from '../restaurantCard/restaurantCard'; // Adjust the path
+import { Input } from '@nextui-org/react';
 
 export const Search: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -39,12 +40,13 @@ export const Search: React.FC = () => {
 
   return (
     <div className="w-full">
-      <input
+      <Input
         type="text"
         placeholder="Find Restaurant"
         value={query}
+        variant='bordered'
         onChange={handleSearch}
-        className="w-full p-2 border"
+        className=""
       />
       
       <div>
@@ -57,7 +59,7 @@ export const Search: React.FC = () => {
             </div>
           ))
         ) : (
-          <p>No results found</p>
+          <p className='hidden'>No results found</p>
         )}
       </div>
     </div>
