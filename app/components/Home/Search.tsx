@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
 import { getRestaurantsData } from '@/app/utils/getRestaurantData'; // Import your function
@@ -41,7 +42,7 @@ export const Search: React.FC = () => {
     };
 
     return (
-        <Listbox className="w-full">
+        <div className="w-full">
             <Input
                 type="text"
                 placeholder="Find Restaurant"
@@ -51,7 +52,7 @@ export const Search: React.FC = () => {
                 className=""
             />
 
-            <div className="mt-4">
+            <Listbox className="mt-4">
                 {results.length > 0 ? (
                     <div className="bg-white shadow-lg rounded-lg p-4 space-y-2">
                         {results.map((restaurant) => (
@@ -74,8 +75,8 @@ export const Search: React.FC = () => {
                         ))}
                     </div>
                 ) : <div className='hidden'></div>}
-            </div>
+            </Listbox>
 
-        </Listbox>
+        </div>
     );
 };
