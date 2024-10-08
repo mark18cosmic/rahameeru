@@ -1,4 +1,6 @@
 // Import necessary modules and components
+
+'use client'
 import { Metadata } from 'next';
 import { getRestaurantsData } from '@/app/utils/getRestaurantData';
 import RestaurantDetail from '@/app/components/restaurantDetails';
