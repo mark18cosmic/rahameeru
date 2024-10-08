@@ -50,10 +50,10 @@ function Navbar() {
 
             {/* Search Bar */} {user ? (
                 <div className='md:w-full'>
-                    <Search key={""} label={""} ratings={0} image={""} location={""} desc={""} badges={[]} phone={''} email={''} />
+                    <Search />
                 </div>) : (
                 <div className='md:w-full hidden md:flex'>
-                    <Search key={""} label={""} ratings={0} image={""} location={""} desc={""} badges={[]} phone={''} email={''} />
+                    <Search />
                 </div>)}
 
             {/* User Avatar or Auth Buttons */}
