@@ -40,7 +40,7 @@ export const Search: React.FC = () => {
     };
 
     return (
-        <div className="w-full">
+        <div className="w-full mt-3">
             <Input
                 type="text"
                 placeholder="What are you craving...?"

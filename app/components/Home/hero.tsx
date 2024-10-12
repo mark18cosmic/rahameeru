@@ -36,29 +36,29 @@ const Hero = () => {
                 <div className="hidden lg:grid lg:w-1/2 grid-cols-3 gap-4 ml-10">
                     <div className="grid gap-4">
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/8104578/pexels-photo-8104578.jpeg" alt="Restaurant Image" />
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" width={500} height={500} src="https://images.pexels.com/photos/8104578/pexels-photo-8104578.jpeg" alt="Restaurant Image" />
                         </div>
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" alt="Restaurant Image" />
-                        </div>
-                    </div>
-                    <div className="grid gap-4">
-                        <div>
-                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/64208/pexels-photo-64208.jpeg" alt="Restaurant Image" />
-                        </div>
-                        <div>
-                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/723198/pexels-photo-723198.jpeg" alt="Restaurant Image" />
-                        </div>
-                        <div>
-                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/808941/pexels-photo-808941.jpeg" alt="Restaurant Image" />
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" width={500} height={500} src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" alt="Restaurant Image" />
                         </div>
                     </div>
                     <div className="grid gap-4">
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg" alt="Restaurant Image" />
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" width={500} height={500} src="https://images.pexels.com/photos/64208/pexels-photo-64208.jpeg" alt="Restaurant Image" />
                         </div>
                         <div>
-                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" src="https://images.pexels.com/photos/936611/pexels-photo-936611.jpeg" alt="Restaurant Image" />
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" width={500} height={500} src="https://images.pexels.com/photos/723198/pexels-photo-723198.jpeg" alt="Restaurant Image" />
+                        </div>
+                        <div>
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" width={500} height={500} src="https://images.pexels.com/photos/808941/pexels-photo-808941.jpeg" alt="Restaurant Image" />
+                        </div>
+                    </div>
+                    <div className="grid gap-4">
+                        <div>
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" width={500} height={500} src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg" alt="Restaurant Image" />
+                        </div>
+                        <div>
+                            <Image className="h-auto max-w-full rounded-lg hover:animate-pulse" width={500} height={500} src="https://images.pexels.com/photos/936611/pexels-photo-936611.jpeg" alt="Restaurant Image" />
                         </div>
                     </div>
                 </div>
