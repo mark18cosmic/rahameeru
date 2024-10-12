@@ -63,7 +63,7 @@ const SignIn = () => {
         {/* Account creation link */}
         <div className="flex justify-between items-center mt-4">
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/signup" className="text-root-500 font-semibold">
               Create One
             </Link>
