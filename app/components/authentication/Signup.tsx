@@ -28,39 +28,71 @@ export const SignUp = () => {
     };
 
     return (
-        <Card className='w-full flex justify-center items-center md:w-1/2 p-2'>
-            <CardBody>
-                <CardHeader className='flex justify-center items-center'>
-                    <h2 className='text-xl md:text-2xl font-semibold'>Create an Account</h2>
-                </CardHeader>
-                <div className='flex flex-col gap-3'>
-                    <Input variant='bordered' label="Username" labelPlacement='outside' type="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-                    <Input variant='bordered' label="Email" labelPlacement='outside' type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-                    <Input variant='bordered' label={
-                    <div className="flex gap-2 items-center">
-                            Password
-                            <Tooltip
-                                placement="top"
-                                className='w-1/2'
-                                content={
-                                    <div className="px-1 py-2">
-                                        <div className="">Password should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number.</div>
-                                    </div>
-                                }
-                            >
-                                <span className="cursor-pointer">
-                                    <BsQuestionCircle />
-                                </span>
-                            </Tooltip>
-                        </div>
-                    } labelPlacement='outside' type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-                    <Button onClick={handleSignUp} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Signup</Button>
-                    <div>
-                        <p className='text-small md:text-medium text-centered'>Already have an account? <Link href={"/login"} className='text-root-500'>Login</Link></p>
-                    </div>
+        <Card className="w-full max-w-xl flex flex-col justify-center items-center p-6">
+  <CardBody>
+    <CardHeader className="flex justify-center items-center mb-4">
+      <h2 className="text-2xl md:text-3xl font-semibold">Create an Account</h2>
+    </CardHeader>
+    <div className="flex flex-col gap-4">
+      <Input 
+        variant="bordered" 
+        label="Username" 
+        labelPlacement="outside" 
+        type="text" 
+        placeholder="Username" 
+        onChange={(e) => setUsername(e.target.value)} 
+        className="w-full"
+      />
+      <Input 
+        variant="bordered" 
+        label="Email" 
+        labelPlacement="outside" 
+        type="email" 
+        placeholder="Email" 
+        onChange={(e) => setEmail(e.target.value)} 
+        className="w-full"
+      />
+      <Input 
+        variant="bordered" 
+        label={
+          <div className="flex gap-2 items-center">
+            Password
+            <Tooltip
+              placement="top"
+              content={
+                <div className="px-2 py-1 text-sm">
+                  Password should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, and one number.
                 </div>
-            </CardBody>
-        </Card>
+              }
+            >
+              <span className="cursor-pointer">
+                <BsQuestionCircle />
+              </span>
+            </Tooltip>
+          </div>
+        } 
+        labelPlacement="outside" 
+        type="password" 
+        placeholder="Password" 
+        onChange={(e) => setPassword(e.target.value)} 
+        className="w-full"
+      />
+      <Button 
+        onClick={handleSignUp} 
+        className="bg-root-500 text-white text-lg md:text-xl font-semibold py-2 rounded"
+      >
+        Sign Up
+      </Button>
+      <div className="text-center mt-3">
+        <p className="text-sm md:text-base">
+          Already have an account? 
+          <Link href="/login" className="text-root-500 ml-1">Login</Link>
+        </p>
+      </div>
+    </div>
+  </CardBody>
+</Card>
+
     );
 };
 
