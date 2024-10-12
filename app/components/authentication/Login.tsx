@@ -26,23 +26,56 @@ const SignIn = () => {
   };
 
   return (
-    <Card className='w-full h-full p-2 md:w-1/2'>
-      <CardHeader className='flex justify-center'>
-        <h2 className='text-xl md:text-3xl font-semibold'>Login</h2>
-      </CardHeader>
-      <CardBody>
-        <div className='flex flex-col justify-center gap-3'>
-          <Input variant='bordered' labelPlacement='outside' label="Email" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-          <Input variant='bordered' labelPlacement='outside' label="Password" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-          <Button onClick={handleSignIn} className='bg-root-500 text-white  md:text-large font-semibold flex flex-row items-center'>Login</Button>
-          <div className='flex flex-row justify-between'>
-            <p className='text-black text-small md:text-medium'>Dont have an account? <Link href={"/signup"} className='text-root-500'>Create One</Link></p>
-          </div>
-          <br />
-          {/* <GoogleSignIn />  coming soon */}
+    <Card className="w-full max-w-xl mx-auto p-6 shadow-xl rounded-lg">
+    <CardHeader className="flex justify-center mb-4">
+      <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Login</h2>
+    </CardHeader>
+    <CardBody>
+      <div className="flex flex-col gap-4">
+        {/* Email Input */}
+        <Input
+          variant="bordered"
+          labelPlacement="outside"
+          label="Email"
+          type="email"
+          placeholder="Enter your email"
+          className="p-3 rounded-md"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        {/* Password Input */}
+        <Input
+          variant="bordered"
+          labelPlacement="outside"
+          label="Password"
+          type="password"
+          placeholder="Enter your password"
+          className="p-3 rounded-md"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {/* Login Button */}
+        <Button
+          onClick={handleSignIn}
+          className="bg-root-500 text-white text-lg font-semibold rounded-lg py-3"
+        >
+          Login
+        </Button>
+
+        {/* Account creation link */}
+        <div className="flex justify-between items-center mt-4">
+          <p className="text-sm text-gray-600">
+            Don't have an account?{" "}
+            <Link href="/signup" className="text-root-500 font-semibold">
+              Create One
+            </Link>
+          </p>
         </div>
-      </CardBody>
-    </Card>
+
+        <br />
+        {/* Uncomment GoogleSignIn when ready */}
+        {/* <GoogleSignIn /> */}
+      </div>
+    </CardBody>
+  </Card>
   );
 };
 

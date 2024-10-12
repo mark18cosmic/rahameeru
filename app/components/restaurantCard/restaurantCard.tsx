@@ -22,7 +22,7 @@ export interface RestaurantProps {
 const RestaurantCard: React.FC<RestaurantProps> = ({ label, ratings, image, location }) => {
     return (
         <Link href={`/${encodeURIComponent(label.replace(/\s+/g, '-').toLowerCase())}`}>
-            <Card isPressable isHoverable className='w-[200px] border-gray-[#e0e0e0] hover:border-1 hover:border-gray-300 shadow-sm md:w-[300px]'>
+            <Card isPressable isHoverable className='w-[200px] hover:border-1 hover:border-gray-300 shadow-sm md:w-[300px]'>
                 <CardBody>
                     <div className='flex flex-col gap-2'>
                         <div className='flex justify-center items-center'>
