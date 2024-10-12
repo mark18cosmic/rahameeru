@@ -47,7 +47,7 @@ export const Search: React.FC = () => {
                 value={query}
                 variant='bordered'
                 onChange={handleSearch}
-                className=""
+                className="bg-white"
             />
 
             <div className="relative mt-3">
