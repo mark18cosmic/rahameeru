@@ -34,7 +34,7 @@ const RestaurantTabs: React.FC<{ restaurantId: string }> = ({ restaurantId }) =>
                     key="popular-restaurants"
                     title={<span className={`text-sm md:text-lg`}>You may also like</span>}
                 >
-                    <PopularRestaurants label="You may also like" />
+                    <PopularRestaurants label="You may also like" filter={null} />
                 </Tab>
             </Tabs>
         </div>
