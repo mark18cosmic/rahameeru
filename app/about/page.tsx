@@ -14,7 +14,7 @@ const About = () => {
         {/* Introductory Paragraph */}
         <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-10 leading-relaxed">
           At Rahameeru, we are passionate about connecting food lovers with the best dining experiences in the Maldives. 
-          Whether you're looking for a cozy cafe, a luxury restaurant, or hidden gems, we've got you covered!
+          Whether you&apos;re looking for a cozy cafe, a luxury restaurant, or hidden gems, we&apos;ve got you covered!
         </p>
 
         {/* Image */}
