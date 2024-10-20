@@ -8,7 +8,6 @@ import Badge from '../components/badges/Badge';
 import MapButton from '../components/buttons/MapButton';
 import Review, { RatingIcon } from '../components/buttons/Review';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
-import ReviewList from '../components/Review/ReviewList';
 import { useState, useEffect } from 'react';
 import { Spinner } from '@nextui-org/react';
 import Info from './buttons/Info';
@@ -72,7 +71,7 @@ export default function RestaurantDetail({ params }: { params: RestaurantParams 
             {/* <Navbar /> */}
             <main className="m-4 md:m-6 flex flex-col gap-5 md:gap-8 text-black">
                 <div className='flex items-center justify-center'>
-                    <Image src={restaurant!.image} alt={restaurant!.label} width={500} height={500} className='rounded-lg object-cover' />
+                    <Image src={restaurant!.image} alt={restaurant!.label} width={500} height={500} className='rounded-lg object-cover hover:scale-105' />
                 </div>
                 <div className='flex flex-row items-center justify-between'>
                     <div>
