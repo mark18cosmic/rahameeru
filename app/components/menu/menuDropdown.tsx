@@ -18,12 +18,12 @@ interface MenuProps {
 
 const MenuDropdown: React.FC<MenuProps> = ({ menuItems }) => {
     return (
-        <div className="flex flex-col items-center justify-center gap-4 w-full max-w-3xl mx-auto">
+        <div className="flex flex-col items-center justify-center gap-4 w-full">
             {menuItems.map((menu, idx) => (
                 <Accordion key={idx} className="w-full">
                     <AccordionItem
                         title={
-                            <h4 className="text-2xl font-bold text-gray-900 border-b-2 border-gray-300 pb-2 mb-4">
+                            <h4 className="text-xl font-semibold text-gray-900">
                                 {menu.category}
                             </h4>}
                         className="p-4 bg-white shadow-md rounded-md mb-4"

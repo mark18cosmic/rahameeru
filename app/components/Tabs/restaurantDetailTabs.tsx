@@ -5,6 +5,7 @@ import { Tabs, Tab, } from '@nextui-org/react';
 import PopularRestaurants from '@/app/components/Home/PopularRestaurants';
 import ReviewsList from '@/app/components/Review/ReviewList';
 import MenuDropdown from '@/app/components/menu/menuDropdown';
+import SpringRolls from '@/app/components/menu/pexels-catscoming-1395319.jpg';
 
 const menuData = [
     {
@@ -14,13 +15,13 @@ const menuData = [
           name: "Spring Rolls",
           description: "Crispy rolls stuffed with vegetables.",
           price: 5.99,
-          image: "/images/spring-rolls.jpg",
+          image: SpringRolls.src,
         },
         {
           name: "Chicken Wings",
           description: "Spicy grilled chicken wings.",
           price: 8.99,
-          image: "/images/chicken-wings.jpg",
+          image: SpringRolls.src,
         },
       ],
     },
@@ -31,13 +32,13 @@ const menuData = [
           name: "Grilled Salmon",
           description: "Salmon served with a side of vegetables.",
           price: 15.99,
-          image: "/images/grilled-salmon.jpg",
+          image: SpringRolls.src,
         },
         {
           name: "Steak",
           description: "Juicy grilled steak with mashed potatoes.",
           price: 18.99,
-          image: "/images/steak.jpg",
+          image: SpringRolls.src,
         },
       ],
     },
