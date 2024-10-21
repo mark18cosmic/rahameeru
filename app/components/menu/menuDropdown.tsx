@@ -44,7 +44,7 @@ const MenuDropdown: React.FC<MenuProps> = ({ menuItems }) => {
                   <p className="text-sm text-gray-500">{dish.description}</p>
                 </div>
                 <div className="text-lg font-semibold text-gray-800">
-                  ${dish.price}
+                ރ{dish.price}
                 </div>
               </div>
             ))}
