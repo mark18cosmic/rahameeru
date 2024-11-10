@@ -26,7 +26,7 @@ const MenuDropdown: React.FC<MenuProps> = ({ menuItems }) => {
                             <h4 className="text-xl font-semibold text-gray-900">
                                 {menu.category}
                             </h4>}
-                        className="p-4 gap-2 shadow-md rounded-md mb-4"
+                        className="p-4 gap-2 rounded-md mb-4"
                     >
                         {menu.dishes.map((dish, dishIdx) => (
                             <Card
