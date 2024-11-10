@@ -39,11 +39,32 @@ export const Search: React.FC = () => {
         }
     };
 
+    const [placeholder, setPlaceholder] = useState("What are you craving...?");
+    const placeholders = [
+      "What are you craving...?",
+      "Looking for a cozy café?",
+      "Whats a good date spot?",
+      "Where to eat tonight?",
+      "Search for the best spots!"
+    ];
+  
+    useEffect(() => {
+      const intervalId = setInterval(() => {
+        setPlaceholder((prev) => {
+          const currentIndex = placeholders.indexOf(prev);
+          const nextIndex = (currentIndex + 1) % placeholders.length;
+          return placeholders[nextIndex];
+        });
+      }, 5000);
+  
+      return () => clearInterval(intervalId);
+    }, []);
+
     return (
         <div className="w-full mt-3">
             <Input
                 type="text"
-                placeholder="What are you craving...?"
+                placeholder={placeholder}
                 value={query}
                 variant='bordered'
                 onChange={handleSearch}

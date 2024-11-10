@@ -17,17 +17,6 @@ const About = () => {
           Whether you&apos;re looking for a cozy cafe, a luxury restaurant, or hidden gems, we&apos;ve got you covered!
         </p>
 
-        {/* Image */}
-        <div className="flex justify-center mb-12">
-          <Image
-            src="/banner/alex-haney-CAhjZmVk5H4-unsplash.jpg" // Corrected path
-            alt="About Us"
-            width={800}
-            height={500}
-            className="rounded-lg shadow-xl object-cover"
-          />
-        </div>
-
         {/* Mission Section */}
         <div className="text-center mb-12">
           <h2 className="text-3xl font-semibold text-gray-800 mb-4">
