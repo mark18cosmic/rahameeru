@@ -69,7 +69,7 @@ const PopularRestaurants: React.FC<TitlesProps> = ({ label, filter }) => {
 
       {/* Show message if no restaurants match the filter */}
       {filteredRestaurants.length === 0 && (
-        <div className="text-center text-gray-500 mt-4">No restaurants found for this filter.</div>
+        <div className="text-center text-gray-500 mt-4">No restaurants found for this section.</div>
       )}
     </div>
   );
