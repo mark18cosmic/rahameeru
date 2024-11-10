@@ -64,8 +64,6 @@ function Navbar() {
                             <Avatar className='rounded-full cursor-pointer' src={''} />
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Static Actions">
-                            <DropdownItem key="profile">Profile</DropdownItem>
-                            <DropdownItem key="myreviews">My Reviews</DropdownItem>
                             <DropdownItem key="request">Request Restaurant</DropdownItem>
                             <DropdownItem key="contact">Contact us</DropdownItem>
                             <DropdownItem key="logout" className='text-root-500' color='danger' onClick={handleLogout}>
