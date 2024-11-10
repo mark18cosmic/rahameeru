@@ -30,7 +30,7 @@ export const SignUp = () => {
     return (
         <Card className="w-full max-w-xl flex flex-col justify-center items-center p-6">
   <CardBody>
-    <CardHeader className="flex flex-col gap-1 justify-center items-center mb-4">
+    <CardHeader className="flex flex-col text-justify gap-1 justify-center items-center mb-4">
       <h2 className="text-2xl md:text-3xl font-semibold">Create Account</h2>
       <p>Create an account start ordering and reviewing.</p>
     </CardHeader>

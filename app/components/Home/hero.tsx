@@ -1,12 +1,28 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
-import { Button } from '@nextui-org/react';
+import React, { useEffect, useState } from 'react';
+import { Button, Input } from '@nextui-org/react';
 import { FaArrowRight } from 'react-icons/fa6';
 import Link from 'next/link';
+import { User, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/app/firebase/firebaseConfig'
+import { Search } from './Search';
 
 const Hero = () => {
+    const [user, setUser] = useState<User | null>(null);
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user);
+            } else {
+                setUser(null);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
+
     return (
         <section className="">
             <div className="container mx-auto px-4 py-8 lg:py-12 flex flex-col lg:flex-row lg:items-center">
@@ -19,16 +35,22 @@ const Hero = () => {
                         Rahameeru helps you explore top-rated dining spots, read authentic reviews, and share your experiences. Join us in discovering the best places to eat around the islands!
                     </p>
                     <div className='flex gap-2 md:gap-4'>
-                        <Link href='/login'>
-                            <Button className="bg-root-500 text-white md:text-base text-sm font-semibold flex flex-row items-center animate-fadeIn">
-                                Get started <FaArrowRight />
-                            </Button>
-                        </Link>
-                        <Link href={"/contact-us"}>
-                            <Button className='bg-white border-black border text-black text-sm md:text-base font-semibold flex flex-row items-center animate-fadeIn'>
-                                Contact us
-                            </Button>
-                        </Link>
+                        {user ? (
+                            <Search />
+                        ) : (
+                            <>
+                                <Link href='/login'>
+                                    <Button className="bg-root-500 text-white md:text-base text-sm font-semibold flex flex-row items-center animate-fadeIn">
+                                        Get started <FaArrowRight />
+                                    </Button>
+                                </Link>
+                                <Link href="/contact-us">
+                                    <Button className='bg-white border-black border text-black text-sm md:text-base font-semibold flex flex-row items-center animate-fadeIn'>
+                                        Contact us
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
 
