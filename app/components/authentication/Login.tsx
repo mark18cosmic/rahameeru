@@ -26,9 +26,10 @@ const SignIn = () => {
   };
 
   return (
-    <Card className="w-full max-w-xl mx-auto p-6 shadow-xl rounded-lg">
-    <CardHeader className="flex justify-center mb-4">
+    <Card className="w-full max-w-xl flex flex-col justify-center items-center p-6">
+    <CardHeader className="flex flex-col gap-1 justify-center mb-4">
       <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Login</h2>
+      <p>Enter your Email and Password to sign in.</p>
     </CardHeader>
     <CardBody>
       <div className="flex flex-col gap-4">
@@ -39,7 +40,7 @@ const SignIn = () => {
           label="Email"
           type="email"
           placeholder="Enter your email"
-          className="p-3 rounded-md"
+          className="w-full"
           onChange={(e) => setEmail(e.target.value)}
         />
         {/* Password Input */}
@@ -49,7 +50,7 @@ const SignIn = () => {
           label="Password"
           type="password"
           placeholder="Enter your password"
-          className="p-3 rounded-md"
+          className="w-full"
           onChange={(e) => setPassword(e.target.value)}
         />
         {/* Login Button */}
@@ -62,7 +63,7 @@ const SignIn = () => {
 
         {/* Account creation link */}
         <div className="flex justify-between items-center mt-4">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm md:text-base text-gray-600">
             Don&apos;t have an account?{" "}
             <Link href="/signup" className="text-root-500 font-semibold">
               Create One
