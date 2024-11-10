@@ -40,7 +40,7 @@ export const SignUp = () => {
         label="Username" 
         labelPlacement="outside" 
         type="text" 
-        placeholder="Username" 
+        placeholder="Create a unique username" 
         onChange={(e) => setUsername(e.target.value)} 
         className="w-full"
       />
@@ -49,7 +49,7 @@ export const SignUp = () => {
         label="Email" 
         labelPlacement="outside" 
         type="email" 
-        placeholder="Email" 
+        placeholder="Enter your email" 
         onChange={(e) => setEmail(e.target.value)} 
         className="w-full"
       />
