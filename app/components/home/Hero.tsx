@@ -20,9 +20,6 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute -right-40 -top-40 h-96 w-96 rounded-full bg-root-300/30 blur-3xl" />
-      <div className="pointer-events-none absolute -left-40 top-40 h-96 w-96 rounded-full bg-saffron-400/20 blur-3xl" />
-
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 md:px-6 md:py-20 lg:grid-cols-2">
         <div>
           <motion.span

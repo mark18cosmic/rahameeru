@@ -63,7 +63,7 @@ export default function AboutPage() {
         ))}
       </div>
 
-      <div className="mt-14 rounded-3xl bg-gradient-to-br from-root-500 to-root-700 p-10 text-center text-white">
+      <div className="mt-14 rounded-3xl bg-root-600 p-10 text-center text-white">
         <h2 className="font-display text-3xl font-extrabold">
           Join the table
         </h2>

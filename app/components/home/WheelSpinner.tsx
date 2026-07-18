@@ -128,10 +128,7 @@ export function WheelSpinner({ restaurants }: Props) {
   };
 
   return (
-    <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-ink-900 via-ink-800 to-ink-900 p-6 text-white shadow-card md:p-10">
-      <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-root-500/30 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-saffron-500/20 blur-3xl" />
-
+    <section className="relative overflow-hidden rounded-[2rem] bg-ink-900 p-6 text-white shadow-card md:p-10">
       <div className="relative grid items-center gap-8 md:grid-cols-2">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-root-300">

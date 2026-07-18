@@ -17,6 +17,7 @@ import {
 import type { PriceLevel } from "@/app/lib/types";
 import { RestaurantCard, CardSkeleton } from "../RestaurantCard";
 import { Input } from "../ui/Field";
+import { Select } from "../ui/Select";
 
 const PRICES: PriceLevel[] = [1, 2, 3, 4];
 const RATINGS = [4.5, 4, 3.5, 3];
@@ -211,17 +212,12 @@ export function SearchExperience() {
             <p className="text-sm text-ink-500">
               {loading ? "Searching…" : `${results.length} result${results.length === 1 ? "" : "s"}`}
             </p>
-            <select
+            <Select<SortKey>
               value={sort}
-              onChange={(e) => setSort(e.target.value as SortKey)}
-              className="rounded-xl border border-ink-200 bg-white px-3 py-2 text-sm text-ink-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200"
-            >
-              {SORTS.map((s) => (
-                <option key={s.key} value={s.key}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
+              onChange={setSort}
+              ariaLabel="Sort results"
+              options={SORTS.map((s) => ({ value: s.key, label: s.label }))}
+            />
           </div>
 
           {loading ? (

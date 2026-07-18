@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useRestaurants } from "@/app/lib/useRestaurants";
 import type { SortKey } from "@/app/lib/search";
 import { RestaurantCard, CardSkeleton } from "./RestaurantCard";
+import { Select } from "./ui/Select";
 
 const SORTS: { key: SortKey; label: string }[] = [
   { key: "rating", label: "Top rated" },
@@ -48,17 +49,12 @@ export function ExploreContent() {
             Every spot we love across the islands.
           </p>
         </div>
-        <select
+        <Select<SortKey>
           value={sort}
-          onChange={(e) => setSort(e.target.value as SortKey)}
-          className="rounded-xl border border-ink-200 bg-white px-3 py-2 text-sm text-ink-700 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200"
-        >
-          {SORTS.map((s) => (
-            <option key={s.key} value={s.key}>
-              {s.label}
-            </option>
-          ))}
-        </select>
+          onChange={setSort}
+          ariaLabel="Sort restaurants"
+          options={SORTS.map((s) => ({ value: s.key, label: s.label }))}
+        />
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
