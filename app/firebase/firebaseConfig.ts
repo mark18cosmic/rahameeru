@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { getApps, getApp, initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
@@ -11,20 +11,17 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+// Reuse the app across hot reloads / server & client to avoid duplicate init.
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
-const googleProvider = new GoogleAuthProvider();
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+export const googleProvider = new GoogleAuthProvider();
+
 export const signInWithGoogle = async () => {
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    return result.user; // Returns the signed-in user data
-  } catch (error) {
-    console.error("Google Sign-in Error:", error);
-    throw error; // Forward error for error handling
-  }
+  const result = await signInWithPopup(auth, googleProvider);
+  return result.user;
 };
 
-export const db = getFirestore(app)
-
-export { auth, googleProvider };
+export default app;

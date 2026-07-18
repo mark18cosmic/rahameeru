@@ -1,45 +1,60 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import { NextUIProvider } from "@nextui-org/react";
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { Analytics } from '@vercel/analytics/react';
+import { AuthProvider } from "./providers/AuthProvider";
+import { ThemeProvider } from "./providers/ThemeProvider";
+import { SearchProvider } from "./providers/SearchProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-display",
+});
 
 export const metadata: Metadata = {
-  title: "Rahameeru | Find the best places to eat near you",
-  description: "Discover the best restaurants in Malé and Hulhumalé with Rahameeru! Create an account to explore top-rated dining spots and review your favorites. Find the perfect place for every occasion—whether it’s affordable eats, luxury dining, or a romantic date night. Start exploring the Maldives' culinary scene today!w",
+  metadataBase: new URL("https://rahameeru.com"),
+  title: {
+    default: "Rahameeru · Find the best places to eat in the Maldives",
+    template: "%s · Rahameeru",
+  },
+  description:
+    "Discover top-rated restaurants across Malé and Hulhumalé. Read honest reviews, save favourites, spin the wheel to decide where to eat, and search smarter.",
+  keywords: ["Maldives restaurants", "Malé food", "Hulhumalé dining", "food reviews"],
+  openGraph: {
+    title: "Rahameeru · The Maldives' food review guide",
+    description: "Discover, review and decide where to eat in the Maldives.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest"></link>
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="google-adsense-account" content="ca-pub-3567729252312652" />
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3567729252312652"
-          crossOrigin="anonymous"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}})();`,
+          }}
+        />
       </head>
-      <body className={inter.className}>
-        <NextUIProvider>
-          <Navbar />
-          {children}
-          <Analytics />
-          <Footer />
-        </NextUIProvider>
-
-      </body >
-    </html >
+      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
+        <ThemeProvider>
+          <AuthProvider>
+            <SearchProvider>
+              <Navbar />
+              <div className="min-h-screen">{children}</div>
+              <Footer />
+            </SearchProvider>
+          </AuthProvider>
+        </ThemeProvider>
+        <Analytics />
+      </body>
+    </html>
   );
 }

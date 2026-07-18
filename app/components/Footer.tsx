@@ -1,29 +1,77 @@
-import React from 'react'
+import Link from "next/link";
+import { UtensilsCrossed, Instagram, Twitter, Facebook } from "lucide-react";
 
-const Footer = () => {
-    return (
-        <footer className="bg-white rounded-lg shadow m-4 mt-10">
-            <div className="w-full mx-auto max-w-screen-xl justify-center p-4 flex flex-col md:flex-row items-center md:justify-between">
-                <span className="text-sm text-gray-500 sm:text-center">© 2024 <a href="https://rahameeru.com" className="hover:underline">Rahameeru Reviews</a>. All Rights Reserved.
-                </span>
-                <ul className="flex flex-wrap justify-center items-center mt-3 text-sm font-medium sm:mt-0">
-                    <li>
-                        <a href="/about" className="hover:underline me-4 md:me-6">About</a>
-                    </li>
-                    <li>
-                        <a href="#" className="hover:underline me-4 md:me-6">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="#" className="hover:underline me-4 md:me-6">Licensing</a>
-                    </li>
-                    <li>
-                        <a href="#" className="hover:underline">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </footer>
+const COLS = [
+  {
+    title: "Discover",
+    links: [
+      { href: "/explore", label: "Explore" },
+      { href: "/search", label: "Search" },
+      { href: "/favorites", label: "Favorites" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { href: "/about", label: "About" },
+      { href: "#", label: "Privacy Policy" },
+      { href: "#", label: "Contact" },
+    ],
+  },
+];
 
-    )
+export default function Footer() {
+  return (
+    <footer className="mt-20 border-t border-ink-100 bg-white dark:border-ink-800 dark:bg-ink-900">
+      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-4">
+        <div className="md:col-span-2">
+          <div className="flex items-center gap-2 text-xl font-extrabold text-ink-900 dark:text-white">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-root-500 text-white">
+              <UtensilsCrossed size={18} />
+            </span>
+            Rahameeru
+          </div>
+          <p className="mt-3 max-w-sm text-sm text-ink-500">
+            Discover the best places to eat across Malé and Hulhumalé. Read real
+            reviews, save your favorites, and let the wheel decide when you
+            can&apos;t.
+          </p>
+          <div className="mt-5 flex gap-3">
+            {[Instagram, Twitter, Facebook].map((Icon, i) => (
+              <a
+                key={i}
+                href="#"
+                className="grid h-9 w-9 place-items-center rounded-full bg-ink-100 text-ink-600 transition hover:bg-root-500 hover:text-white dark:bg-ink-800 dark:text-ink-300"
+              >
+                <Icon size={16} />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {COLS.map((col) => (
+          <div key={col.title}>
+            <h4 className="mb-3 text-sm font-semibold text-ink-900 dark:text-white">
+              {col.title}
+            </h4>
+            <ul className="space-y-2">
+              {col.links.map((l) => (
+                <li key={l.label}>
+                  <Link
+                    href={l.href}
+                    className="text-sm text-ink-500 transition hover:text-root-600"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div className="border-t border-ink-100 py-5 text-center text-sm text-ink-400 dark:border-ink-800">
+        © {new Date().getFullYear()} Rahameeru Reviews. All rights reserved.
+      </div>
+    </footer>
+  );
 }
-
-export default Footer

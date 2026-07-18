@@ -1,18 +1,7 @@
-import React from "react";
-import SignIn from "../components/authentication/Login";
-import Navbar from "../components/Navbar";
+import { AuthForm } from "@/app/components/auth/AuthForm";
 
-const LoginPage = () => {
-  return (
-    <>
-      {/* <Navbar /> */}
-      <main className="min-h-screen flex items-center justify-center text-black">
-        <div className="">
-          <SignIn />
-        </div>
-      </main>
-    </>
-  );
-};
+export const metadata = { title: "Sign in" };
 
-export default LoginPage;
+export default function LoginPage() {
+  return <AuthForm mode="login" />;
+}

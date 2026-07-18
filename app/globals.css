@@ -3,6 +3,78 @@
 @tailwind utilities;
 
 :root {
-  background: #fafafa;
-  color: #333333;
+  --bg: #faf8f5;
+  --fg: #26221d;
+}
+
+.dark {
+  --bg: #171512;
+  --fg: #f7f6f4;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .glass {
+    background: rgba(250, 248, 245, 0.72);
+    backdrop-filter: saturate(160%) blur(14px);
+  }
+  .dark .glass {
+    background: rgba(23, 21, 18, 0.72);
+  }
+}
+
+/* Shimmer skeleton */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #edebe7;
+}
+.dark .skeleton {
+  background: #26221d;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+  animation: shimmer 1.6s infinite;
+}
+.dark .skeleton::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06),
+    transparent
+  );
+}
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
