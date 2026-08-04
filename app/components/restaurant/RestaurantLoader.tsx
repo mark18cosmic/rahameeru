@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import type { Restaurant } from "@/app/lib/types";
 import { getRestaurants } from "@/app/lib/restaurants";
 import { slugify } from "@/app/lib/utils";
+import { ChiliLoader } from "../ui/ChiliLoader";
 import { RestaurantDetail } from "./RestaurantDetail";
 
 export function RestaurantLoader({ slug }: { slug: string }) {
@@ -40,8 +41,8 @@ export function RestaurantLoader({ slug }: { slug: string }) {
   if (state.status === "loading") {
     return (
       <div className="mx-auto max-w-6xl px-4 py-10 md:px-6">
-        <div className="skeleton aspect-[16/9] rounded-3xl" />
-        <div className="mt-6 space-y-3">
+        <ChiliLoader label="Setting the table…" className="py-16" />
+        <div className="mt-2 space-y-3 opacity-60">
           <div className="skeleton h-8 w-1/2 rounded" />
           <div className="skeleton h-4 w-1/3 rounded" />
           <div className="skeleton h-24 w-full rounded-2xl" />
