@@ -2,12 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, MapPin, TrendingUp, CornerDownLeft, Clock } from "lucide-react";
 import { useRestaurants } from "@/app/lib/useRestaurants";
 import { buildFuse, runSearch, emptyFilters } from "@/app/lib/search";
-import { priceString, isOpenNow, photoUrl } from "@/app/lib/utils";
+import { priceString, isOpenNow } from "@/app/lib/utils";
+import { Photo } from "../ui/Photo";
 import { Stars } from "../ui/Stars";
 
 const QUICK = ["Seafood", "Cafés", "Date Spots", "Fast food", "Open"];
@@ -74,7 +74,7 @@ export function SmartSearch({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[110] flex items-start justify-center p-4 pt-[10vh]"
+          className="fixed inset-0 z-[110] flex items-start justify-center p-3 pt-[8vh] sm:p-4 sm:pt-[10vh]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -88,30 +88,34 @@ export function SmartSearch({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="relative w-full max-w-xl overflow-hidden rounded-3xl bg-white shadow-card dark:bg-ink-900"
+            className="relative w-full max-w-xl overflow-hidden rounded-[1.75rem] bg-white shadow-card ring-1 ring-ink-100 dark:bg-ink-900 dark:ring-ink-800"
           >
-            <div className="flex items-center gap-3 border-b border-ink-100 px-5 py-4 dark:border-ink-800">
-              <Search size={20} className="text-ink-400" />
-              <input
-                ref={inputRef}
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                onKeyDown={onKeyDown}
-                placeholder="Search restaurants, cuisines, vibes…"
-                className="flex-1 bg-transparent text-lg text-ink-900 outline-none placeholder:text-ink-400 dark:text-white"
-              />
-              <kbd className="hidden rounded-md bg-ink-100 px-2 py-1 text-xs text-ink-500 dark:bg-ink-800 sm:block">
-                ESC
-              </kbd>
+            {/* The field is a pill inside the panel rather than a squared-off
+                bar across it — everything else in the app is round. */}
+            <div className="p-3 sm:p-4">
+              <div className="flex items-center gap-2.5 rounded-2xl bg-ink-50 px-4 py-3 ring-1 ring-ink-100 transition focus-within:bg-white focus-within:ring-2 focus-within:ring-root-300 dark:bg-ink-800/60 dark:ring-ink-700 dark:focus-within:bg-ink-800">
+                <Search size={20} className="shrink-0 text-root-500" />
+                <input
+                  ref={inputRef}
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                  onKeyDown={onKeyDown}
+                  placeholder="Search restaurants, cuisines, vibes…"
+                  className="min-w-0 flex-1 bg-transparent text-base text-ink-900 outline-none placeholder:text-ink-400 dark:text-white sm:text-lg"
+                />
+                <kbd className="hidden shrink-0 rounded-lg bg-ink-100 px-2 py-1 text-xs text-ink-500 dark:bg-ink-700 sm:block">
+                  ESC
+                </kbd>
+              </div>
             </div>
 
             {!q.trim() && (
-              <div className="flex flex-wrap gap-2 px-5 pt-4">
+              <div className="flex flex-wrap gap-2 px-4 pb-1">
                 {QUICK.map((t) => (
                   <button
                     key={t}
                     onClick={() => setQ(t === "Open" ? "" : t)}
-                    className="rounded-full bg-ink-100 px-3 py-1.5 text-sm text-ink-700 transition hover:bg-root-100 hover:text-root-700 dark:bg-ink-800 dark:text-ink-200"
+                    className="rounded-full bg-ink-100 px-3.5 py-2 text-sm font-medium text-ink-700 transition active:scale-95 hover:bg-root-100 hover:text-root-700 dark:bg-ink-800 dark:text-ink-200 dark:hover:bg-root-900/30 dark:hover:text-root-300"
                   >
                     {t}
                   </button>
@@ -150,7 +154,7 @@ export function SmartSearch({
                   }`}
                 >
                   <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-ink-100 dark:bg-ink-800">
-                    <Image src={photoUrl(r)} alt={r.name} fill sizes="48px" className="object-cover" />
+                    <Photo r={r} sizes="48px" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
