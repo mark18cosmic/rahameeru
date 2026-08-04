@@ -1,6 +1,7 @@
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   updateProfile,
 } from "firebase/auth";
 import { auth, signInWithGoogle } from "@/app/firebase/firebaseConfig";
@@ -14,6 +15,10 @@ export async function signUp(email: string, password: string, username: string) 
   const cred = await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(cred.user, { displayName: username });
   return cred.user;
+}
+
+export async function resetPassword(email: string) {
+  await sendPasswordResetEmail(auth, email);
 }
 
 export { signInWithGoogle };
@@ -34,6 +39,12 @@ export function authErrorMessage(e: unknown): string {
       return "Password should be at least 6 characters.";
     case "auth/too-many-requests":
       return "Too many attempts. Please try again later.";
+    case "auth/missing-email":
+      return "Enter your email address first.";
+    case "auth/network-request-failed":
+      return "No connection. Check your network and try again.";
+    case "auth/popup-blocked":
+      return "Your browser blocked the Google popup. Allow popups and retry.";
     default:
       return "Something went wrong. Please try again.";
   }
