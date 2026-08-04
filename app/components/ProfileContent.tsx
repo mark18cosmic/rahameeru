@@ -27,16 +27,16 @@ export function ProfileContent() {
   const initial = (user.displayName?.[0] ?? user.email?.[0] ?? "U").toUpperCase();
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 md:px-6">
-      <div className="flex flex-col items-start gap-5 rounded-3xl border border-ink-100 bg-white p-6 dark:border-ink-800 dark:bg-ink-900 sm:flex-row sm:items-center">
-        <span className="grid h-20 w-20 shrink-0 place-items-center rounded-3xl bg-root-500 text-3xl font-extrabold text-white">
+    <div className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-10">
+      <div className="flex flex-col items-start gap-4 rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900 sm:flex-row sm:items-center sm:gap-5 sm:p-6">
+        <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-root-500 to-saffron-500 text-2xl font-extrabold text-white shadow-glow sm:h-20 sm:w-20 sm:rounded-3xl sm:text-3xl">
           {initial}
         </span>
         <div className="flex-1">
-          <h1 className="font-display text-3xl font-extrabold text-ink-900 dark:text-white">
+          <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white sm:text-3xl">
             {user.displayName ?? "Foodie"}
           </h1>
-          <p className="text-ink-500">{user.email}</p>
+          <p className="truncate text-sm text-ink-500 sm:text-base">{user.email}</p>
           <div className="mt-3 flex gap-5 text-sm">
             <span className="flex items-center gap-1.5 text-ink-600 dark:text-ink-300">
               <Heart size={16} className="text-root-500" /> {saved.length} saved
@@ -57,7 +57,7 @@ export function ProfileContent() {
         </Button>
       </div>
 
-      <h2 className="mt-10 font-display text-2xl font-extrabold text-ink-900 dark:text-white">
+      <h2 className="mt-8 font-display text-xl font-extrabold text-ink-900 dark:text-white md:mt-10 md:text-2xl">
         Your favorites
       </h2>
       {saved.length === 0 ? (
@@ -65,7 +65,7 @@ export function ProfileContent() {
           You haven&apos;t saved any restaurants yet.
         </p>
       ) : (
-        <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-3 md:mt-5 md:grid-cols-4 md:gap-4">
           {saved.map((r) => (
             <RestaurantCard key={r.id} r={r} />
           ))}

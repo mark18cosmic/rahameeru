@@ -221,7 +221,7 @@ export function SearchExperience() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
               {Array.from({ length: 6 }).map((_, i) => (
                 <CardSkeleton key={i} />
               ))}
@@ -236,7 +236,7 @@ export function SearchExperience() {
           ) : (
             <motion.div
               layout
-              className="grid grid-cols-2 gap-4 md:grid-cols-3"
+              className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4"
             >
               {results.map((r) => (
                 <RestaurantCard key={r.id} r={r} />

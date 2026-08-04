@@ -39,13 +39,13 @@ export function ExploreContent() {
   }, [restaurants, sort]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
-      <div className="flex items-end justify-between gap-4">
+    <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+      <div className="flex items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl font-extrabold text-ink-900 dark:text-white md:text-4xl">
+          <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white md:text-4xl">
             Explore
           </h1>
-          <p className="mt-1 text-ink-500">
+          <p className="mt-1 text-sm text-ink-500 md:text-base">
             Every spot we love across the islands.
           </p>
         </div>
@@ -57,7 +57,7 @@ export function ExploreContent() {
         />
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-5 grid grid-cols-2 gap-3 md:mt-6 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
         {loading
           ? Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />)
           : sorted.map((r) => <RestaurantCard key={r.id} r={r} />)}
