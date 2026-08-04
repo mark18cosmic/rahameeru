@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
   }
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 8000);
+  const timer = setTimeout(() => controller.abort(), 12000);
 
   try {
     const candidates = await resolvePhotos(name, location, cuisine);

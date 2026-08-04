@@ -77,6 +77,20 @@ export function photoUrl(r: Restaurant, index = 0): string {
   return `/api/photo?${params.toString()}`;
 }
 
+/**
+ * The looked-up photo for a restaurant, deliberately ignoring whatever the
+ * Firestore doc claims. Used as the recovery source when a stored URL fails to
+ * load — plenty of the seeded Firebase links are dead or expired, and this is
+ * what overrides them.
+ */
+export function apiPhotoUrl(r: Restaurant, index = 0): string {
+  const params = new URLSearchParams({ q: r.name });
+  if (r.location) params.set("loc", r.location);
+  if (r.cuisine.length) params.set("c", r.cuisine.join(","));
+  if (index) params.set("i", String(index));
+  return `/api/photo?${params.toString()}`;
+}
+
 /** Photo slots for the detail-page gallery. */
 export function galleryUrls(r: Restaurant, count = 4): string[] {
   if (r.gallery?.length) return r.gallery.slice(0, count);

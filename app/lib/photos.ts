@@ -11,9 +11,11 @@
  * Resolution order for a restaurant:
  *   1. DuckDuckGo image search for "<name> restaurant <location> Maldives"
  *   2. Same search without the location, for chains indexed under a plain name
- *   3. A curated stock photo chosen deterministically from the cuisine
+ *   3. Both queries again against Bing, which indexes some small venues
+ *      DuckDuckGo misses entirely
+ *   4. A curated stock photo chosen deterministically from the cuisine
  *
- * Step 3 means a lookup never fails — a restaurant always renders a plausible
+ * Step 4 means a lookup never fails — a restaurant always renders a plausible
  * photo even when the network, or DuckDuckGo, is unavailable.
  */
 
@@ -146,6 +148,42 @@ async function searchDdg(query: string, signal: AbortSignal): Promise<string[]> 
 }
 
 /* -------------------------------------------------------------------------- */
+/* Bing lookup                                                                */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Second opinion when DuckDuckGo comes back empty — different index, different
+ * blind spots, and its results page still ships plain HTML to a normal
+ * user-agent. Each result carries a JSON blob in an `m=` attribute whose `murl`
+ * is the full-size original.
+ */
+async function searchBing(query: string, signal: AbortSignal): Promise<string[]> {
+  const res = await fetch(
+    `https://www.bing.com/images/search?q=${encodeURIComponent(query)}&form=HDRSC2&first=1`,
+    {
+      headers: {
+        "User-Agent": UA,
+        Accept: "text/html",
+        "Accept-Language": "en-US,en;q=0.9",
+      },
+      signal,
+    }
+  );
+  if (!res.ok) return [];
+
+  const html = await res.text();
+  const urls: string[] = [];
+  // The blob is HTML-escaped inside the attribute, hence &quot; rather than ".
+  const re = /&quot;murl&quot;:&quot;(https:\\?\/\\?\/[^&]+?)&quot;/g;
+  for (const m of html.matchAll(re)) {
+    const url = m[1].replace(/\\\//g, "/");
+    if (/\.(jpe?g|png|webp)(\?|$)/i.test(url) && !urls.includes(url)) urls.push(url);
+    if (urls.length >= 8) break;
+  }
+  return urls;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Public API                                                                 */
 /* -------------------------------------------------------------------------- */
 
@@ -168,16 +206,22 @@ export async function resolvePhotos(
 
   const task = (async () => {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6000);
+    const timer = setTimeout(() => controller.abort(), 9000);
     let urls: string[] = [];
     try {
       const queries = [
         `${name} restaurant ${location} Maldives`.replace(/\s+/g, " ").trim(),
         `${name} restaurant Maldives`,
       ];
-      for (const q of queries) {
-        urls = await searchDdg(q, controller.signal);
-        if (urls.length) break;
+      outer: for (const engine of [searchDdg, searchBing]) {
+        for (const q of queries) {
+          try {
+            urls = await engine(q, controller.signal);
+          } catch {
+            urls = [];
+          }
+          if (urls.length) break outer;
+        }
       }
     } catch {
       // Network failure, timeout or a shape change upstream — fall through.
