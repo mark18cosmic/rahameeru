@@ -14,7 +14,9 @@ import {
   Menu,
   X,
   LogOut,
-  UtensilsCrossed,
+  Compass,
+  Search as SearchIcon,
+  Info,
 } from "lucide-react";
 import logo from "@/public/rahameeruLogo.png";
 import { useAuth } from "@/app/providers/AuthProvider";
@@ -24,11 +26,17 @@ import { cx } from "@/app/lib/utils";
 import { ButtonLink } from "./ui/Button";
 
 const NAV = [
-  { href: "/explore", label: "Explore" },
-  { href: "/search", label: "Search" },
-  { href: "/favorites", label: "Favorites" },
-  { href: "/about", label: "About" },
+  { href: "/explore", label: "Explore", icon: Compass },
+  { href: "/search", label: "Search", icon: SearchIcon },
+  { href: "/favorites", label: "Favorites", icon: Heart },
+  { href: "/about", label: "About", icon: Info },
 ];
+
+/**
+ * On phones the bottom tab bar already covers Explore/Search/Favorites, so the
+ * sheet only carries what the tab bar leaves out.
+ */
+const MOBILE_ONLY = NAV.filter((n) => n.href === "/about");
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -169,13 +177,13 @@ export default function Navbar() {
             className="overflow-hidden border-t border-ink-100 bg-white dark:border-ink-800 dark:bg-ink-900 md:hidden"
           >
             <div className="flex flex-col p-3">
-              {NAV.map((n) => (
+              {MOBILE_ONLY.map((n) => (
                 <Link
                   key={n.href}
                   href={n.href}
-                  className="flex items-center gap-2 rounded-xl px-4 py-3 text-ink-700 hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-ink-800"
+                  className="flex min-h-[48px] items-center gap-2.5 rounded-xl px-4 py-3 text-ink-700 hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-ink-800"
                 >
-                  <UtensilsCrossed size={16} /> {n.label}
+                  <n.icon size={18} /> {n.label}
                 </Link>
               ))}
               {!user && (

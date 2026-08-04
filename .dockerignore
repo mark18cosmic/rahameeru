@@ -1,0 +1,30 @@
+# Reinstalled inside the image
+node_modules
+.next
+out
+build
+
+# Native platform builds — never valid inside a Linux image
+android
+ios
+
+# Local tooling and VCS
+.git
+.gitignore
+.vscode
+.idea
+.DS_Store
+*.log
+npm-debug.log*
+
+# Secrets: NEXT_PUBLIC_* values are passed as build args instead
+.env
+.env.*
+
+# Docs and CI
+README.md
+layout.md
+.github
+Dockerfile
+.dockerignore
+docker-compose.yml

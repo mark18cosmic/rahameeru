@@ -31,7 +31,8 @@ function normalize(id: string, d: Record<string, any>): Restaurant {
     rating,
     reviewCount: Number(d.reviewCount ?? 0) || 0,
     description: d.description ?? d.desc ?? "",
-    image: d.image ?? "",
+    // Left undefined rather than "" so photoUrl() falls through to lookup.
+    image: d.image || undefined,
     gallery: Array.isArray(d.gallery) ? d.gallery : undefined,
     location: d.location ?? "",
     address: d.address,
@@ -40,6 +41,7 @@ function normalize(id: string, d: Record<string, any>): Restaurant {
     phone: d.phone,
     email: d.email,
     hours: d.hours,
+    menu: Array.isArray(d.menu) ? d.menu : undefined,
     featured: Boolean(d.featured),
     createdAt: d.createdAt,
   };

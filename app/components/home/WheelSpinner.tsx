@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Sparkles, RotateCw, MapPin, ArrowRight } from "lucide-react";
 import type { Restaurant, PriceLevel } from "@/app/lib/types";
-import { priceString } from "@/app/lib/utils";
+import { priceString, photoUrl } from "@/app/lib/utils";
 import { Stars } from "../ui/Stars";
 import { Button, ButtonLink } from "../ui/Button";
 
@@ -34,13 +33,20 @@ const PRICES: { label: string; value: PriceLevel | 0 }[] = [
   { label: "$$$$", value: 4 },
 ];
 
+/** The pointer sits at the top of the wheel; canvas angle 0 points right. */
+const POINTER_ANGLE = 270;
+const SPIN_MS = 4200;
+
 export function WheelSpinner({ restaurants }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
   const [area, setArea] = useState("All");
   const [price, setPrice] = useState<PriceLevel | 0>(0);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [winner, setWinner] = useState<Restaurant | null>(null);
+  const [size, setSize] = useState(300);
+  const reduceMotion = useReducedMotion();
 
   const pool = useMemo(() => {
     const filtered = restaurants.filter(
@@ -52,7 +58,23 @@ export function WheelSpinner({ restaurants }: Props) {
     return (filtered.length ? filtered : restaurants).slice(0, 10);
   }, [restaurants, area, price]);
 
-  // Draw the wheel whenever the pool or rotation changes.
+  // Fit the wheel to its column, so it never overflows a narrow phone.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      const w = entry.contentRect.width;
+      setSize(Math.max(240, Math.min(360, Math.floor(w))));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  /**
+   * Draws the wheel in its neutral orientation. Rotation is applied purely by
+   * the CSS transform on the wrapper — baking it into the canvas as well would
+   * double every angle and land the pointer on the wrong slice.
+   */
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || pool.length === 0) return;
@@ -60,7 +82,6 @@ export function WheelSpinner({ restaurants }: Props) {
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
-    const size = 320;
     canvas.width = size * dpr;
     canvas.height = size * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -70,10 +91,12 @@ export function WheelSpinner({ restaurants }: Props) {
     const cy = size / 2;
     const radius = size / 2 - 6;
     const slice = (2 * Math.PI) / pool.length;
-    const rot = (rotation * Math.PI) / 180;
+    const hub = Math.max(20, size * 0.08);
+    const fontSize = Math.max(10, Math.round(size * 0.042));
+    const maxChars = pool.length > 8 ? 11 : 14;
 
     pool.forEach((r, i) => {
-      const start = rot + i * slice;
+      const start = i * slice;
       const end = start + slice;
       ctx.beginPath();
       ctx.moveTo(cx, cy);
@@ -85,171 +108,213 @@ export function WheelSpinner({ restaurants }: Props) {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Label
+      // Label, laid along the slice's centre line.
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(start + slice / 2);
       ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
       ctx.fillStyle = "#fff";
-      ctx.font = "600 13px Inter, system-ui, sans-serif";
-      const label = r.name.length > 14 ? r.name.slice(0, 13) + "…" : r.name;
-      ctx.fillText(label, radius - 14, 5);
+      ctx.font = `600 ${fontSize}px Inter, system-ui, sans-serif`;
+      const label =
+        r.name.length > maxChars ? r.name.slice(0, maxChars - 1) + "…" : r.name;
+      ctx.fillText(label, radius - 12, 0);
       ctx.restore();
     });
 
     // Hub
     ctx.beginPath();
-    ctx.arc(cx, cy, 26, 0, 2 * Math.PI);
+    ctx.arc(cx, cy, hub, 0, 2 * Math.PI);
     ctx.fillStyle = "#171512";
     ctx.fill();
     ctx.strokeStyle = "#fff";
     ctx.lineWidth = 3;
     ctx.stroke();
-  }, [pool, rotation]);
+  }, [pool, size]);
 
-  const spin = () => {
+  const spin = useCallback(() => {
     if (spinning || pool.length === 0) return;
     setSpinning(true);
     setWinner(null);
 
+    if (typeof navigator !== "undefined" && navigator.vibrate) {
+      navigator.vibrate(15);
+    }
+
     const slice = 360 / pool.length;
     const winIndex = Math.floor(Math.random() * pool.length);
+
+    // Centre of the winning slice in the wheel's own (unrotated) coordinates.
+    // Nudge within the slice so it doesn't stop dead-centre every time, while
+    // staying well clear of the dividing lines.
+    const jitter = (Math.random() - 0.5) * slice * 0.7;
+    const sliceCentre = (winIndex + 0.5) * slice + jitter;
+
+    // Solve for the final rotation R that puts that centre under the pointer:
+    //   sliceCentre + R ≡ POINTER_ANGLE  (mod 360)
+    const targetMod = (((POINTER_ANGLE - sliceCentre) % 360) + 360) % 360;
     const turns = 5 + Math.floor(Math.random() * 3);
-    // Pointer sits at top (−90° / 270°). Land the winning slice centre there.
-    const target =
-      turns * 360 + (270 - (winIndex * slice + slice / 2)) - (rotation % 360);
-    const final = rotation + target;
+    // Keep the whole-turn count already accumulated so the wheel only ever
+    // spins forward, then add the turns plus the offset that lands the winner.
+    const final = (Math.floor(rotation / 360) + turns) * 360 + targetMod;
+
     setRotation(final);
 
-    window.setTimeout(() => {
-      setWinner(pool[winIndex]);
-      setSpinning(false);
-    }, 4200);
-  };
+    window.setTimeout(
+      () => {
+        setWinner(pool[winIndex]);
+        setSpinning(false);
+        if (typeof navigator !== "undefined" && navigator.vibrate) {
+          navigator.vibrate([20, 40, 20]);
+        }
+      },
+      reduceMotion ? 300 : SPIN_MS
+    );
+  }, [spinning, pool, rotation, reduceMotion]);
 
   return (
-    <section className="relative overflow-hidden rounded-[2rem] bg-ink-900 p-6 text-white shadow-card md:p-10">
+    <section className="relative overflow-hidden rounded-[2rem] bg-ink-900 p-5 text-white shadow-card sm:p-6 md:p-10">
+      {/* Soft brand glow behind the wheel */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-root-500/20 blur-3xl"
+      />
+
       <div className="relative grid items-center gap-8 md:grid-cols-2">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-root-300">
             <Sparkles size={14} /> Can&apos;t decide?
           </span>
           <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight md:text-4xl">
-            Spin the wheel,
-            <br /> let fate feed you.
+            Let the wheel
+            <br /> decide for you.
           </h2>
           <p className="mt-3 max-w-md text-ink-300">
-            Stuck choosing where to eat? Give it a spin and we&apos;ll pick a
-            spot for you. Narrow it down by area and budget first.
+            Twenty minutes of arguing about dinner, solved in one spin. Narrow it
+            down by island and budget first if you want.
           </p>
 
           <div className="mt-6 space-y-3">
-            <div className="flex flex-wrap gap-2">
-              {AREAS.map((a) => (
-                <button
-                  key={a}
-                  onClick={() => setArea(a)}
-                  disabled={spinning}
-                  className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
-                    area === a
-                      ? "bg-white text-ink-900"
-                      : "bg-white/10 text-ink-200 hover:bg-white/20"
-                  }`}
-                >
-                  {a}
-                </button>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {PRICES.map((pr) => (
-                <button
-                  key={pr.label}
-                  onClick={() => setPrice(pr.value)}
-                  disabled={spinning}
-                  className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
-                    price === pr.value
-                      ? "bg-white text-ink-900"
-                      : "bg-white/10 text-ink-200 hover:bg-white/20"
-                  }`}
-                >
-                  {pr.label}
-                </button>
-              ))}
-            </div>
+            <fieldset>
+              <legend className="sr-only">Filter by island</legend>
+              <div className="flex flex-wrap gap-2">
+                {AREAS.map((a) => (
+                  <button
+                    key={a}
+                    onClick={() => setArea(a)}
+                    disabled={spinning}
+                    aria-pressed={area === a}
+                    className={`min-h-[44px] rounded-full px-4 py-2 text-sm font-medium transition active:scale-95 disabled:opacity-60 ${
+                      area === a
+                        ? "bg-white text-ink-900"
+                        : "bg-white/10 text-ink-200 hover:bg-white/20"
+                    }`}
+                  >
+                    {a}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend className="sr-only">Filter by price</legend>
+              <div className="flex flex-wrap gap-2">
+                {PRICES.map((pr) => (
+                  <button
+                    key={pr.label}
+                    onClick={() => setPrice(pr.value)}
+                    disabled={spinning}
+                    aria-pressed={price === pr.value}
+                    className={`min-h-[44px] rounded-full px-4 py-2 text-sm font-medium transition active:scale-95 disabled:opacity-60 ${
+                      price === pr.value
+                        ? "bg-white text-ink-900"
+                        : "bg-white/10 text-ink-200 hover:bg-white/20"
+                    }`}
+                  >
+                    {pr.label}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
           </div>
 
-          <Button
-            onClick={spin}
-            disabled={spinning}
-            size="lg"
-            className="mt-6"
-          >
+          <p className="mt-4 text-sm text-ink-400">
+            {pool.length} {pool.length === 1 ? "place" : "places"} on the wheel
+          </p>
+
+          <Button onClick={spin} disabled={spinning} size="lg" className="mt-3 w-full sm:w-auto">
             <RotateCw size={18} className={spinning ? "animate-spin" : ""} />
-            {spinning ? "Spinning…" : "Spin the wheel"}
+            {spinning ? "Spinning…" : winner ? "Spin again" : "Spin the wheel"}
           </Button>
         </div>
 
-        <div className="relative mx-auto flex flex-col items-center">
-          <div className="relative">
+        <div className="relative mx-auto flex w-full max-w-[360px] flex-col items-center">
+          <div ref={wrapRef} className="relative w-full" style={{ height: size }}>
             {/* Pointer */}
             <div className="absolute left-1/2 top-[-6px] z-10 -translate-x-1/2">
               <div className="h-0 w-0 border-x-[12px] border-t-[20px] border-x-transparent border-t-white drop-shadow" />
             </div>
             <motion.div
               animate={{ rotate: rotation }}
-              transition={{ duration: 4.2, ease: [0.16, 1, 0.3, 1] }}
-              style={{ width: 320, height: 320 }}
+              transition={{
+                duration: reduceMotion ? 0.3 : SPIN_MS / 1000,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              style={{ width: size, height: size }}
+              className="mx-auto"
             >
               <canvas
                 ref={canvasRef}
-                style={{ width: 320, height: 320 }}
+                style={{ width: size, height: size }}
                 className="drop-shadow-2xl"
+                aria-hidden
               />
             </motion.div>
           </div>
 
-          <AnimatePresence>
-            {winner && (
-              <motion.div
-                initial={{ opacity: 0, y: 12, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="mt-5 w-full max-w-sm rounded-2xl bg-white p-3 text-ink-900 shadow-glow"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl">
-                    <Image
-                      src={winner.image}
-                      alt={winner.name}
-                      fill
-                      sizes="64px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-root-500">
-                      Tonight you&apos;re eating at
-                    </p>
-                    <h4 className="truncate font-bold">{winner.name}</h4>
-                    <div className="flex items-center gap-2 text-xs text-ink-500">
-                      <Stars value={winner.rating} size={12} />
-                      <span className="flex items-center gap-0.5">
-                        <MapPin size={11} /> {winner.location}
-                      </span>
-                      <span>{priceString(winner.priceLevel)}</span>
+          <div aria-live="polite" className="w-full">
+            <AnimatePresence>
+              {winner && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="mt-5 w-full rounded-2xl bg-white p-3 text-ink-900 shadow-glow"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-ink-100">
+                      <Image
+                        src={photoUrl(winner)}
+                        alt={winner.name}
+                        fill
+                        sizes="64px"
+                        className="object-cover"
+                      />
                     </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-root-500">
+                        Tonight you&apos;re eating at
+                      </p>
+                      <h4 className="truncate font-bold">{winner.name}</h4>
+                      <div className="flex flex-wrap items-center gap-x-2 text-xs text-ink-500">
+                        <Stars value={winner.rating} size={12} />
+                        <span className="flex items-center gap-0.5">
+                          <MapPin size={11} /> {winner.location}
+                        </span>
+                        <span>{priceString(winner.priceLevel)}</span>
+                      </div>
+                    </div>
+                    <ButtonLink
+                      href={`/restaurant/${winner.slug}`}
+                      size="sm"
+                      className="shrink-0"
+                    >
+                      Go <ArrowRight size={14} />
+                    </ButtonLink>
                   </div>
-                  <ButtonLink
-                    href={`/restaurant/${winner.slug}`}
-                    size="sm"
-                    className="shrink-0"
-                  >
-                    Go <ArrowRight size={14} />
-                  </ButtonLink>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>

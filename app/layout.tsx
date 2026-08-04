@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import MobileTabBar from "./components/MobileTabBar";
+import { InstallPrompt } from "./components/InstallPrompt";
 import { AuthProvider } from "./providers/AuthProvider";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { SearchProvider } from "./providers/SearchProvider";
@@ -18,17 +20,33 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL("https://rahameeru.com"),
   title: {
-    default: "Rahameeru · Find the best places to eat in the Maldives",
+    default: "Rahameeru · Where to eat in the Maldives",
     template: "%s · Rahameeru",
   },
   description:
-    "Discover top-rated restaurants across Malé and Hulhumalé. Read honest reviews, save favourites, spin the wheel to decide where to eat, and search smarter.",
-  keywords: ["Maldives restaurants", "Malé food", "Hulhumalé dining", "food reviews"],
+    "Find somewhere to eat in Malé and Hulhumalé. Menus, opening hours, honest reviews, and a wheel to spin when nobody can decide.",
+  keywords: ["Maldives restaurants", "Malé food", "Hulhumalé dining", "restaurant menus"],
+  appleWebApp: {
+    capable: true,
+    title: "Rahameeru",
+    statusBarStyle: "default",
+  },
   openGraph: {
-    title: "Rahameeru · The Maldives' food review guide",
-    description: "Discover, review and decide where to eat in the Maldives.",
+    title: "Rahameeru · Where to eat in the Maldives",
+    description: "Menus, reviews and opening hours for Malé and Hulhumalé.",
     type: "website",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // Deliberately not capping maximumScale — blocking zoom fails WCAG 1.4.4.
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#171512" },
+  ],
 };
 
 export default function RootLayout({
@@ -47,9 +65,20 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             <SearchProvider>
+              <a
+                href="#content"
+                className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-root-500 focus:px-5 focus:py-3 focus:text-white"
+              >
+                Skip to content
+              </a>
               <Navbar />
-              <div className="min-h-screen">{children}</div>
+              {/* Bottom padding clears the mobile tab bar. */}
+              <div id="content" className="min-h-screen pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0">
+                {children}
+              </div>
               <Footer />
+              <MobileTabBar />
+              <InstallPrompt />
             </SearchProvider>
           </AuthProvider>
         </ThemeProvider>

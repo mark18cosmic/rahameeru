@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   MapPin,
   Phone,
@@ -19,15 +20,20 @@ import {
   isOpenNow,
   todayHoursLabel,
   mapsUrl,
+  galleryUrls,
+  cx,
 } from "@/app/lib/utils";
 import { Stars } from "../ui/Stars";
 import { Badge } from "../ui/Badge";
 import { Button, ButtonLink } from "../ui/Button";
 import { FavoriteButton } from "../FavoriteButton";
 import { Reviews } from "./Reviews";
+import { Menu } from "./Menu";
 import { RestaurantCard } from "../RestaurantCard";
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+type Tab = "about" | "menu" | "reviews";
 
 export function RestaurantDetail({
   restaurant,
@@ -36,12 +42,19 @@ export function RestaurantDetail({
   restaurant: Restaurant;
   similar: Restaurant[];
 }) {
-  const gallery = restaurant.gallery?.length
-    ? restaurant.gallery
-    : [restaurant.image];
+  const gallery = galleryUrls(restaurant, 4);
   const [active, setActive] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [tab, setTab] = useState<Tab>("about");
   const open = isOpenNow(restaurant.hours);
+  const reduceMotion = useReducedMotion();
+  const hasMenu = Boolean(restaurant.menu?.length);
+
+  const tabs: { key: Tab; label: string }[] = [
+    { key: "about", label: "About" },
+    ...(hasMenu ? [{ key: "menu" as const, label: "Menu" }] : []),
+    { key: "reviews", label: "Reviews" },
+  ];
 
   const share = async () => {
     const url = typeof window !== "undefined" ? window.location.href : "";
@@ -59,17 +72,23 @@ export function RestaurantDetail({
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 md:px-6">
+    <div className="mx-auto max-w-6xl px-4 py-6 pb-28 md:px-6 md:pb-6">
       <Link
         href="/explore"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-ink-500 transition hover:text-root-600"
+        className="mb-4 inline-flex min-h-[44px] items-center gap-1 text-sm text-ink-500 transition hover:text-root-600"
       >
         <ChevronLeft size={16} /> Back to explore
       </Link>
 
       {/* Gallery */}
       <div className="grid gap-3 md:grid-cols-[1.6fr_1fr]">
-        <div className="relative aspect-[16/10] overflow-hidden rounded-3xl">
+        <motion.div
+          key={active}
+          initial={reduceMotion ? false : { opacity: 0.4 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.25 }}
+          className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-ink-100 dark:bg-ink-800"
+        >
           <Image
             src={gallery[active]}
             alt={restaurant.name}
@@ -79,15 +98,18 @@ export function RestaurantDetail({
             className="object-cover"
           />
           <FavoriteButton id={restaurant.id} className="absolute right-4 top-4 h-11 w-11" size={20} />
-        </div>
-        <div className="grid grid-cols-3 gap-3 md:grid-cols-2">
-          {gallery.slice(0, 4).map((g, i) => (
+        </motion.div>
+        <div className="grid grid-cols-4 gap-2 md:grid-cols-2 md:gap-3">
+          {gallery.map((g, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`relative aspect-square overflow-hidden rounded-2xl ring-2 transition ${
-                active === i ? "ring-root-500" : "ring-transparent hover:ring-ink-200"
-              }`}
+              aria-label={`Show photo ${i + 1}`}
+              aria-current={active === i}
+              className={cx(
+                "relative aspect-square overflow-hidden rounded-2xl bg-ink-100 ring-2 transition active:scale-95 dark:bg-ink-800",
+                active === i ? "ring-root-500" : "ring-transparent hover:ring-ink-300"
+              )}
             >
               <Image src={g} alt="" fill sizes="200px" className="object-cover" />
             </button>
@@ -95,75 +117,144 @@ export function RestaurantDetail({
         </div>
       </div>
 
+      {/* Title block */}
+      <div className="mt-8">
+        <div className="flex flex-wrap items-center gap-2">
+          {open ? (
+            <Badge tone="success">
+              <Clock size={12} /> Open now
+            </Badge>
+          ) : (
+            <Badge tone="neutral">
+              <Clock size={12} /> Closed
+            </Badge>
+          )}
+          <Badge tone="brand">{priceString(restaurant.priceLevel)}</Badge>
+          {restaurant.cuisine.map((c) => (
+            <Badge key={c} tone="outline">
+              {c}
+            </Badge>
+          ))}
+        </div>
+
+        <h1 className="mt-4 font-display text-3xl font-extrabold text-ink-900 dark:text-white md:text-4xl">
+          {restaurant.name}
+        </h1>
+
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-ink-500">
+          <span className="flex items-center gap-1.5">
+            <Stars value={restaurant.rating} size={18} />
+            <b className="text-ink-800 dark:text-ink-100">
+              {restaurant.rating.toFixed(1)}
+            </b>
+            ({restaurant.reviewCount.toLocaleString()})
+          </span>
+          <span className="flex items-center gap-1">
+            <MapPin size={16} /> {restaurant.location}
+          </span>
+        </div>
+      </div>
+
       <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_320px]">
         {/* Main column */}
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            {open ? (
-              <Badge tone="success">
-                <Clock size={12} /> Open now
-              </Badge>
-            ) : (
-              <Badge tone="neutral">
-                <Clock size={12} /> Closed
-              </Badge>
-            )}
-            <Badge tone="brand">{priceString(restaurant.priceLevel)}</Badge>
-            {restaurant.cuisine.map((c) => (
-              <Badge key={c} tone="outline">
-                {c}
-              </Badge>
+        <div className="min-w-0">
+          {/* Tabs */}
+          <div
+            role="tablist"
+            aria-label="Restaurant details"
+            className="flex gap-1 border-b border-ink-100 dark:border-ink-800"
+          >
+            {tabs.map((t) => (
+              <button
+                key={t.key}
+                role="tab"
+                aria-selected={tab === t.key}
+                onClick={() => setTab(t.key)}
+                className={cx(
+                  "relative min-h-[48px] px-4 text-sm font-semibold transition",
+                  tab === t.key
+                    ? "text-root-600"
+                    : "text-ink-500 hover:text-ink-800 dark:hover:text-ink-200"
+                )}
+              >
+                {t.label}
+                {tab === t.key && (
+                  <motion.span
+                    layoutId="tab-underline"
+                    className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-root-500"
+                    transition={{ duration: 0.2 }}
+                  />
+                )}
+              </button>
             ))}
           </div>
 
-          <h1 className="mt-4 font-display text-4xl font-extrabold text-ink-900 dark:text-white">
-            {restaurant.name}
-          </h1>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={tab}
+              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduceMotion ? undefined : { opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="pt-6"
+            >
+              {tab === "about" && (
+                <>
+                  <p className="text-lg leading-relaxed text-ink-600 dark:text-ink-300">
+                    {restaurant.description}
+                  </p>
 
-          <div className="mt-3 flex flex-wrap items-center gap-4 text-ink-500">
-            <span className="flex items-center gap-1.5">
-              <Stars value={restaurant.rating} size={18} />
-              <b className="text-ink-800 dark:text-ink-100">
-                {restaurant.rating.toFixed(1)}
-              </b>
-              ({restaurant.reviewCount.toLocaleString()})
-            </span>
-            <span className="flex items-center gap-1">
-              <MapPin size={16} /> {restaurant.location}
-            </span>
-          </div>
+                  {restaurant.tags.length > 0 && (
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {restaurant.tags.map((t) => (
+                        <Link
+                          key={t}
+                          href={`/search?q=${encodeURIComponent(t)}`}
+                          className="rounded-full bg-ink-100 px-3.5 py-2 text-sm text-ink-600 transition hover:bg-root-100 hover:text-root-700 active:scale-95 dark:bg-ink-800 dark:text-ink-200"
+                        >
+                          #{t}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
 
-          <p className="mt-5 text-lg leading-relaxed text-ink-600 dark:text-ink-300">
-            {restaurant.description}
-          </p>
+                  {hasMenu && (
+                    <button
+                      onClick={() => setTab("menu")}
+                      className="mt-6 flex w-full items-center justify-between rounded-2xl border border-ink-200 p-4 text-left transition hover:border-root-300 hover:bg-root-50/50 active:scale-[0.99] dark:border-ink-700 dark:hover:bg-ink-800"
+                    >
+                      <span>
+                        <span className="block font-semibold text-ink-900 dark:text-white">
+                          See the menu
+                        </span>
+                        <span className="text-sm text-ink-500">
+                          {restaurant.menu!.reduce((n, s) => n + s.items.length, 0)} dishes
+                          across {restaurant.menu!.length} sections
+                        </span>
+                      </span>
+                      <ChevronLeft size={20} className="rotate-180 text-ink-400" />
+                    </button>
+                  )}
+                </>
+              )}
 
-          {restaurant.tags.length > 0 && (
-            <div className="mt-5 flex flex-wrap gap-2">
-              {restaurant.tags.map((t) => (
-                <Link
-                  key={t}
-                  href={`/search?q=${encodeURIComponent(t)}`}
-                  className="rounded-full bg-ink-100 px-3 py-1.5 text-sm text-ink-600 transition hover:bg-root-100 hover:text-root-700 dark:bg-ink-800 dark:text-ink-200"
-                >
-                  #{t}
-                </Link>
-              ))}
-            </div>
-          )}
+              {tab === "menu" && hasMenu && <Menu sections={restaurant.menu!} />}
 
-          <div className="my-8 h-px bg-ink-100 dark:bg-ink-800" />
-
-          <Reviews
-            restaurantId={restaurant.id}
-            seedCount={restaurant.reviewCount}
-            seedRating={restaurant.rating}
-          />
+              {tab === "reviews" && (
+                <Reviews
+                  restaurantId={restaurant.id}
+                  seedCount={restaurant.reviewCount}
+                  seedRating={restaurant.rating}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Sidebar */}
         <aside className="lg:sticky lg:top-24 lg:h-fit">
           <div className="rounded-3xl border border-ink-100 bg-white p-5 shadow-soft dark:border-ink-800 dark:bg-ink-900">
-            <div className="flex gap-2">
+            <div className="hidden gap-2 md:flex">
               <ButtonLink href={mapsUrl(restaurant)} className="flex-1" target="_blank">
                 <Navigation size={16} /> Directions
               </ButtonLink>
@@ -172,7 +263,7 @@ export function RestaurantDetail({
               </Button>
             </div>
 
-            <div className="mt-5 space-y-3 text-sm">
+            <div className="space-y-3 text-sm md:mt-5">
               {restaurant.address && (
                 <Row icon={<MapPin size={16} />} label={restaurant.address} />
               )}
@@ -202,11 +293,12 @@ export function RestaurantDetail({
                   {restaurant.hours.map((h) => (
                     <li
                       key={h.day}
-                      className={`flex justify-between ${
+                      className={cx(
+                        "flex justify-between",
                         h.day === new Date().getDay()
                           ? "font-semibold text-ink-900 dark:text-white"
                           : "text-ink-500"
-                      }`}
+                      )}
                     >
                       <span>{DAYS[h.day]}</span>
                       <span>
@@ -226,7 +318,7 @@ export function RestaurantDetail({
       {similar.length > 0 && (
         <section className="mt-16">
           <h2 className="mb-4 font-display text-2xl font-extrabold text-ink-900 dark:text-white">
-            You may also like
+            Similar places nearby
           </h2>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {similar.map((r) => (
@@ -235,6 +327,16 @@ export function RestaurantDetail({
           </div>
         </section>
       )}
+
+      {/* Mobile action bar — kept above the tab bar's safe area. */}
+      <div className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 flex gap-2 border-t border-ink-100 bg-[var(--bg)]/95 px-4 py-3 backdrop-blur dark:border-ink-800 md:hidden">
+        <ButtonLink href={mapsUrl(restaurant)} className="flex-1" target="_blank">
+          <Navigation size={16} /> Directions
+        </ButtonLink>
+        <Button variant="outline" onClick={share} aria-label="Share">
+          {copied ? <Check size={18} /> : <Share2 size={18} />}
+        </Button>
+      </div>
     </div>
   );
 }

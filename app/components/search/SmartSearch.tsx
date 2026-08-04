@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Search, MapPin, TrendingUp, CornerDownLeft, Clock } from "lucide-react";
 import { useRestaurants } from "@/app/lib/useRestaurants";
 import { buildFuse, runSearch, emptyFilters } from "@/app/lib/search";
-import { priceString, isOpenNow } from "@/app/lib/utils";
+import { priceString, isOpenNow, photoUrl } from "@/app/lib/utils";
 import { Stars } from "../ui/Stars";
 
 const QUICK = ["Seafood", "Cafés", "Date Spots", "Fast food", "Open"];
@@ -149,8 +149,8 @@ export function SmartSearch({
                       : "hover:bg-ink-50 dark:hover:bg-ink-800/60"
                   }`}
                 >
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl">
-                    <Image src={r.image} alt={r.name} fill sizes="48px" className="object-cover" />
+                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-ink-100 dark:bg-ink-800">
+                    <Image src={photoUrl(r)} alt={r.name} fill sizes="48px" className="object-cover" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">

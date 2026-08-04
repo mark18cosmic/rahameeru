@@ -7,6 +7,21 @@ export interface OpeningHours {
   close: string; // "23:30"
 }
 
+export interface MenuItem {
+  name: string;
+  description?: string;
+  /** Price in Maldivian rufiyaa. */
+  price: number;
+  /** Dietary or preparation notes, e.g. "Vegetarian", "Spicy". */
+  tags?: string[];
+  popular?: boolean;
+}
+
+export interface MenuSection {
+  name: string;
+  items: MenuItem[];
+}
+
 export interface Restaurant {
   id: string;
   slug: string;
@@ -16,7 +31,8 @@ export interface Restaurant {
   rating: number;
   reviewCount: number;
   description: string;
-  image: string;
+  /** Optional explicit photo. When absent, resolved by name via /api/photo. */
+  image?: string;
   gallery?: string[];
   location: string; // area, e.g. "Malé"
   address?: string;
@@ -25,6 +41,7 @@ export interface Restaurant {
   phone?: string;
   email?: string;
   hours?: OpeningHours[];
+  menu?: MenuSection[];
   featured?: boolean;
   createdAt?: number;
 }

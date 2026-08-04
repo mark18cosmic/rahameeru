@@ -32,9 +32,8 @@ export default function Footer() {
             Rahameeru
           </div>
           <p className="mt-3 max-w-sm text-sm text-ink-500">
-            Discover the best places to eat across Malé and Hulhumalé. Read real
-            reviews, save your favorites, and let the wheel decide when you
-            can&apos;t.
+            Menus, opening hours and reviews for places to eat in Malé and
+            Hulhumalé. Spin the wheel when nobody can decide.
           </p>
           <div className="mt-5 flex gap-3">
             {[Instagram, Twitter, Facebook].map((Icon, i) => (
@@ -69,7 +68,8 @@ export default function Footer() {
           </div>
         ))}
       </div>
-      <div className="border-t border-ink-100 py-5 text-center text-sm text-ink-400 dark:border-ink-800">
+      {/* Extra bottom padding clears the mobile tab bar. */}
+      <div className="border-t border-ink-100 py-5 pb-[calc(5rem+env(safe-area-inset-bottom))] text-center text-sm text-ink-400 dark:border-ink-800 md:pb-5">
         © {new Date().getFullYear()} Rahameeru Reviews. All rights reserved.
       </div>
     </footer>

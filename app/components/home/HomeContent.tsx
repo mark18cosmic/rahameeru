@@ -30,7 +30,7 @@ export function HomeContent() {
 
   return (
     <>
-      <Hero />
+      <Hero restaurants={restaurants} />
 
       <div className="mt-4">
         <CategoryStrip />
@@ -38,8 +38,8 @@ export function HomeContent() {
 
       <main className="mx-auto max-w-7xl px-4 md:px-6">
         <RestaurantRail
-          title="Featured restaurants"
-          subtitle="Handpicked spots worth the trip"
+          title="Worth the walk"
+          subtitle="The ones we send people to first"
           restaurants={rails.featured.length ? rails.featured : rails.byRating}
           loading={loading}
           href="/explore?sort=rating"
@@ -51,31 +51,31 @@ export function HomeContent() {
 
         <RestaurantRail
           title="Open right now"
-          subtitle="Grab a bite this minute"
+          subtitle="Kitchens still running as of this minute"
           restaurants={rails.openNow}
           loading={loading}
           href="/search"
         />
 
         <RestaurantRail
-          title="Perfect date spots"
-          subtitle="Set the mood for something special"
+          title="Good for a date"
+          subtitle="Quiet enough to hear each other"
           restaurants={rails.dateSpots}
           loading={loading}
           href="/search?q=Date%20Spots"
         />
 
         <RestaurantRail
-          title="Cafés & brunch"
-          subtitle="Coffee, pastries and slow mornings"
+          title="Coffee and breakfast"
+          subtitle="For mornings, and for working through them"
           restaurants={rails.cafes}
           loading={loading}
           href="/search?q=Caf%C3%A9s"
         />
 
         <RestaurantRail
-          title="Quick & casual"
-          subtitle="Fast food done right"
+          title="In and out in twenty minutes"
+          subtitle="When you just need feeding"
           restaurants={rails.fastFood}
           loading={loading}
           href="/search?q=Fast%20food"

@@ -62,6 +62,27 @@ export function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+/**
+ * Photo source for a restaurant. Prefers an explicitly supplied image (a
+ * Firestore doc can override), otherwise defers to /api/photo, which looks the
+ * place up by name. `index` selects a different result for gallery slots.
+ */
+export function photoUrl(r: Restaurant, index = 0): string {
+  if (index === 0 && r.image) return r.image;
+  if (index > 0 && r.gallery?.[index]) return r.gallery[index];
+  const params = new URLSearchParams({ q: r.name });
+  if (r.location) params.set("loc", r.location);
+  if (r.cuisine.length) params.set("c", r.cuisine.join(","));
+  if (index) params.set("i", String(index));
+  return `/api/photo?${params.toString()}`;
+}
+
+/** Photo slots for the detail-page gallery. */
+export function galleryUrls(r: Restaurant, count = 4): string[] {
+  if (r.gallery?.length) return r.gallery.slice(0, count);
+  return Array.from({ length: count }, (_, i) => photoUrl(r, i));
+}
+
 export function mapsUrl(r: Restaurant): string {
   if (r.coords) {
     return `https://www.google.com/maps/search/?api=1&query=${r.coords.lat},${r.coords.lng}`;

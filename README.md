@@ -4,6 +4,7 @@
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Usage](#usage)
+- [Running with Docker](#running-with-docker)
 - [License](#license)
 
 
@@ -36,6 +37,40 @@ Push Notifications: Get notified about new reviews, responses, and promotions.
 - **User Profile**: Manage your reviews, favorites, and subscription status.
 - **Review Submission**: Write and submit reviews with ratings and optional images.
 - **Notifications**: Stay updated with the latest reviews and promotions.
+
+## Running with Docker
+
+The image is a multi-stage build on Next's `standalone` output (~330 MB, runs as
+a non-root user).
+
+Firebase's `NEXT_PUBLIC_*` values are compiled into the client bundle, so they
+must be supplied **at build time** — passing them only to `docker run` leaves the
+browser with an undefined API key. Put them in a local `.env` and use Compose:
+
+```bash
+docker compose up --build      # http://localhost:3000
+```
+
+Or build directly:
+
+```bash
+docker build \
+  --build-arg NEXT_PUBLIC_FIREBASE_API_KEY=... \
+  --build-arg NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=... \
+  --build-arg NEXT_PUBLIC_FIREBASE_PROJECT_ID=... \
+  --build-arg NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=... \
+  --build-arg NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=... \
+  --build-arg NEXT_PUBLIC_FIREBASE_APP_ID=... \
+  -t rahameeru .
+
+docker run -p 3000:3000 rahameeru
+```
+
+Because those values are baked in, build a separate image per environment, and
+rebuild (not just restart) whenever they change.
+
+The container needs outbound HTTPS: `/api/photo` resolves restaurant photos by
+name from an upstream image search.
 
 ## License
 

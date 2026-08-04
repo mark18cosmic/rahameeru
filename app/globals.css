@@ -14,6 +14,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* Sticky header height, so anchors don't land under it. */
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -21,6 +24,44 @@ body {
   color: var(--fg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Stops sideways drift on phones when a rail overshoots. `clip` rather than
+     `hidden` on purpose: `hidden` makes body a scroll container, which breaks
+     the sticky navbar and the menu's sticky section bar. */
+  overflow-x: clip;
+}
+
+/* iOS paints its own grey flash on tap; the components handle press states. */
+a,
+button,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS zooms the page when focusing an input below 16px. */
+input,
+select,
+textarea {
+  font-size: max(16px, 1rem);
+}
+
+/* Honour the OS setting rather than animating regardless. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid #f84b3b;
+  outline-offset: 2px;
 }
 
 @layer utilities {
@@ -33,6 +74,14 @@ body {
   }
   .text-balance {
     text-wrap: balance;
+  }
+  /* Padding that respects a notch or home indicator. */
+  .safe-b {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-x {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
   .glass {
     background: rgba(250, 248, 245, 0.72);

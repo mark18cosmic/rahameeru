@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getRestaurantBySlug } from "@/app/lib/restaurants";
 import { seedRestaurants } from "@/app/lib/data";
 import { RestaurantLoader } from "@/app/components/restaurant/RestaurantLoader";
+import { photoUrl } from "@/app/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -13,8 +14,13 @@ export async function generateMetadata({
   if (!r) return { title: "Restaurant not found" };
   return {
     title: r.name,
-    description: r.description || `Discover ${r.name} on Rahameeru.`,
-    openGraph: { images: [r.image], title: r.name, description: r.description },
+    description:
+      r.description || `${r.name} — menu, hours and reviews on Rahameeru.`,
+    openGraph: {
+      images: [photoUrl(r)],
+      title: r.name,
+      description: r.description,
+    },
   };
 }
 
