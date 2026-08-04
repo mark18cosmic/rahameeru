@@ -22,7 +22,9 @@ const COLS = [
 
 export default function Footer() {
   return (
-    <footer className="mt-20 border-t border-ink-100 bg-white dark:border-ink-800 dark:bg-ink-900">
+    // Phones have the tab bar for navigation; a six-link footer above it was
+    // just more to scroll past.
+    <footer className="mt-20 hidden border-t border-ink-100 bg-white dark:border-ink-800 dark:bg-ink-900 md:block">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-2 text-xl font-extrabold text-ink-900 dark:text-white">

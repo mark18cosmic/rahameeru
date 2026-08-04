@@ -24,9 +24,11 @@ export default function MobileTabBar() {
   const { open } = useSearch();
 
   return (
+    // Solid, not translucent: content scrolling underneath a blurred bar was
+    // the muddiest part of the phone layout.
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-ink-100 bg-[var(--bg)]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-lg dark:border-ink-800 md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-ink-100 bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-1px_12px_-6px_rgba(23,21,18,0.35)] dark:border-ink-800 dark:bg-ink-900 md:hidden"
     >
       <ul className="flex items-stretch">
         {TABS.map((t) => {
@@ -39,12 +41,12 @@ export default function MobileTabBar() {
               {activeTab && (
                 <motion.span
                   layoutId="tabbar-pill"
-                  className="absolute inset-x-3 top-1 h-8 rounded-full bg-root-500/10"
+                  className="absolute inset-x-2.5 top-1 h-7 rounded-full bg-root-50 dark:bg-root-900/30"
                   transition={{ type: "spring", stiffness: 400, damping: 32 }}
                 />
               )}
               <Icon
-                size={21}
+                size={20}
                 className={cx(
                   "relative transition",
                   activeTab ? "text-root-500" : "text-ink-400"
@@ -63,7 +65,7 @@ export default function MobileTabBar() {
           );
 
           const classes =
-            "relative flex min-h-[56px] w-full flex-col items-center justify-center gap-0.5 pt-1 active:scale-95 transition-transform";
+            "relative flex min-h-[52px] w-full flex-col items-center justify-center gap-0.5 pt-1 transition-transform active:scale-95";
 
           return (
             <li key={t.href} className="flex-1">

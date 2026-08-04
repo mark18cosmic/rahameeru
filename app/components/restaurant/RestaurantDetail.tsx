@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
@@ -23,6 +22,7 @@ import {
   galleryUrls,
   cx,
 } from "@/app/lib/utils";
+import { Photo } from "../ui/Photo";
 import { Stars } from "../ui/Stars";
 import { Badge } from "../ui/Badge";
 import { Button, ButtonLink } from "../ui/Button";
@@ -72,7 +72,7 @@ export function RestaurantDetail({
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 pb-28 md:px-6 md:pb-6">
+    <div className="mx-auto max-w-6xl px-4 py-5 pb-14 md:px-6 md:py-6">
       <Link
         href="/explore"
         className="mb-4 inline-flex min-h-[44px] items-center gap-1 text-sm text-ink-500 transition hover:text-root-600"
@@ -81,7 +81,7 @@ export function RestaurantDetail({
       </Link>
 
       {/* Gallery */}
-      <div className="grid gap-3 md:grid-cols-[1.6fr_1fr]">
+      <div className="grid gap-2.5 md:grid-cols-[1.6fr_1fr] md:gap-3">
         <motion.div
           key={active}
           initial={reduceMotion ? false : { opacity: 0.4 }}
@@ -89,18 +89,16 @@ export function RestaurantDetail({
           transition={{ duration: 0.25 }}
           className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-ink-100 dark:bg-ink-800"
         >
-          <Image
-            src={gallery[active]}
-            alt={restaurant.name}
-            fill
+          <Photo
+            r={restaurant}
+            index={active}
             priority
             sizes="(max-width: 768px) 100vw, 60vw"
-            className="object-cover"
           />
           <FavoriteButton id={restaurant.id} className="absolute right-4 top-4 h-11 w-11" size={20} />
         </motion.div>
         <div className="grid grid-cols-4 gap-2 md:grid-cols-2 md:gap-3">
-          {gallery.map((g, i) => (
+          {gallery.map((_, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
@@ -111,14 +109,14 @@ export function RestaurantDetail({
                 active === i ? "ring-root-500" : "ring-transparent hover:ring-ink-300"
               )}
             >
-              <Image src={g} alt="" fill sizes="200px" className="object-cover" />
+              <Photo r={restaurant} index={i} alt="" sizes="200px" />
             </button>
           ))}
         </div>
       </div>
 
       {/* Title block */}
-      <div className="mt-8">
+      <div className="mt-6 md:mt-8">
         <div className="flex flex-wrap items-center gap-2">
           {open ? (
             <Badge tone="success">
@@ -137,7 +135,7 @@ export function RestaurantDetail({
           ))}
         </div>
 
-        <h1 className="mt-4 font-display text-3xl font-extrabold text-ink-900 dark:text-white md:text-4xl">
+        <h1 className="mt-3 font-display text-2xl font-extrabold text-ink-900 dark:text-white sm:text-3xl md:mt-4 md:text-4xl">
           {restaurant.name}
         </h1>
 
@@ -155,7 +153,7 @@ export function RestaurantDetail({
         </div>
       </div>
 
-      <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_320px]">
+      <div className="mt-6 grid gap-8 md:mt-8 lg:grid-cols-[1fr_320px] lg:gap-10">
         {/* Main column */}
         <div className="min-w-0">
           {/* Tabs */}
@@ -196,11 +194,11 @@ export function RestaurantDetail({
               animate={{ opacity: 1, y: 0 }}
               exit={reduceMotion ? undefined : { opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="pt-6"
+              className="pt-5 md:pt-6"
             >
               {tab === "about" && (
                 <>
-                  <p className="text-lg leading-relaxed text-ink-600 dark:text-ink-300">
+                  <p className="text-base leading-relaxed text-ink-600 dark:text-ink-300 md:text-lg">
                     {restaurant.description}
                   </p>
 
@@ -320,7 +318,7 @@ export function RestaurantDetail({
           <h2 className="mb-4 font-display text-2xl font-extrabold text-ink-900 dark:text-white">
             Similar places nearby
           </h2>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
             {similar.map((r) => (
               <RestaurantCard key={r.id} r={r} />
             ))}
@@ -329,7 +327,7 @@ export function RestaurantDetail({
       )}
 
       {/* Mobile action bar — kept above the tab bar's safe area. */}
-      <div className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 flex gap-2 border-t border-ink-100 bg-[var(--bg)]/95 px-4 py-3 backdrop-blur dark:border-ink-800 md:hidden">
+      <div className="fixed inset-x-0 bottom-[calc(3.25rem+env(safe-area-inset-bottom))] z-30 flex gap-2 border-t border-ink-100 bg-[var(--bg)] px-4 py-2.5 dark:border-ink-800 md:hidden">
         <ButtonLink href={mapsUrl(restaurant)} className="flex-1" target="_blank">
           <Navigation size={16} /> Directions
         </ButtonLink>

@@ -73,7 +73,7 @@ export default function RootLayout({
               </a>
               <Navbar />
               {/* Bottom padding clears the mobile tab bar. */}
-              <div id="content" className="min-h-screen pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0">
+              <div id="content" className="min-h-screen pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
                 {children}
               </div>
               <Footer />

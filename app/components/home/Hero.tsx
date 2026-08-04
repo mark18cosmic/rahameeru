@@ -1,11 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { Search, Star, Utensils, MapPin } from "lucide-react";
 import type { Restaurant } from "@/app/lib/types";
-import { photoUrl } from "@/app/lib/utils";
+import { Photo } from "../ui/Photo";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { useSearch } from "@/app/providers/SearchProvider";
 
@@ -33,13 +32,24 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
     const reviews = restaurants.reduce((n, r) => n + r.reviewCount, 0);
     const islands = new Set(restaurants.map((r) => r.location).filter(Boolean));
     return [
-      { icon: Utensils, stat: String(restaurants.length || "—"), label: "Places listed" },
+      {
+        icon: Utensils,
+        stat: String(restaurants.length || "—"),
+        label: "Places listed",
+        tint: "bg-root-100 text-root-600 dark:bg-root-500/15 dark:text-root-300",
+      },
       {
         icon: Star,
         stat: reviews > 999 ? `${(reviews / 1000).toFixed(1)}k` : String(reviews),
         label: "Reviews",
+        tint: "bg-saffron-400/25 text-saffron-500 dark:bg-saffron-500/15",
       },
-      { icon: MapPin, stat: String(islands.size || "—"), label: "Islands" },
+      {
+        icon: MapPin,
+        stat: String(islands.size || "—"),
+        label: "Islands",
+        tint: "bg-sky-100 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300",
+      },
     ];
   }, [restaurants]);
 
@@ -47,7 +57,14 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
 
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-10 md:px-6 md:py-20 lg:grid-cols-2">
+      {/* Colour wash behind the fold. Cheap (two blurred circles, no images)
+          and it stops the phone layout reading as a form on white. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -left-24 -top-24 h-64 w-64 rounded-full bg-root-300/30 blur-3xl dark:bg-root-500/15" />
+        <div className="absolute right-0 top-10 h-56 w-56 rounded-full bg-saffron-400/25 blur-3xl dark:bg-saffron-500/10" />
+        <div className="absolute -bottom-16 left-1/3 h-56 w-56 rounded-full bg-sky-300/25 blur-3xl dark:bg-sky-500/10" />
+      </div>
+      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-6 pt-4 md:px-6 md:py-20 lg:grid-cols-2">
         <div>
           <motion.span
             initial={reduceMotion ? false : { opacity: 0, y: 10 }}
@@ -62,11 +79,15 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="mt-5 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-ink-900 dark:text-white md:text-6xl"
+            className="mt-4 font-display text-[2rem] font-extrabold leading-[1.08] tracking-tight text-ink-900 dark:text-white sm:text-4xl md:mt-5 md:text-6xl"
           >
             {firstName ? (
               <>
-                Evening, <span className="text-root-500">{firstName}</span>.
+                Evening,{" "}
+                <span className="bg-gradient-to-r from-root-500 to-saffron-500 bg-clip-text text-transparent">
+                  {firstName}
+                </span>
+                .
                 <br />
                 Hungry?
               </>
@@ -74,7 +95,9 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
               <>
                 Where are we
                 <br />
-                <span className="text-root-500">eating tonight?</span>
+                <span className="bg-gradient-to-r from-root-500 via-root-600 to-saffron-500 bg-clip-text text-transparent">
+                  eating tonight?
+                </span>
               </>
             )}
           </motion.h1>
@@ -83,7 +106,7 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mt-5 max-w-lg text-lg text-ink-500"
+            className="mt-3 max-w-lg text-base text-ink-500 md:mt-5 md:text-lg"
           >
             Menus, opening hours and what people actually thought — for the
             places you can walk to. Spin the wheel if you&apos;d rather not
@@ -94,11 +117,11 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="mt-7"
+            className="mt-5 md:mt-7"
           >
             <button
               onClick={open}
-              className="flex min-h-[56px] w-full max-w-lg items-center gap-3 rounded-2xl border border-ink-200 bg-white px-5 py-4 text-left shadow-soft transition hover:shadow-card active:scale-[0.99] dark:border-ink-700 dark:bg-ink-900"
+              className="flex min-h-[52px] w-full max-w-lg items-center gap-3 rounded-2xl border border-ink-200 bg-white px-5 py-4 text-left shadow-soft transition hover:shadow-card active:scale-[0.99] dark:border-ink-700 dark:bg-ink-900"
             >
               <Search className="shrink-0 text-root-500" />
               <span className="truncate text-ink-400">
@@ -110,10 +133,12 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
             </button>
           </motion.div>
 
-          <div className="mt-8 flex flex-wrap gap-6 sm:gap-8">
+          <div className="mt-6 flex flex-wrap gap-5 sm:gap-8 md:mt-8">
             {stats.map((s) => (
               <div key={s.label} className="flex items-center gap-2.5">
-                <s.icon className="text-root-500" size={22} />
+                <span className={`grid h-10 w-10 place-items-center rounded-2xl ${s.tint}`}>
+                  <s.icon size={19} />
+                </span>
                 <div>
                   <p className="text-xl font-extrabold text-ink-900 dark:text-white">
                     {s.stat}
@@ -140,13 +165,7 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
                   : { animation: `float 6s ease-in-out ${SLOTS[i].delay}s infinite` }
               }
             >
-              <Image
-                src={photoUrl(r)}
-                alt={r.name}
-                fill
-                sizes="240px"
-                className="object-cover"
-              />
+              <Photo r={r} sizes="240px" priority={i === 0} />
             </motion.div>
           ))}
         </div>

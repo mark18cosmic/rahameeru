@@ -60,13 +60,23 @@ export default function Navbar() {
   return (
     <header
       className={cx(
-        "sticky top-0 z-50 transition-all",
-        scrolled ? "glass border-b border-ink-100 dark:border-ink-800" : "bg-transparent"
+        "sticky top-0 z-50 transition-colors",
+        // Solid rather than translucent on phones: a blurred bar over a moving
+        // photo rail reads as smeared, and Android skips the blur anyway.
+        scrolled
+          ? "nav-solid border-b border-ink-100 dark:border-ink-800"
+          : "bg-transparent"
       )}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 md:px-6">
+      <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-2 px-4 md:h-[68px] md:gap-3 md:px-6">
         <Link href="/" className="flex shrink-0 items-center gap-2">
-          <Image src={logo} alt="Rahameeru" width={140} priority className="dark:brightness-0 dark:invert" />
+          <Image
+            src={logo}
+            alt="Rahameeru"
+            width={140}
+            priority
+            className="h-auto w-[104px] dark:brightness-0 dark:invert md:w-[140px]"
+          />
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
@@ -89,9 +99,11 @@ export default function Navbar() {
         <div className="flex items-center gap-1.5">
           <button
             onClick={open}
-            className="flex items-center gap-2 rounded-full border border-ink-200 py-2 pl-3 pr-2 text-sm text-ink-500 transition hover:border-ink-300 dark:border-ink-700 md:min-w-[200px]"
+            aria-label="Search"
+            className="grid h-9 w-9 place-items-center rounded-full text-ink-600 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800 md:flex md:h-auto md:w-auto md:min-w-[200px] md:items-center md:gap-2 md:rounded-full md:border md:border-ink-200 md:py-2 md:pl-3 md:pr-2 md:text-sm md:text-ink-500 md:hover:border-ink-300 md:hover:bg-transparent md:dark:border-ink-700"
           >
-            <Search size={16} />
+            <Search size={18} className="md:hidden" />
+            <Search size={16} className="hidden md:block" />
             <span className="hidden md:inline">Search…</span>
             <kbd className="ml-auto hidden rounded bg-ink-100 px-1.5 py-0.5 text-[10px] text-ink-500 dark:bg-ink-800 md:inline">
               ⌘K

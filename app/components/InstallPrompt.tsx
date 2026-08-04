@@ -113,7 +113,7 @@ export function InstallPrompt() {
           animate={{ y: 0, opacity: 1 }}
           exit={reduceMotion ? { opacity: 0 } : { y: 120, opacity: 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 28 }}
-          className="fixed inset-x-0 z-[60] px-3 pb-[env(safe-area-inset-bottom)] bottom-[calc(4rem+env(safe-area-inset-bottom))] md:bottom-4 md:left-auto md:right-4 md:w-[380px] md:px-0"
+          className="fixed inset-x-0 z-[60] px-3 pb-[env(safe-area-inset-bottom)] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] md:bottom-4 md:left-auto md:right-4 md:w-[380px] md:px-0"
         >
           <div className="relative overflow-hidden rounded-3xl border border-ink-100 bg-white p-4 shadow-card dark:border-ink-800 dark:bg-ink-900">
             <button

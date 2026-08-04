@@ -83,6 +83,20 @@ textarea {
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
   }
+  /* Sticky header fill. Phones get a flat colour — a blur pass over a scrolling
+     photo rail smears, costs a frame, and Android often ignores it anyway. */
+  .nav-solid {
+    background: var(--bg);
+  }
+  @media (min-width: 768px) {
+    .nav-solid {
+      background: rgba(250, 248, 245, 0.72);
+      backdrop-filter: saturate(160%) blur(14px);
+    }
+    .dark .nav-solid {
+      background: rgba(23, 21, 18, 0.72);
+    }
+  }
   .glass {
     background: rgba(250, 248, 245, 0.72);
     backdrop-filter: saturate(160%) blur(14px);

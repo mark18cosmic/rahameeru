@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Sparkles, RotateCw, MapPin, ArrowRight } from "lucide-react";
 import type { Restaurant, PriceLevel } from "@/app/lib/types";
-import { priceString, photoUrl } from "@/app/lib/utils";
+import { priceString } from "@/app/lib/utils";
+import { Photo } from "../ui/Photo";
 import { Stars } from "../ui/Stars";
 import { Button, ButtonLink } from "../ui/Button";
 
@@ -64,7 +64,10 @@ export function WheelSpinner({ restaurants }: Props) {
     if (!el) return;
     const ro = new ResizeObserver(([entry]) => {
       const w = entry.contentRect.width;
-      setSize(Math.max(240, Math.min(360, Math.floor(w))));
+      // Phones get a deliberately smaller wheel: at full column width it ate
+      // the whole screen and pushed the spin button below the fold.
+      const cap = window.innerWidth < 640 ? 258 : 360;
+      setSize(Math.max(200, Math.min(cap, Math.floor(w))));
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -173,28 +176,28 @@ export function WheelSpinner({ restaurants }: Props) {
   }, [spinning, pool, rotation, reduceMotion]);
 
   return (
-    <section className="relative overflow-hidden rounded-[2rem] bg-ink-900 p-5 text-white shadow-card sm:p-6 md:p-10">
+    <section className="relative overflow-hidden rounded-[1.75rem] bg-ink-900 p-4 text-white shadow-card sm:rounded-[2rem] sm:p-6 md:p-10">
       {/* Soft brand glow behind the wheel */}
       <div
         aria-hidden
         className="pointer-events-none absolute -right-24 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-root-500/20 blur-3xl"
       />
 
-      <div className="relative grid items-center gap-8 md:grid-cols-2">
+      <div className="relative grid items-center gap-6 md:grid-cols-2 md:gap-8">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-root-300">
             <Sparkles size={14} /> Can&apos;t decide?
           </span>
-          <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight md:text-4xl">
+          <h2 className="mt-3 font-display text-2xl font-extrabold leading-tight sm:text-3xl md:mt-4 md:text-4xl">
             Let the wheel
             <br /> decide for you.
           </h2>
-          <p className="mt-3 max-w-md text-ink-300">
+          <p className="mt-2 max-w-md text-sm text-ink-300 md:mt-3 md:text-base">
             Twenty minutes of arguing about dinner, solved in one spin. Narrow it
             down by island and budget first if you want.
           </p>
 
-          <div className="mt-6 space-y-3">
+          <div className="mt-4 space-y-2.5 md:mt-6 md:space-y-3">
             <fieldset>
               <legend className="sr-only">Filter by island</legend>
               <div className="flex flex-wrap gap-2">
@@ -204,7 +207,7 @@ export function WheelSpinner({ restaurants }: Props) {
                     onClick={() => setArea(a)}
                     disabled={spinning}
                     aria-pressed={area === a}
-                    className={`min-h-[44px] rounded-full px-4 py-2 text-sm font-medium transition active:scale-95 disabled:opacity-60 ${
+                    className={`min-h-[40px] rounded-full px-3.5 text-[13px] font-medium transition active:scale-95 disabled:opacity-60 md:min-h-[44px] md:px-4 md:text-sm ${
                       area === a
                         ? "bg-white text-ink-900"
                         : "bg-white/10 text-ink-200 hover:bg-white/20"
@@ -224,7 +227,7 @@ export function WheelSpinner({ restaurants }: Props) {
                     onClick={() => setPrice(pr.value)}
                     disabled={spinning}
                     aria-pressed={price === pr.value}
-                    className={`min-h-[44px] rounded-full px-4 py-2 text-sm font-medium transition active:scale-95 disabled:opacity-60 ${
+                    className={`min-h-[40px] rounded-full px-3.5 text-[13px] font-medium transition active:scale-95 disabled:opacity-60 md:min-h-[44px] md:px-4 md:text-sm ${
                       price === pr.value
                         ? "bg-white text-ink-900"
                         : "bg-white/10 text-ink-200 hover:bg-white/20"
@@ -237,7 +240,7 @@ export function WheelSpinner({ restaurants }: Props) {
             </fieldset>
           </div>
 
-          <p className="mt-4 text-sm text-ink-400">
+          <p className="mt-3 text-sm text-ink-400 md:mt-4">
             {pool.length} {pool.length === 1 ? "place" : "places"} on the wheel
           </p>
 
@@ -247,7 +250,7 @@ export function WheelSpinner({ restaurants }: Props) {
           </Button>
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-[360px] flex-col items-center">
+        <div className="relative mx-auto flex w-full max-w-[276px] flex-col items-center sm:max-w-[360px]">
           <div ref={wrapRef} className="relative w-full" style={{ height: size }}>
             {/* Pointer */}
             <div className="absolute left-1/2 top-[-6px] z-10 -translate-x-1/2">
@@ -282,13 +285,7 @@ export function WheelSpinner({ restaurants }: Props) {
                 >
                   <div className="flex items-center gap-3">
                     <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-ink-100">
-                      <Image
-                        src={photoUrl(winner)}
-                        alt={winner.name}
-                        fill
-                        sizes="64px"
-                        className="object-cover"
-                      />
+                      <Photo r={winner} sizes="64px" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-xs font-semibold uppercase tracking-wide text-root-500">

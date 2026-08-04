@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useRestaurants } from "@/app/lib/useRestaurants";
 import { isOpenNow } from "@/app/lib/utils";
+import { Flame, Clock3, HeartHandshake, Coffee, Zap, Sparkle } from "lucide-react";
 import { Hero } from "./Hero";
 import { CategoryStrip } from "./CategoryStrip";
 import { WheelSpinner } from "./WheelSpinner";
@@ -32,25 +33,29 @@ export function HomeContent() {
     <>
       <Hero restaurants={restaurants} />
 
-      <div className="mt-4">
+      <div className="mt-2 md:mt-4">
         <CategoryStrip />
       </div>
 
       <main className="mx-auto max-w-7xl px-4 md:px-6">
         <RestaurantRail
           title="Worth the walk"
+          icon={Flame}
+          accent="root"
           subtitle="The ones we send people to first"
           restaurants={rails.featured.length ? rails.featured : rails.byRating}
           loading={loading}
           href="/explore?sort=rating"
         />
 
-        <div className="mt-14">
+        <div className="mt-10 md:mt-14">
           <WheelSpinner restaurants={restaurants} />
         </div>
 
         <RestaurantRail
           title="Open right now"
+          icon={Clock3}
+          accent="emerald"
           subtitle="Kitchens still running as of this minute"
           restaurants={rails.openNow}
           loading={loading}
@@ -59,6 +64,8 @@ export function HomeContent() {
 
         <RestaurantRail
           title="Good for a date"
+          icon={HeartHandshake}
+          accent="rose"
           subtitle="Quiet enough to hear each other"
           restaurants={rails.dateSpots}
           loading={loading}
@@ -67,6 +74,8 @@ export function HomeContent() {
 
         <RestaurantRail
           title="Coffee and breakfast"
+          icon={Coffee}
+          accent="amber"
           subtitle="For mornings, and for working through them"
           restaurants={rails.cafes}
           loading={loading}
@@ -75,6 +84,8 @@ export function HomeContent() {
 
         <RestaurantRail
           title="In and out in twenty minutes"
+          icon={Zap}
+          accent="sky"
           subtitle="When you just need feeding"
           restaurants={rails.fastFood}
           loading={loading}
@@ -83,6 +94,8 @@ export function HomeContent() {
 
         <RestaurantRail
           title="Recently added"
+          icon={Sparkle}
+          accent="violet"
           restaurants={rails.recent}
           loading={loading}
           href="/explore"
