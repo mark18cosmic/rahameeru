@@ -1,6 +1,11 @@
 import { getApps, getApp, initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import {
+  getAuth,
+  connectAuthEmulator,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -16,6 +21,32 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+/**
+ * Point the SDK at the local Emulator Suite when one is configured.
+ *
+ * The browser and the server reach the same emulator by different names: from
+ * the page it is whatever the host publishes (localhost), from inside the
+ * compose network it is the service name. So the public variable drives the
+ * client and the private one — read only on the server — drives SSR.
+ */
+const emulatorHost =
+  typeof window === "undefined"
+    ? process.env.FIREBASE_EMULATOR_HOST ??
+      process.env.NEXT_PUBLIC_FIREBASE_EMULATOR_HOST
+    : process.env.NEXT_PUBLIC_FIREBASE_EMULATOR_HOST;
+
+if (emulatorHost) {
+  try {
+    connectFirestoreEmulator(db, emulatorHost, 8080);
+    connectAuthEmulator(auth, `http://${emulatorHost}:9099`, {
+      disableWarnings: true,
+    });
+  } catch {
+    // Already connected on a previous module evaluation (hot reload) — the SDK
+    // throws rather than no-opping, and a second call has nothing to do anyway.
+  }
+}
 
 export const googleProvider = new GoogleAuthProvider();
 

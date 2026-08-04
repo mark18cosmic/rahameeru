@@ -72,6 +72,46 @@ rebuild (not just restart) whenever they change.
 The container needs outbound HTTPS: `/api/photo` resolves restaurant photos by
 name from an upstream image search.
 
+## Local stack (OrbStack / Docker + Firebase emulator)
+
+`docker-compose.dev.yml` runs the app against a local Firebase Emulator Suite
+instead of the real project, so nothing touches production data:
+
+```bash
+npm run dev:stack        # builds and starts the emulator + the app
+npm run seed             # loads the seed restaurants into the emulator
+```
+
+| Service     | URL                     |
+| ----------- | ----------------------- |
+| App         | http://localhost:3200   |
+| Emulator UI | http://localhost:4000   |
+| Firestore   | localhost:8080          |
+| Auth        | localhost:9099          |
+
+Accounts created on the sign-up page live in the Auth emulator and can be
+inspected (and deleted) from the Emulator UI. Note that Google sign-in still
+goes to the real Google popup, so use email/password locally.
+
+The emulator connection is opt-in: the SDK only redirects when
+`NEXT_PUBLIC_FIREBASE_EMULATOR_HOST` (browser) or `FIREBASE_EMULATOR_HOST`
+(server) is set, both of which are supplied by the dev compose file alone.
+`npm run dev` on its own still talks to whatever project `.env.local` points at.
+
+Stop it with `npm run dev:stack:down`.
+
+## Photos
+
+Restaurant images resolve through `/api/photo`, which searches DuckDuckGo and
+then Bing for the venue by name, server-side and without an API key, falling
+back to a cuisine-matched stock photo. Results are cached in-process for six
+hours and proxied so `next/image` can optimise them.
+
+Images render through `app/components/ui/Photo.tsx`, which lazy-loads
+everything below the fold behind a blur placeholder and walks a source chain —
+stored Firestore URL → lookup → inline placeholder — so a dead link in the
+database silently repairs itself instead of leaving a hole in the grid.
+
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for more details.

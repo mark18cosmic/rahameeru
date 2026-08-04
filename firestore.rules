@@ -1,0 +1,15 @@
+rules_version = '2';
+
+// Local development only. The emulator has no real users to protect, and the
+// seed script needs unauthenticated writes — do not deploy this file.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /restaurants/{doc} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
