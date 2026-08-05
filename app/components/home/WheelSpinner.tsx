@@ -177,12 +177,6 @@ export function WheelSpinner({ restaurants }: Props) {
 
   return (
     <section className="relative overflow-hidden rounded-[1.75rem] bg-ink-900 p-4 text-white shadow-card sm:rounded-[2rem] sm:p-6 md:p-10">
-      {/* Soft brand glow behind the wheel */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-24 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-root-500/20 blur-3xl"
-      />
-
       <div className="relative grid items-center gap-6 md:grid-cols-2 md:gap-8">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-root-300">

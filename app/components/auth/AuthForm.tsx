@@ -138,7 +138,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           blurDataURL={BLUR}
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-900/95 via-ink-900/50 to-ink-900/20" />
+        <div className="absolute inset-0 bg-ink-900/70" />
         <div className="absolute bottom-12 left-12 right-12 text-white">
           <UtensilsCrossed className="mb-4 text-root-400" size={32} />
           <h2 className="font-display text-3xl font-extrabold leading-tight">
@@ -169,7 +169,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
           {/* Phones don't get the photo panel, so the perks ride along here —
               otherwise the page is a form floating in white space. */}
-          <div className="mb-6 rounded-3xl bg-gradient-to-br from-root-500 via-root-600 to-saffron-500 p-5 text-white shadow-glow lg:hidden">
+          <div className="mb-6 rounded-3xl bg-root-500 p-5 text-white lg:hidden">
             <UtensilsCrossed size={26} className="mb-2.5" />
             <h2 className="font-display text-xl font-extrabold leading-snug">
               The Maldives&apos; best tables, all in one place.

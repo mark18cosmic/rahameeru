@@ -36,7 +36,6 @@ export function RestaurantCard({
           sizes="(max-width: 768px) 70vw, 320px"
           className="duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/45 to-transparent" />
         {/* One badge per corner. Two stacked chips plus a heart used to collide
             on a half-width phone card, which is where the overlap came from —
             price now lives in the body row instead. */}

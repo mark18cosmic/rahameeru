@@ -74,7 +74,7 @@ export function ChiliLoader({
           {/* Body */}
           <path
             d="M32 22c11 0 19 9 19 21 0 16-12 30-24 30-6 0-10-3-10-7 0-4 4-6 9-7 9-2 14-9 14-18 0-8-4-13-8-15z"
-            fill="url(#chili)"
+            fill="#F84B3B"
           />
           {/* Highlight */}
           <path
@@ -84,13 +84,6 @@ export function ChiliLoader({
             strokeWidth="3"
             strokeLinecap="round"
           />
-          <defs>
-            <linearGradient id="chili" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#FF7D71" />
-              <stop offset="0.55" stopColor="#F84B3B" />
-              <stop offset="1" stopColor="#C12314" />
-            </linearGradient>
-          </defs>
         </motion.svg>
 
         {/* Shadow the chili bounces on, so it reads as weight rather than drift */}

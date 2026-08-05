@@ -57,13 +57,6 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
 
   return (
     <section className="relative overflow-hidden">
-      {/* Colour wash behind the fold. Cheap (two blurred circles, no images)
-          and it stops the phone layout reading as a form on white. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -left-24 -top-24 h-64 w-64 rounded-full bg-root-300/30 blur-3xl dark:bg-root-500/15" />
-        <div className="absolute right-0 top-10 h-56 w-56 rounded-full bg-saffron-400/25 blur-3xl dark:bg-saffron-500/10" />
-        <div className="absolute -bottom-16 left-1/3 h-56 w-56 rounded-full bg-sky-300/25 blur-3xl dark:bg-sky-500/10" />
-      </div>
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-6 pt-4 md:px-6 md:py-20 lg:grid-cols-2">
         <div>
           <motion.span
@@ -83,11 +76,7 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
           >
             {firstName ? (
               <>
-                Evening,{" "}
-                <span className="bg-gradient-to-r from-root-500 to-saffron-500 bg-clip-text text-transparent">
-                  {firstName}
-                </span>
-                .
+                Evening, <span className="text-root-500">{firstName}</span>.
                 <br />
                 Hungry?
               </>
@@ -95,9 +84,7 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
               <>
                 Where are we
                 <br />
-                <span className="bg-gradient-to-r from-root-500 via-root-600 to-saffron-500 bg-clip-text text-transparent">
-                  eating tonight?
-                </span>
+                <span className="text-root-500">eating tonight?</span>
               </>
             )}
           </motion.h1>
