@@ -64,6 +64,14 @@ textarea {
   outline-offset: 2px;
 }
 
+/* Text fields draw their own focus treatment (a ring on the rounded wrapper),
+   so the global outline only added a hard orange rectangle inside it. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
 @layer utilities {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;

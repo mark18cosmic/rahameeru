@@ -2,6 +2,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/app/firebase/firebaseConfig";
 import type { Restaurant, PriceLevel } from "./types";
 import { seedRestaurants } from "./data";
+import { fetchReviewStats, blendRating, invalidateReviewStats } from "./ratings";
 import { slugify } from "./utils";
 
 /** Normalise a loosely-typed Firestore document into a Restaurant. */
@@ -30,6 +31,8 @@ function normalize(id: string, d: Record<string, any>): Restaurant {
     priceLevel,
     rating,
     reviewCount: Number(d.reviewCount ?? 0) || 0,
+    baseRating: rating,
+    baseReviewCount: Number(d.reviewCount ?? 0) || 0,
     description: d.description ?? d.desc ?? "",
     // Left undefined rather than "" so photoUrl() falls through to lookup.
     image: d.image || undefined,
@@ -66,8 +69,30 @@ export async function getRestaurants(): Promise<Restaurant[]> {
   const bySlug = new Map<string, Restaurant>();
   for (const r of seedRestaurants) bySlug.set(r.slug, r);
   for (const r of remote) if (r.name) bySlug.set(r.slug, r);
-  cache = Array.from(bySlug.values());
+
+  // Fold in what people have actually rated. One aggregate read covers the
+  // whole list, so this costs the same whether it's a rail or the full grid.
+  const stats = await fetchReviewStats();
+  cache = Array.from(bySlug.values()).map((r) => {
+    const base = {
+      rating: r.baseRating ?? r.rating,
+      count: r.baseReviewCount ?? r.reviewCount,
+    };
+    const blended = blendRating(base.rating, base.count, stats.get(r.id));
+    return {
+      ...r,
+      baseRating: base.rating,
+      baseReviewCount: base.count,
+      ...blended,
+    };
+  });
   return cache;
+}
+
+/** Forces the next read to re-query Firestore — call after posting a review. */
+export function refreshRestaurants() {
+  cache = null;
+  invalidateReviewStats();
 }
 
 export async function getRestaurantBySlug(

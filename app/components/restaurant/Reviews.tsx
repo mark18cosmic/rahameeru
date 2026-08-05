@@ -5,6 +5,8 @@ import Link from "next/link";
 import { MessageSquarePlus, Loader2 } from "lucide-react";
 import type { Review } from "@/app/lib/types";
 import { getReviews, addReview } from "@/app/lib/reviews";
+import { blendRating } from "@/app/lib/ratings";
+import { refreshRestaurants } from "@/app/lib/restaurants";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { Stars, StarInput } from "../ui/Stars";
 import { Button } from "../ui/Button";
@@ -29,12 +31,14 @@ function timeAgo(ts: number): string {
 
 export function Reviews({
   restaurantId,
-  seedCount,
-  seedRating,
+  baseCount,
+  baseRating,
 }: {
   restaurantId: string;
-  seedCount: number;
-  seedRating: number;
+  /** Listed review count, before anything posted in the app. */
+  baseCount: number;
+  /** Listed rating, before anything posted in the app. */
+  baseRating: number;
 }) {
   const { user } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -70,6 +74,9 @@ export function Reviews({
       setRating(0);
       setOpen(false);
       setLoading(true);
+      // The list pages memoise their aggregate, so drop it — otherwise the
+      // rating you just changed keeps showing the old number elsewhere.
+      refreshRestaurants();
       load();
     } catch {
       setError("Couldn't save your review. Try again.");
@@ -78,7 +85,16 @@ export function Reviews({
     }
   };
 
-  const communityCount = seedCount + reviews.length;
+  // Same Bayesian blend the listing pages use, recomputed from the reviews on
+  // screen so posting one updates the header immediately.
+  const live = reviews.length
+    ? { count: reviews.length, sum: reviews.reduce((n, r) => n + r.rating, 0) }
+    : undefined;
+  const { rating: shownRating, reviewCount: communityCount } = blendRating(
+    baseRating,
+    baseCount,
+    live
+  );
 
   return (
     <div>
@@ -88,11 +104,16 @@ export function Reviews({
             Reviews
           </h3>
           <div className="mt-1 flex items-center gap-2 text-sm text-ink-500">
-            <Stars value={seedRating} size={16} />
+            <Stars value={shownRating} size={16} />
             <span className="font-semibold text-ink-800 dark:text-ink-100">
-              {seedRating.toFixed(1)}
+              {shownRating.toFixed(1)}
             </span>
             <span>· {communityCount.toLocaleString()} reviews</span>
+            {reviews.length > 0 && (
+              <span className="text-ink-400">
+                ({reviews.length} from the app)
+              </span>
+            )}
           </div>
         </div>
         {user ? (

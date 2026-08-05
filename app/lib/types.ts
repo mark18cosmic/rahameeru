@@ -28,8 +28,12 @@ export interface Restaurant {
   name: string;
   cuisine: string[];
   priceLevel: PriceLevel;
+  /** Displayed rating: the listed one blended with live reviews. */
   rating: number;
   reviewCount: number;
+  /** Listed values before live reviews are folded in; set by getRestaurants. */
+  baseRating?: number;
+  baseReviewCount?: number;
   description: string;
   /** Optional explicit photo. When absent, resolved by name via /api/photo. */
   image?: string;

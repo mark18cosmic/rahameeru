@@ -241,8 +241,8 @@ export function RestaurantDetail({
               {tab === "reviews" && (
                 <Reviews
                   restaurantId={restaurant.id}
-                  seedCount={restaurant.reviewCount}
-                  seedRating={restaurant.rating}
+                  baseCount={restaurant.baseReviewCount ?? restaurant.reviewCount}
+                  baseRating={restaurant.baseRating ?? restaurant.rating}
                 />
               )}
             </motion.div>
