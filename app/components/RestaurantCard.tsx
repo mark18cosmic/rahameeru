@@ -22,7 +22,7 @@ export function RestaurantCard({
       href={`/restaurant/${r.slug}`}
       className={cx(
         "group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-ink-100 transition-all duration-300 md:rounded-3xl",
-        "hover:-translate-y-1 hover:shadow-card active:scale-[0.98] active:shadow-soft",
+        "active:scale-[0.98] active:shadow-soft md:hover:-translate-y-1 md:hover:shadow-card",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-root-400",
         "dark:bg-ink-900 dark:ring-ink-800",
         className
@@ -34,7 +34,7 @@ export function RestaurantCard({
         <Photo
           r={r}
           sizes="(max-width: 768px) 70vw, 320px"
-          className="duration-500 group-hover:scale-105"
+          className="duration-500 md:group-hover:scale-105"
         />
         {/* One badge per corner. Two stacked chips plus a heart used to collide
             on a half-width phone card, which is where the overlap came from —
@@ -60,7 +60,7 @@ export function RestaurantCard({
       </div>
 
       <div className="flex flex-1 flex-col gap-1 p-3 md:gap-1.5 md:p-4">
-        <h3 className="line-clamp-1 font-bold leading-tight text-ink-900 transition-colors group-hover:text-root-600 dark:text-white">
+        <h3 className="line-clamp-1 font-bold leading-tight text-ink-900 transition-colors dark:text-white md:group-hover:text-root-600">
           {r.name}
         </h3>
         <p className="line-clamp-1 text-[13px] text-ink-500">

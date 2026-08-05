@@ -39,7 +39,7 @@ export function ExploreContent() {
   }, [restaurants, sort]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+    <div className="mx-auto max-w-7xl px-5 py-6 md:px-6 md:py-8">
       <div className="flex items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white md:text-4xl">

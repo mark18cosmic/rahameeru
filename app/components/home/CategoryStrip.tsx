@@ -30,16 +30,16 @@ const CATEGORIES = [
 
 export function CategoryStrip() {
   return (
-    <section className="mx-auto max-w-7xl px-4 md:px-6">
-      <div className="scrollbar-hide -mx-4 flex gap-2.5 overflow-x-auto overscroll-x-contain px-4 pb-2 md:mx-0 md:gap-3 md:px-0">
+    <section className="mx-auto max-w-7xl px-5 md:px-6">
+      <div className="scrollbar-hide -mx-5 flex gap-2.5 overflow-x-auto overscroll-x-contain px-5 pb-2 md:mx-0 md:gap-3 md:px-0">
         {CATEGORIES.map((c) => (
           <Link
             key={c.label}
             href={`/search?q=${encodeURIComponent(c.q)}`}
-            className="group flex min-w-[84px] shrink-0 flex-col items-center gap-2 rounded-2xl border border-ink-100 bg-white px-3 py-3 transition-all duration-200 hover:-translate-y-1 hover:border-transparent hover:shadow-card active:scale-95 dark:border-ink-800 dark:bg-ink-900 md:min-w-[96px] md:px-4 md:py-4"
+            className="group flex min-w-[84px] shrink-0 flex-col items-center gap-2 rounded-2xl border border-ink-100 bg-white px-3 py-3 transition-all duration-200 active:scale-95 dark:border-ink-800 dark:bg-ink-900 md:min-w-[96px] md:px-4 md:py-4 md:hover:-translate-y-1 md:hover:border-transparent md:hover:shadow-card"
           >
             <span
-              className={`grid h-11 w-11 place-items-center rounded-full transition-all duration-200 group-hover:scale-110 group-hover:text-white md:h-12 md:w-12 ${c.tint} ${c.hover}`}
+              className={`grid h-11 w-11 place-items-center rounded-full transition-all duration-200 md:h-12 md:w-12 md:group-hover:scale-110 md:group-hover:text-white ${c.tint} ${c.hover}`}
             >
               <c.icon size={21} />
             </span>
@@ -48,6 +48,7 @@ export function CategoryStrip() {
             </span>
           </Link>
         ))}
+        <div aria-hidden className="w-1 shrink-0 md:hidden" />
       </div>
     </section>
   );

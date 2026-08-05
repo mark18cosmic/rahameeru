@@ -37,7 +37,7 @@ export function HomeContent() {
         <CategoryStrip />
       </div>
 
-      <main className="mx-auto max-w-7xl px-4 md:px-6">
+      <main className="mx-auto max-w-7xl px-5 md:px-6">
         <RestaurantRail
           title="Worth the walk"
           icon={Flame}

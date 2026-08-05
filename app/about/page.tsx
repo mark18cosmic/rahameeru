@@ -31,7 +31,7 @@ const VALUES = [
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16 md:px-6">
+    <div className="mx-auto max-w-5xl px-5 py-10 md:px-6 md:py-16">
       <div className="text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-root-50 px-3.5 py-1.5 text-sm font-medium text-root-700 dark:bg-root-900/20 dark:text-root-300">
           <Sparkles size={14} /> About

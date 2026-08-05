@@ -57,7 +57,7 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
 
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-6 pt-4 md:px-6 md:py-20 lg:grid-cols-2">
+      <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-6 pt-4 md:px-6 md:py-20 lg:grid-cols-2">
         <div>
           <motion.span
             initial={reduceMotion ? false : { opacity: 0, y: 10 }}

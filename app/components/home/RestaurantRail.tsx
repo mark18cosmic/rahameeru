@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
 import type { Restaurant } from "@/app/lib/types";
 import { cx } from "@/app/lib/utils";
@@ -161,9 +161,14 @@ export function RestaurantRail({
         </div>
       </div>
 
+      {/* Cards are plain divs on purpose. Animating each one into view fires
+          mid-swipe on a horizontal scroller — every card that crosses the edge
+          starts a transform, which is what made the rail feel like it was
+          catching. scroll-pl keeps a snapped card clear of the screen edge
+          instead of flush against it. */}
       <div
         ref={scroller}
-        className="scrollbar-hide -mx-4 flex snap-x gap-3 overflow-x-auto overscroll-x-contain px-4 pb-2 md:mx-0 md:gap-4 md:px-0"
+        className="scrollbar-hide -mx-5 flex snap-x snap-proximity gap-3 overflow-x-auto overscroll-x-contain scroll-pl-5 px-5 pb-2 md:mx-0 md:scroll-pl-0 md:gap-4 md:px-0"
       >
         {loading
           ? Array.from({ length: 4 }).map((_, i) => (
@@ -171,20 +176,13 @@ export function RestaurantRail({
                 <CardSkeleton />
               </div>
             ))
-          : restaurants.map((r, i) => (
-              <motion.div
-                key={r.id}
-                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                // Stagger only the first screenful; later cards would otherwise
-                // sit waiting on a delay nobody is around to see.
-                transition={{ duration: 0.35, delay: Math.min(i, 4) * 0.05 }}
-                className="w-[228px] shrink-0 snap-start md:w-[280px]"
-              >
+          : restaurants.map((r) => (
+              <div key={r.id} className="w-[228px] shrink-0 snap-start md:w-[280px]">
                 <RestaurantCard r={r} />
-              </motion.div>
+              </div>
             ))}
+        {/* Trailing spacer so the last card can clear the right edge. */}
+        <div aria-hidden className="w-2 shrink-0 md:hidden" />
       </div>
     </section>
   );

@@ -72,7 +72,7 @@ export function RestaurantDetail({
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-5 pb-14 md:px-6 md:py-6">
+    <div className="mx-auto max-w-6xl px-5 py-5 pb-14 md:px-6 md:py-6">
       <Link
         href="/explore"
         className="mb-4 inline-flex min-h-[44px] items-center gap-1 text-sm text-ink-500 transition hover:text-root-600"
@@ -327,7 +327,7 @@ export function RestaurantDetail({
       )}
 
       {/* Mobile action bar — kept above the tab bar's safe area. */}
-      <div className="fixed inset-x-0 bottom-[calc(3.25rem+env(safe-area-inset-bottom))] z-30 flex gap-2 border-t border-ink-100 bg-[var(--bg)] px-4 py-2.5 dark:border-ink-800 md:hidden">
+      <div className="fixed inset-x-0 bottom-[calc(3.25rem+env(safe-area-inset-bottom))] z-30 flex gap-2 border-t border-ink-100 bg-[var(--bg)] px-5 py-2.5 dark:border-ink-800 md:hidden">
         <ButtonLink href={mapsUrl(restaurant)} className="flex-1" target="_blank">
           <Navigation size={16} /> Directions
         </ButtonLink>

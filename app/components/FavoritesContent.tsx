@@ -14,7 +14,7 @@ export function FavoritesContent() {
   const saved = restaurants.filter((r) => favorites.includes(r.id));
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+    <div className="mx-auto max-w-7xl px-5 py-6 md:px-6 md:py-8">
       <div className="flex items-center gap-3">
         <span className="grid h-11 w-11 place-items-center rounded-2xl bg-root-500 text-white">
           <Heart size={20} className="fill-white" />
