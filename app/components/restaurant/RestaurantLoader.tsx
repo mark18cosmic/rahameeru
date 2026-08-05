@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import type { Restaurant } from "@/app/lib/types";
 import { getRestaurants } from "@/app/lib/restaurants";
 import { slugify } from "@/app/lib/utils";
+import { recordVisit } from "@/app/lib/metrics";
 import { ChiliLoader } from "../ui/ChiliLoader";
 import { RestaurantDetail } from "./RestaurantDetail";
 
@@ -32,6 +33,8 @@ export function RestaurantLoader({ slug }: { slug: string }) {
         .sort((a, b) => b.rating - a.rating)
         .slice(0, 4);
       setState({ status: "found", r, similar });
+      // Feeds the vendor dashboard. Once per restaurant per session.
+      recordVisit(r.id);
     });
     return () => {
       alive = false;

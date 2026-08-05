@@ -23,6 +23,10 @@ export default function MobileTabBar() {
   const pathname = usePathname();
   const { open } = useSearch();
 
+  // The vendor and admin areas are a different product with different
+  // navigation; the diner tab bar would just be five wrong answers there.
+  if (pathname.startsWith("/vendor") || pathname.startsWith("/admin")) return null;
+
   return (
     // Solid, not translucent: content scrolling underneath a blurred bar was
     // the muddiest part of the phone layout.

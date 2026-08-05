@@ -8,6 +8,23 @@ service cloud.firestore {
       allow read: if true;
       allow write: if true;
     }
+    // Vendor claims. In production: read/write your own doc, admins only for
+    // status changes, and nobody may set their own status to approved.
+    match /vendors/{uid} {
+      allow read, write: if true;
+    }
+
+    // Per-user state: favourites, diet flags, points ledger.
+    match /users/{uid} {
+      allow read, write: if true;
+    }
+
+    // Visit counters, incremented by the app on a restaurant page view.
+    match /metrics/{restaurantId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
     match /{document=**} {
       allow read, write: if true;
     }

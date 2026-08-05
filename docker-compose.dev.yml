@@ -39,6 +39,8 @@ services:
         # Baked into the client bundle: the browser reaches the emulator through
         # the published ports on the host, not through the compose network.
         NEXT_PUBLIC_FIREBASE_EMULATOR_HOST: localhost
+        # Accounts allowed into /admin. Comma separated.
+        NEXT_PUBLIC_ADMIN_EMAILS: ${NEXT_PUBLIC_ADMIN_EMAILS:-}
     image: rahameeru:dev
     ports:
       # 3000 is a busy port on most dev machines; the stack claims 3200 instead.

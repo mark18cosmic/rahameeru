@@ -100,6 +100,32 @@ The emulator connection is opt-in: the SDK only redirects when
 
 Stop it with `npm run dev:stack:down`.
 
+## Vendors and admin
+
+`/vendor` is the restaurant-facing side: a landing page, a three-step claim
+form at `/vendor/signup`, and `/vendor/dashboard` with reviews, visit trends and
+plan selection. It has its own navigation and the diner tab bar is hidden there.
+
+Claims land as `vendors/{uid}` documents with `status: "pending"`. Nothing is
+visible to a vendor until an admin approves it at `/admin`, and approval is also
+what links a listing to the account.
+
+Admins are named by email, not by a database flag, so a compromised account
+can't promote itself:
+
+```bash
+NEXT_PUBLIC_ADMIN_EMAILS=you@example.com,someone@example.com
+```
+
+It's a build-time value (it ships in the client bundle), so rebuild after
+changing it. This only decides what the UI offers — the enforcement belongs in
+Firestore rules before this goes anywhere public. `firestore.rules` in this repo
+is the wide-open emulator version and must not be deployed as is.
+
+**Plans do not charge anything.** No payment processor is connected; choosing a
+plan records the intent on the vendor document, and every screen that mentions a
+plan says so.
+
 ## Photos
 
 Restaurant images resolve through `/api/photo`, which searches DuckDuckGo and

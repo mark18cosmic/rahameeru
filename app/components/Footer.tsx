@@ -18,6 +18,15 @@ const COLS = [
       { href: "#", label: "Contact" },
     ],
   },
+  {
+    // The only door into the vendor side from the diner app.
+    title: "Restaurants",
+    links: [
+      { href: "/vendor", label: "For restaurants" },
+      { href: "/vendor/signup", label: "Claim your listing" },
+      { href: "/vendor/dashboard", label: "Vendor dashboard" },
+    ],
+  },
 ];
 
 export default function Footer() {
@@ -25,7 +34,7 @@ export default function Footer() {
     // Phones have the tab bar for navigation; a six-link footer above it was
     // just more to scroll past.
     <footer className="mt-20 hidden border-t border-ink-100 bg-white dark:border-ink-800 dark:bg-ink-900 md:block">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-5">
         <div className="md:col-span-2">
           <div className="flex items-center gap-2 text-xl font-extrabold text-ink-900 dark:text-white">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-root-500 text-white">
