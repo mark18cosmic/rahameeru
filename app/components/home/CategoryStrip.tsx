@@ -31,24 +31,27 @@ const CATEGORIES = [
 export function CategoryStrip() {
   return (
     <section className="mx-auto max-w-7xl px-5 md:px-6">
-      <div className="scrollbar-hide -mx-5 flex gap-2.5 overflow-x-auto overscroll-x-contain px-5 pb-2 md:mx-0 md:gap-3 md:px-0">
+      {/* Four across, two rows on a phone: eight tiles fit on one screen, so
+          there's nothing to swipe past and nothing hidden off the edge. Wider
+          screens lay all eight in one centred row. */}
+      <div className="grid grid-cols-4 justify-center gap-2.5 md:flex md:flex-wrap md:gap-3">
         {CATEGORIES.map((c) => (
           <Link
             key={c.label}
             href={`/search?q=${encodeURIComponent(c.q)}`}
-            className="group flex min-w-[84px] shrink-0 flex-col items-center gap-2 rounded-2xl border border-ink-100 bg-white px-3 py-3 transition-all duration-200 active:scale-95 dark:border-ink-800 dark:bg-ink-900 md:min-w-[96px] md:px-4 md:py-4 md:hover:-translate-y-1 md:hover:border-transparent md:hover:shadow-card"
+            className="group flex shrink-0 flex-col items-center justify-start gap-1.5 rounded-2xl border border-ink-100 bg-white px-1.5 py-3 text-center transition-all duration-200 active:scale-95 dark:border-ink-800 dark:bg-ink-900 md:min-w-[96px] md:gap-2 md:px-4 md:py-4 md:hover:-translate-y-1 md:hover:border-transparent md:hover:shadow-card"
           >
             <span
-              className={`grid h-11 w-11 place-items-center rounded-full transition-all duration-200 md:h-12 md:w-12 md:group-hover:scale-110 md:group-hover:text-white ${c.tint} ${c.hover}`}
+              className={`grid h-10 w-10 shrink-0 place-items-center rounded-full transition-all duration-200 md:h-12 md:w-12 md:group-hover:scale-110 md:group-hover:text-white ${c.tint} ${c.hover}`}
             >
-              <c.icon size={21} />
+              <c.icon size={19} className="md:hidden" />
+              <c.icon size={21} className="hidden md:block" />
             </span>
-            <span className="text-[13px] font-medium text-ink-700 dark:text-ink-200 md:text-sm">
+            <span className="text-[11px] font-medium leading-tight text-ink-700 dark:text-ink-200 md:text-sm">
               {c.label}
             </span>
           </Link>
         ))}
-        <div aria-hidden className="w-1 shrink-0 md:hidden" />
       </div>
     </section>
   );

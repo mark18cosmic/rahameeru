@@ -56,8 +56,11 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
   const firstName = user?.displayName?.split(" ")[0];
 
   return (
-    <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-6 pt-4 md:px-6 md:py-20 lg:grid-cols-2">
+    // Fills the screen at every size. On phones that means the viewport minus
+    // the navbar and the tab bar — svh rather than vh so the height doesn't
+    // jump when mobile browsers hide their URL bar mid-scroll.
+    <section className="relative flex min-h-[calc(100svh-6.75rem)] items-center overflow-hidden md:min-h-[calc(100svh-4.25rem)]">
+      <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-5 py-6 md:px-6 md:py-12 lg:grid-cols-2">
         <div>
           <motion.span
             initial={reduceMotion ? false : { opacity: 0, y: 10 }}
