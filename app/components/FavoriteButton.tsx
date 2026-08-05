@@ -35,10 +35,13 @@ export function FavoriteButton({
       aria-label={active ? "Remove from favorites" : "Add to favorites"}
       aria-pressed={active}
       className={cx(
-        "relative grid place-items-center rounded-full backdrop-blur transition active:scale-90",
+        // Opaque, not translucent. A see-through circle over a bright photo
+        // half-disappeared into it — the blur was doing nothing on a rounded
+        // 36px target either. z-10 keeps it clear of the photo's transforms.
+        "relative z-10 grid shrink-0 place-items-center rounded-full shadow-sm ring-1 transition active:scale-90",
         active
-          ? "bg-root-500 text-white"
-          : "bg-white/80 text-ink-600 hover:bg-white dark:bg-ink-800/80 dark:text-ink-200",
+          ? "bg-root-500 text-white ring-root-600/30"
+          : "bg-white text-ink-600 ring-black/5 hover:bg-white dark:bg-ink-900 dark:text-ink-100 dark:ring-white/10",
         className
       )}
     >
@@ -48,10 +51,12 @@ export function FavoriteButton({
           <motion.span
             key="burst"
             initial={{ scale: 0.6, opacity: 0.55 }}
-            animate={{ scale: 1.9, opacity: 0 }}
+            animate={{ scale: 1.55, opacity: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.45, ease: "easeOut" }}
             onAnimationComplete={() => setBurst(false)}
+            // Stays inside the card's clip so the pulse doesn't get sliced off
+            // at the photo edge.
             className="pointer-events-none absolute inset-0 rounded-full bg-root-500"
           />
         )}

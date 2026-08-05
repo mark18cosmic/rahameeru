@@ -40,7 +40,7 @@ export function RestaurantCard({
             on a half-width phone card, which is where the overlap came from —
             price now lives in the body row instead. */}
         {open && (
-          <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2 py-1 text-[11px] font-bold text-white shadow-sm md:left-3 md:top-3 md:text-xs">
+          <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2 py-1 text-[11px] font-bold text-white shadow-sm md:text-xs">
             <span className="h-1.5 w-1.5 rounded-full bg-white/90" />
             Open
           </span>
@@ -48,11 +48,11 @@ export function RestaurantCard({
         <FavoriteButton
           id={r.id}
           size={16}
-          className="absolute right-2 top-2 h-9 w-9 shadow-sm md:right-3 md:top-3 md:h-10 md:w-10"
+          className="absolute right-3 top-3 h-9 w-9 md:h-10 md:w-10"
         />
         {/* Rating sits on the photo where it reads at a glance; the body below
             is then just words, with nothing competing for the same corner. */}
-        <span className="absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-1 text-[11px] font-bold text-ink-900 shadow-sm md:bottom-3 md:left-3 md:text-xs">
+        <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-white px-2 py-1 text-[11px] font-bold text-ink-900 shadow-sm md:text-xs">
           <Star size={11} className="fill-saffron-500 text-saffron-500" />
           {r.rating.toFixed(1)}
           <span className="font-medium text-ink-400">({r.reviewCount})</span>

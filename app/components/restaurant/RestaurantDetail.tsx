@@ -95,7 +95,7 @@ export function RestaurantDetail({
             priority
             sizes="(max-width: 768px) 100vw, 60vw"
           />
-          <FavoriteButton id={restaurant.id} className="absolute right-4 top-4 h-11 w-11" size={20} />
+          <FavoriteButton id={restaurant.id} className="absolute right-4 top-4 h-11 w-11" size={19} />
         </motion.div>
         <div className="grid grid-cols-4 gap-2 md:grid-cols-2 md:gap-3">
           {gallery.map((_, i) => (
