@@ -91,6 +91,24 @@ export function apiPhotoUrl(r: Restaurant, index = 0): string {
   return `/api/photo?${params.toString()}`;
 }
 
+/**
+ * Photo for a single dish, looked up by name through the same keyless endpoint
+ * as restaurant photos. Scoped with the cuisine and the word "dish" because
+ * "Sunrise" on its own returns hotels, not breakfast.
+ */
+export function dishPhotoUrl(
+  dish: string,
+  restaurantName: string,
+  cuisine: string[] = []
+): string {
+  const params = new URLSearchParams({
+    q: `${dish} dish ${cuisine[0] ?? ""}`.replace(/\s+/g, " ").trim(),
+    loc: restaurantName,
+  });
+  if (cuisine.length) params.set("c", cuisine.join(","));
+  return `/api/photo?${params.toString()}`;
+}
+
 /** Photo slots for the detail-page gallery. */
 export function galleryUrls(r: Restaurant, count = 4): string[] {
   if (r.gallery?.length) return r.gallery.slice(0, count);

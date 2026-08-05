@@ -7,6 +7,8 @@ import { useAuth } from "@/app/providers/AuthProvider";
 import { useFavorites } from "@/app/lib/useFavorites";
 import { useRestaurants } from "@/app/lib/useRestaurants";
 import { RestaurantCard } from "./RestaurantCard";
+import { DietPicker } from "./profile/DietPicker";
+import { RewardsCard } from "./profile/RewardsCard";
 import { Button } from "./ui/Button";
 
 export function ProfileContent() {
@@ -55,6 +57,11 @@ export function ProfileContent() {
         >
           <LogOut size={16} /> Log out
         </Button>
+      </div>
+
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <RewardsCard />
+        <DietPicker />
       </div>
 
       <h2 className="mt-8 font-display text-xl font-extrabold text-ink-900 dark:text-white md:mt-10 md:text-2xl">

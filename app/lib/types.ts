@@ -15,6 +15,10 @@ export interface MenuItem {
   /** Dietary or preparation notes, e.g. "Vegetarian", "Spicy". */
   tags?: string[];
   popular?: boolean;
+  /** Listed by the restaurant when it publishes them. */
+  ingredients?: string[];
+  /** Overrides the photo lookup for this dish. */
+  image?: string;
 }
 
 export interface MenuSection {

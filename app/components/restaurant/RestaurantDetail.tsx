@@ -236,11 +236,18 @@ export function RestaurantDetail({
                 </>
               )}
 
-              {tab === "menu" && hasMenu && <Menu sections={restaurant.menu!} />}
+              {tab === "menu" && hasMenu && (
+                <Menu
+                  sections={restaurant.menu!}
+                  restaurantName={restaurant.name}
+                  cuisine={restaurant.cuisine}
+                />
+              )}
 
               {tab === "reviews" && (
                 <Reviews
                   restaurantId={restaurant.id}
+                  restaurantName={restaurant.name}
                   baseCount={restaurant.baseReviewCount ?? restaurant.reviewCount}
                   baseRating={restaurant.baseRating ?? restaurant.rating}
                 />

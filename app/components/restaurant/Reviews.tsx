@@ -7,6 +7,9 @@ import type { Review } from "@/app/lib/types";
 import { getReviews, addReview } from "@/app/lib/reviews";
 import { blendRating } from "@/app/lib/ratings";
 import { refreshRestaurants } from "@/app/lib/restaurants";
+import { usePoints } from "@/app/lib/usePoints";
+import { awardForReview } from "@/app/lib/rewards";
+import { PointsToast } from "./PointsToast";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { Stars, StarInput } from "../ui/Stars";
 import { Button } from "../ui/Button";
@@ -31,16 +34,23 @@ function timeAgo(ts: number): string {
 
 export function Reviews({
   restaurantId,
+  restaurantName,
   baseCount,
   baseRating,
 }: {
   restaurantId: string;
+  restaurantName: string;
   /** Listed review count, before anything posted in the app. */
   baseCount: number;
   /** Listed rating, before anything posted in the app. */
   baseRating: number;
 }) {
   const { user } = useAuth();
+  const { award } = usePoints();
+  const [earned, setEarned] = useState<{
+    amount: number;
+    lines: { label: string; amount: number }[];
+  } | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -70,6 +80,19 @@ export function Reviews({
         rating,
         content: text.trim(),
       });
+      // Points are issued in the restaurant's name — see lib/rewards.ts.
+      const earning = awardForReview({
+        contentLength: text.trim().length,
+        isFirstForVendor: reviews.length === 0,
+      });
+      await award({
+        restaurantId,
+        restaurantName,
+        amount: earning.amount,
+        reason: `Reviewed ${restaurantName}`,
+      });
+      setEarned(earning);
+
       setText("");
       setRating(0);
       setOpen(false);
@@ -98,6 +121,8 @@ export function Reviews({
 
   return (
     <div>
+      <PointsToast earned={earned} onDone={() => setEarned(null)} />
+
       <div className="flex items-center justify-between">
         <div>
           <h3 className="font-display text-2xl font-bold text-ink-900 dark:text-white">

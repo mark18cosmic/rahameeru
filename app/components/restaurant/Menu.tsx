@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   Search,
@@ -9,10 +10,16 @@ import {
   Star,
   X,
   ChevronDown,
+  ChevronRight,
+  ShieldAlert,
   UtensilsCrossed,
 } from "lucide-react";
-import type { MenuSection } from "@/app/lib/types";
-import { cx } from "@/app/lib/utils";
+import type { MenuItem, MenuSection } from "@/app/lib/types";
+import { cx, dishPhotoUrl } from "@/app/lib/utils";
+import { flagsFor } from "@/app/lib/diet";
+import { usePreferences } from "@/app/lib/usePreferences";
+import { BLUR } from "../ui/Photo";
+import { DishSheet } from "./DishSheet";
 
 /** Dietary filters, matched against an item's `tags`. */
 const FILTERS = [
@@ -38,11 +45,22 @@ function formatPrice(mvr: number): string {
  * Searching or filtering bypasses the accordion entirely — the matches are the
  * point, so they are shown expanded.
  */
-export function Menu({ sections }: { sections: MenuSection[] }) {
+export function Menu({
+  sections,
+  restaurantName,
+  cuisine = [],
+}: {
+  sections: MenuSection[];
+  restaurantName: string;
+  cuisine?: string[];
+}) {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<FilterKey[]>([]);
   const [openSection, setOpenSection] = useState(sections[0]?.name ?? "");
+  const [dish, setDish] = useState<MenuItem | null>(null);
+  const [onlySuitable, setOnlySuitable] = useState(false);
   const reduceMotion = useReducedMotion();
+  const { diet } = usePreferences();
 
   const toggleFilter = (key: FilterKey) =>
     setFilters((f) => (f.includes(key) ? f.filter((x) => x !== key) : [...f, key]));
@@ -54,6 +72,7 @@ export function Menu({ sections }: { sections: MenuSection[] }) {
       .map((section) => ({
         ...section,
         items: section.items.filter((item) => {
+          if (onlySuitable && flagsFor(item, diet).length > 0) return false;
           if (q) {
             const haystack = `${item.name} ${item.description ?? ""}`.toLowerCase();
             if (!haystack.includes(q)) return false;
@@ -67,14 +86,25 @@ export function Menu({ sections }: { sections: MenuSection[] }) {
         }),
       }))
       .filter((s) => s.items.length > 0);
-  }, [sections, query, filters]);
+  }, [sections, query, filters, diet, onlySuitable]);
 
   const total = visible.reduce((n, s) => n + s.items.length, 0);
-  const filtering = Boolean(query.trim()) || filters.length > 0;
+  const filtering = Boolean(query.trim()) || filters.length > 0 || onlySuitable;
+
+  // How much of the menu a person with allergens set can actually eat.
+  const suitable = useMemo(() => {
+    if (diet.length === 0) return null;
+    const all = sections.flatMap((s) => s.items);
+    return {
+      fits: all.filter((i) => flagsFor(i, diet).length === 0).length,
+      total: all.length,
+    };
+  }, [sections, diet]);
 
   const clear = () => {
     setQuery("");
     setFilters([]);
+    setOnlySuitable(false);
   };
 
   return (
@@ -136,6 +166,44 @@ export function Menu({ sections }: { sections: MenuSection[] }) {
           })}
         </div>
       </div>
+
+      {suitable && (
+        <button
+          onClick={() => setOnlySuitable((v) => !v)}
+          aria-pressed={onlySuitable}
+          className={cx(
+            "mt-3 flex w-full items-center gap-2.5 rounded-2xl border px-4 py-3 text-left transition active:scale-[0.99]",
+            onlySuitable
+              ? "border-root-500 bg-root-50 dark:bg-root-900/20"
+              : "border-ink-200 dark:border-ink-700"
+          )}
+        >
+          <ShieldAlert size={17} className="shrink-0 text-root-500" />
+          <span className="min-w-0 flex-1 text-sm">
+            <span className="font-semibold text-ink-900 dark:text-white">
+              {suitable.fits} of {suitable.total} dishes suit your profile
+            </span>
+            <span className="block text-xs text-ink-500">
+              {onlySuitable ? "Showing only these" : "Tap to hide the rest"}
+            </span>
+          </span>
+          <span
+            className={cx(
+              "relative h-6 w-10 shrink-0 rounded-full transition-colors",
+              onlySuitable ? "bg-root-500" : "bg-ink-200 dark:bg-ink-700"
+            )}
+          >
+            <motion.span
+              layout
+              transition={{ type: "spring", stiffness: 500, damping: 32 }}
+              className={cx(
+                "absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm",
+                onlySuitable ? "left-[1.125rem]" : "left-0.5"
+              )}
+            />
+          </span>
+        </button>
+      )}
 
       {filtering && (
         <div className="mt-4 flex items-center justify-between gap-3">
@@ -207,47 +275,75 @@ export function Menu({ sections }: { sections: MenuSection[] }) {
                     transition={{ duration: 0.22, ease: "easeOut" }}
                     className="overflow-hidden"
                   >
-                    <ul className="divide-y divide-ink-100 px-4 dark:divide-ink-800">
-                      {section.items.map((item) => (
-                        <li
-                          key={item.name}
-                          className="flex items-start justify-between gap-4 py-3.5"
-                        >
-                          <div className="min-w-0">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <span className="font-medium text-ink-900 dark:text-white">
-                                {item.name}
+                    <ul className="divide-y divide-ink-100 px-3 dark:divide-ink-800 md:px-4">
+                      {section.items.map((item) => {
+                        const flags = flagsFor(item, diet);
+                        return (
+                          <li key={item.name}>
+                            <button
+                              onClick={() => setDish(item)}
+                              className="flex w-full items-center gap-3 py-3 text-left transition active:scale-[0.99]"
+                            >
+                              {/* Thumbnail, looked up by dish name. Lazy, so a
+                                  60-dish menu doesn't fetch 60 photos at once. */}
+                              <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-ink-100 dark:bg-ink-800">
+                                <Image
+                                  src={
+                                    item.image ??
+                                    dishPhotoUrl(item.name, restaurantName, cuisine)
+                                  }
+                                  alt=""
+                                  fill
+                                  sizes="64px"
+                                  loading="lazy"
+                                  placeholder="blur"
+                                  blurDataURL={BLUR}
+                                  className="object-cover"
+                                />
                               </span>
-                              {item.popular && (
-                                <span className="inline-flex items-center gap-1 rounded-full bg-saffron-400/20 px-2 py-0.5 text-[11px] font-semibold text-saffron-500">
-                                  <Star size={10} className="fill-saffron-500" />
-                                  Popular
-                                </span>
-                              )}
-                            </div>
-                            {item.description && (
-                              <p className="mt-0.5 text-sm text-ink-500">
-                                {item.description}
-                              </p>
-                            )}
-                            {item.tags && item.tags.length > 0 && (
-                              <div className="mt-1.5 flex flex-wrap gap-1.5">
-                                {item.tags.map((t) => (
-                                  <span
-                                    key={t}
-                                    className="rounded-full bg-ink-100 px-2 py-0.5 text-[11px] text-ink-600 dark:bg-ink-800 dark:text-ink-300"
-                                  >
-                                    {t}
+
+                              <span className="min-w-0 flex-1">
+                                <span className="flex flex-wrap items-center gap-2">
+                                  <span className="font-medium text-ink-900 dark:text-white">
+                                    {item.name}
                                   </span>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                          <span className="shrink-0 whitespace-nowrap pt-0.5 text-sm font-semibold tabular-nums text-ink-800 dark:text-ink-100">
-                            {formatPrice(item.price)}
-                          </span>
-                        </li>
-                      ))}
+                                  {item.popular && (
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-saffron-400/20 px-2 py-0.5 text-[11px] font-semibold text-saffron-500">
+                                      <Star size={10} className="fill-saffron-500" />
+                                      Popular
+                                    </span>
+                                  )}
+                                </span>
+                                {item.description && (
+                                  <span className="mt-0.5 line-clamp-2 block text-sm text-ink-500">
+                                    {item.description}
+                                  </span>
+                                )}
+                                <span className="mt-1 flex flex-wrap items-center gap-1.5">
+                                  {flags.length > 0 && (
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-root-50 px-2 py-0.5 text-[11px] font-semibold text-root-700 dark:bg-root-900/25 dark:text-root-300">
+                                      <ShieldAlert size={10} /> Check ingredients
+                                    </span>
+                                  )}
+                                  {item.tags?.map((t) => (
+                                    <span
+                                      key={t}
+                                      className="rounded-full bg-ink-100 px-2 py-0.5 text-[11px] text-ink-600 dark:bg-ink-800 dark:text-ink-300"
+                                    >
+                                      {t}
+                                    </span>
+                                  ))}
+                                </span>
+                              </span>
+
+                              <span className="flex shrink-0 items-center gap-1 whitespace-nowrap text-sm font-semibold tabular-nums text-ink-800 dark:text-ink-100">
+                                {formatPrice(item.price)}
+                                <ChevronRight size={15} className="text-ink-300" />
+                              </span>
+                            </button>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </motion.div>
                 )}
@@ -272,6 +368,14 @@ export function Menu({ sections }: { sections: MenuSection[] }) {
           </button>
         </div>
       )}
+
+      <DishSheet
+        item={dish}
+        restaurantName={restaurantName}
+        cuisine={cuisine}
+        diet={diet}
+        onClose={() => setDish(null)}
+      />
     </section>
   );
 }
