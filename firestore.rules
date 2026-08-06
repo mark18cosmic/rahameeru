@@ -19,6 +19,11 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
+    // One document per person per venue per day, written on a verified scan.
+    match /scans/{id} {
+      allow read, write: if true;
+    }
+
     // Shared photo-lookup cache, written by /api/photo.
     match /photos/{key} {
       allow read, write: if true;

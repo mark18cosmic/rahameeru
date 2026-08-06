@@ -36,6 +36,8 @@ export type VendorProfile = {
   restaurantIds: string[];
   status: VendorStatus;
   plan: PlanId;
+  /** Signs the daily table code. Generated on first use, never shown raw. */
+  scanSecret?: string;
   /** Set by an admin when rejecting, shown back to the applicant. */
   reviewNote?: string;
   createdAt: number;

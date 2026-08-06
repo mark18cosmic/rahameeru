@@ -11,6 +11,7 @@ import {
   ShoppingBag,
   Bike,
   UtensilsCrossed,
+  BadgeCheck,
 } from "lucide-react";
 import type { MenuSection, VisitType } from "@/app/lib/types";
 import { blendRating } from "@/app/lib/ratings";
@@ -162,8 +163,16 @@ export function Reviews({
                     {r.name[0]?.toUpperCase()}
                   </span>
                   <div>
-                    <p className="font-semibold text-ink-900 dark:text-white">
+                    <p className="flex items-center gap-1.5 font-semibold text-ink-900 dark:text-white">
                       {r.name}
+                      {r.verifiedVisit && (
+                        <span
+                          title="Scanned the code at the restaurant"
+                          className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
+                        >
+                          <BadgeCheck size={11} /> Verified visit
+                        </span>
+                      )}
                     </p>
                     <p className="text-xs text-ink-400">{timeAgo(r.createdAt)}</p>
                   </div>

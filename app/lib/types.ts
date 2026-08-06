@@ -83,6 +83,8 @@ export interface Review {
   dishes?: DishVerdict[];
   /** Download URLs for photos they added. */
   photos?: string[];
+  /** True when the writer scanned the venue's code within the last day. */
+  verifiedVisit?: boolean;
   visitType?: VisitType;
   /** Minutes waited for food, as reported. */
   waitMinutes?: number;

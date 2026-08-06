@@ -58,7 +58,7 @@ export function ChiliLoader({
           }
           transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChiliMark size={size * 0.72} fill={0.16} />
+          <ChiliMark size={size * 0.92} fill={0.16} />
         </motion.div>
 
         {/* Shadow the chili bounces on, so it reads as weight rather than drift */}

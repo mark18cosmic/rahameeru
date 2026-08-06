@@ -122,6 +122,25 @@ changing it. This only decides what the UI offers — the enforcement belongs in
 Firestore rules before this goes anywhere public. `firestore.rules` in this repo
 is the wide-open emulator version and must not be deployed as is.
 
+### Scan on arrival
+
+Approved vendors get a QR from their dashboard. It encodes a plain URL
+(`/scan/<restaurantId>?k=<code>`), so diners scan it with their phone's own
+camera — no app install and no in-app scanner. The code is derived from a secret
+on the vendor record plus the calendar day, so a photo of the table tent stops
+working at midnight.
+
+`/api/scan/verify` recomputes the code server-side (accepting yesterday's too,
+for a late night), checks the phone's location against the listing when the
+browser shares one, and the scan document id (`uid_restaurantId_day`) enforces
+one payout per person per venue per day. A review written within 24 hours of a
+scan is marked as a verified visit.
+
+Note the route reads the vendor's secret with the client SDK, which works
+because the emulator rules are open. In production, `vendors` should only be
+readable by its owner and admins — move that read to the Admin SDK with a
+service account before locking the rules down.
+
 **Plans do not charge anything.** No payment processor is connected; choosing a
 plan records the intent on the vendor document, and every screen that mentions a
 plan says so.

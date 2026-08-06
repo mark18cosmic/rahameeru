@@ -17,7 +17,10 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 import type { DishVerdict, MenuSection, VisitType } from "@/app/lib/types";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/app/firebase/firebaseConfig";
 import { addReview, uploadReviewPhoto } from "@/app/lib/reviews";
+import { scanDocId, dayKey, VERIFIED_WINDOW_MS } from "@/app/lib/scan";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { cx } from "@/app/lib/utils";
 import { StarInput } from "../ui/Stars";
@@ -124,6 +127,21 @@ export function ReviewForm({
         urls.push(await uploadReviewPhoto(restaurantId, user.uid, photo.file));
       }
 
+      // A scan today, or late last night, marks this as a verified visit.
+      let verifiedVisit = false;
+      try {
+        const yesterday = dayKey(new Date(Date.now() - VERIFIED_WINDOW_MS));
+        const [todayScan, lastScan] = await Promise.all([
+          getDoc(doc(db, "scans", scanDocId(user.uid, restaurantId))),
+          getDoc(doc(db, "scans", scanDocId(user.uid, restaurantId, yesterday))),
+        ]);
+        const scan = todayScan.exists() ? todayScan : lastScan;
+        verifiedVisit =
+          scan.exists() && Date.now() - (scan.data().at ?? 0) < VERIFIED_WINDOW_MS;
+      } catch {
+        // No scan record, or offline — the review posts unverified.
+      }
+
       await addReview({
         restaurantId,
         userId: user.uid,
@@ -132,6 +150,7 @@ export function ReviewForm({
         content: text.trim(),
         dishes: dishes.length ? dishes : undefined,
         photos: urls.length ? urls : undefined,
+        verifiedVisit: verifiedVisit || undefined,
         visitType: visitType ?? undefined,
         waitMinutes: waitMinutes ? Number(waitMinutes) : undefined,
         spendPerHead: spendPerHead ? Number(spendPerHead) : undefined,

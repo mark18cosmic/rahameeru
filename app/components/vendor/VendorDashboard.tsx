@@ -25,6 +25,7 @@ import { cx } from "@/app/lib/utils";
 import { ChiliLoader } from "../ui/ChiliLoader";
 import { PlanCards } from "./PlanCards";
 import { ListingEditor } from "./ListingEditor";
+import { ScanCode } from "./ScanCode";
 
 function Sparkline({ data }: { data: { day: string; count: number }[] }) {
   const max = Math.max(1, ...data.map((d) => d.count));
@@ -274,6 +275,15 @@ export function VendorDashboard() {
                   <span>{series[0]?.day.slice(5)}</span>
                   <span>{series[series.length - 1]?.day.slice(5)}</span>
                 </div>
+              </div>
+
+              <div className="mt-4">
+                <ScanCode
+                  vendorUid={vendor.uid}
+                  scanSecret={vendor.scanSecret}
+                  restaurants={owned}
+                  onSecret={refresh}
+                />
               </div>
 
               <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_1fr]">

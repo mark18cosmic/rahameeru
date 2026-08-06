@@ -1,17 +1,21 @@
 "use client";
 
 /**
- * The chili used for every loading state in the app.
+ * The chili used for every loading state.
  *
- * Drawn as outlines in the brand colour rather than a filled shape: at 20px in
- * a pull-to-refresh pill a solid blob loses its silhouette, while strokes keep
- * the curve of the pod and the kink in the stalk readable at any size. It
- * inherits `currentColor`, so a caller can tint it without a second copy.
+ * Three things make it read as a chili rather than a flame or a teardrop: the
+ * pod is asymmetric (broad at the shoulder, sweeping right and tapering left),
+ * the tip is a mitred point rather than a rounded cap, and the calyx sits
+ * across the top with visible points. The earlier version was a symmetrical
+ * blob and looked like neither.
+ *
+ * Strokes in `currentColor` rather than a fill, so it holds its silhouette at
+ * 20px in a pull-to-refresh pill and takes the brand colour from its parent.
  */
 export function ChiliMark({
   size = 64,
   className = "",
-  /** 0–1. Below 1 the pod is drawn but not yet filled — used while pulling. */
+  /** 0–1. The pod fills as this rises — used while pulling to refresh. */
   fill = 0,
 }: {
   size?: number;
@@ -20,45 +24,45 @@ export function ChiliMark({
 }) {
   return (
     <svg
-      viewBox="0 0 48 64"
+      viewBox="0 0 64 64"
       width={size}
-      height={(size / 48) * 64}
+      height={size}
       className={className}
       fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       aria-hidden
     >
-      {/* Pod, tapering from the shoulder to a hooked tip */}
+      {/* Pod. Mitred join at the tip so it ends in a point. */}
       <path
-        d="M24 17c9.5 1.5 15.5 9.5 15.5 20.5 0 13.5-9 22.5-19 22.5-5.5 0-9.5-3-9.5-7.5 0-4 3-6 7-6.5 8-1 12.5-7 12.5-14.5 0-6.5-2.5-11-6.5-14z"
+        d="M24 19 C39 21 46 33 44 44 C42.4 54 34 59.5 27.5 57.5 C31 49 31 31 24 19 Z"
         fill="currentColor"
-        fillOpacity={fill}
+        fillOpacity={0.18 + fill * 0.72}
         stroke="currentColor"
-        strokeWidth="3"
-        strokeLinejoin="round"
+        strokeWidth="3.2"
+        strokeLinejoin="miter"
+        strokeMiterlimit={4}
       />
-      {/* Highlight down the shoulder */}
+      {/* Calyx across the shoulder */}
       <path
-        d="M28.5 25.5c2.6 2.6 4 6.2 4 10"
+        d="M17 19 L21.5 13.5 L27 15.5 L32.5 13.5 L34.5 19 C30 23.5 21.5 23.5 17 19 Z"
+        fill="currentColor"
+        fillOpacity={0.4}
         stroke="currentColor"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-        opacity="0.55"
+        strokeWidth="2.8"
       />
-      {/* Stalk */}
+      {/* Stem */}
       <path
-        d="M24 17c-.5-6 2.5-10.5 8-12"
+        d="M26 14.5 C26 9.5 29.5 6.5 34.5 6.5"
         stroke="currentColor"
         strokeWidth="3.4"
-        strokeLinecap="round"
       />
-      {/* Calyx */}
+      {/* Crease down the shoulder, where the light catches */}
       <path
-        d="M17.5 15.5c2-3 8.5-3.5 11.5-.5-2.5 3-9 3.5-11.5.5z"
-        fill="currentColor"
-        fillOpacity={0.18 + fill * 0.5}
+        d="M31 28 C35 31.5 37 37 36 43"
         stroke="currentColor"
-        strokeWidth="2.6"
-        strokeLinejoin="round"
+        strokeWidth="2.4"
+        opacity="0.5"
       />
     </svg>
   );
