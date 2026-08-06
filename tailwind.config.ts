@@ -60,10 +60,12 @@ const config: Config = {
           "0%,100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-8px)" },
         },
+
       },
       animation: {
         fadeInUp: "fadeInUp 0.5s ease-out both",
         float: "float 6s ease-in-out infinite",
+
       },
     },
   },

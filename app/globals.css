@@ -116,6 +116,30 @@ select:focus-visible {
   }
 }
 
+/* Hero mosaic. Declared here rather than in the Tailwind config because the
+   tiles set `animation` in an inline style — Tailwind only emits keyframes for
+   animation utilities it actually sees in the markup, so a config-only
+   definition never reaches the stylesheet. */
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 /* Shimmer skeleton */
 .skeleton {
   position: relative;

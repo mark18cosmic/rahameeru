@@ -28,13 +28,21 @@ const QUICK_LINKS = [
   { label: "Spin the wheel", href: "/#wheel", icon: Sparkles },
 ];
 
-/** Positions for the desktop collage, in render order. */
+/**
+ * The desktop collage, as a mosaic rather than free-floating cards.
+ *
+ * The old version positioned five tiles absolutely, which left a hole in the
+ * middle-right at most widths. These six spans tile a 3×4 grid exactly — every
+ * column adds up to four rows — so the block reads as one composed image with
+ * no gap to explain.
+ */
 const SLOTS = [
-  { className: "left-0 top-4 h-52 w-44", delay: 0 },
-  { className: "left-40 top-0 h-64 w-56 z-10", delay: 0.4 },
-  { className: "right-0 top-24 h-44 w-40", delay: 0.8 },
-  { className: "left-8 bottom-0 h-44 w-44", delay: 1.2 },
-  { className: "right-2 bottom-2 h-52 w-48 z-10", delay: 1.6 },
+  { className: "col-start-1 row-start-1 row-span-2", delay: 0 },
+  { className: "col-start-2 row-start-1 row-span-3", delay: 0.6 },
+  { className: "col-start-3 row-start-1 row-span-2", delay: 1.2 },
+  { className: "col-start-1 row-start-3 row-span-2", delay: 1.8 },
+  { className: "col-start-3 row-start-3 row-span-2", delay: 0.9 },
+  { className: "col-start-2 row-start-4 row-span-1", delay: 2.4 },
 ];
 
 export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
@@ -213,22 +221,33 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
           </div>
         </div>
 
-        {/* Floating collage — desktop only; on phones it would be pure weight. */}
-        <div className="relative hidden h-[440px] lg:block">
+        {/* Mosaic — desktop only; on phones it would be pure weight. */}
+        <div className="hidden h-[470px] grid-cols-3 grid-rows-4 gap-3 lg:grid">
           {showcase.map((r, i) => (
             <motion.div
               key={r.id}
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.8 }}
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 + i * 0.1 }}
-              className={`absolute overflow-hidden rounded-3xl bg-ink-100 shadow-card ring-1 ring-black/5 dark:bg-ink-800 ${SLOTS[i].className}`}
+              transition={{ delay: 0.15 + i * 0.07, duration: 0.45 }}
+              className={`group relative overflow-hidden rounded-2xl bg-ink-100 shadow-card ring-1 ring-black/5 dark:bg-ink-800 ${SLOTS[i].className}`}
               style={
                 reduceMotion
                   ? undefined
-                  : { animation: `float 6s ease-in-out ${SLOTS[i].delay}s infinite` }
+                  : { animation: `drift 9s ease-in-out ${SLOTS[i].delay}s infinite` }
               }
             >
-              <Photo r={r} sizes="240px" priority={i === 0} />
+              <Link href={`/restaurant/${r.slug}`} className="block h-full w-full">
+                <Photo
+                  r={r}
+                  sizes="260px"
+                  priority={i < 2}
+                  className="md:group-hover:scale-105"
+                />
+                {/* Name only on hover, so the mosaic stays a picture at rest. */}
+                <span className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-ink-900/70 p-2 text-xs font-semibold text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                  <span className="block truncate">{r.name}</span>
+                </span>
+              </Link>
             </motion.div>
           ))}
         </div>
