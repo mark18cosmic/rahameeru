@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X, Minus, Plus, Users, Receipt, Share2 } from "lucide-react";
+import { X, Minus, Plus, Users, ShoppingBag, Share2 } from "lucide-react";
 import { useCart, GST_RATE, SERVICE_RATE, type BillItem } from "@/app/lib/useCart";
 import { cx } from "@/app/lib/utils";
 
@@ -60,7 +60,7 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
             <div className="flex shrink-0 items-center justify-between gap-3 px-5 pb-3 pt-4">
               <div className="flex items-center gap-2.5">
                 <span className="grid h-9 w-9 place-items-center rounded-2xl bg-root-100 text-root-600 dark:bg-root-500/15 dark:text-root-300">
-                  <Receipt size={18} />
+                  <ShoppingBag size={18} strokeWidth={1.9} />
                 </span>
                 <div>
                   <h3 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">

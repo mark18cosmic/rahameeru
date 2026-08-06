@@ -15,7 +15,7 @@ import {
   Compass,
   Search as SearchIcon,
   Info,
-  Receipt,
+  ShoppingBag,
 } from "lucide-react";
 import logo from "@/public/rahameeruLogo.png";
 import { useAuth } from "@/app/providers/AuthProvider";
@@ -110,9 +110,9 @@ export default function Navbar() {
             aria-label={count > 0 ? `Your bill, ${count} items` : "Your bill"}
             className="relative grid h-9 w-9 place-items-center rounded-full text-ink-600 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800"
           >
-            <Receipt size={19} />
+            <ShoppingBag size={19} strokeWidth={1.9} />
             {count > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-root-500 px-1 text-[10px] font-bold text-white">
+              <span className="absolute -right-0.5 -top-0.5 grid h-[17px] min-w-[17px] place-items-center rounded-full bg-root-500 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-[var(--bg)]">
                 {count > 9 ? "9+" : count}
               </span>
             )}
