@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MobileTabBar from "./components/MobileTabBar";
+import { PullToRefresh } from "./components/PullToRefresh";
 import { InstallPrompt } from "./components/InstallPrompt";
 import { AuthProvider } from "./providers/AuthProvider";
 import { ThemeProvider } from "./providers/ThemeProvider";
@@ -71,6 +72,7 @@ export default function RootLayout({
               >
                 Skip to content
               </a>
+              <PullToRefresh />
               <Navbar />
               {/* Bottom padding clears the mobile tab bar. */}
               <div id="content" className="min-h-screen pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">

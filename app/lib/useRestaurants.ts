@@ -6,6 +6,7 @@ import {
   getRestaurants,
   getCachedRestaurants,
   getSeedRestaurants,
+  REFRESH_EVENT,
 } from "./restaurants";
 
 /**
@@ -28,11 +29,17 @@ export function useRestaurants() {
 
   useEffect(() => {
     let alive = true;
-    getRestaurants()
-      .then((data) => alive && setRestaurants(data))
-      .finally(() => alive && setLoading(false));
+    const load = () => {
+      getRestaurants()
+        .then((data) => alive && setRestaurants(data))
+        .finally(() => alive && setLoading(false));
+    };
+    load();
+    // Pull-to-refresh clears the cache and fires this.
+    window.addEventListener(REFRESH_EVENT, load);
     return () => {
       alive = false;
+      window.removeEventListener(REFRESH_EVENT, load);
     };
   }, []);
 

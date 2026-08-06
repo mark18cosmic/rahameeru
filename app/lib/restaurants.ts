@@ -106,6 +106,9 @@ export async function getRestaurants(): Promise<Restaurant[]> {
   return cache;
 }
 
+/** Dispatched after a manual refresh so mounted hooks re-read the list. */
+export const REFRESH_EVENT = "restaurants-refresh";
+
 /** Forces the next read to re-query Firestore — call after posting a review. */
 export function refreshRestaurants() {
   cache = null;

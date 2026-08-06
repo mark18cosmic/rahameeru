@@ -300,170 +300,193 @@ export function WheelSpinner({ restaurants }: Props) {
     </button>
   );
 
+  /* Preference controls, shared by the desktop panel and the mobile sheet. */
+  const prefControls = (
+    <div className="space-y-3">
+      <Group label="Where">
+        {facets.areas.map((a) => (
+          <Chip
+            key={a}
+            on={prefs.areas.includes(a)}
+            disabled={spinning}
+            onClick={() => setPrefs((p) => ({ ...p, areas: toggle(p.areas, a) }))}
+          >
+            <MapPin size={13} /> {a}
+          </Chip>
+        ))}
+        <Chip
+          on={prefs.openNow}
+          disabled={spinning}
+          onClick={() => setPrefs((p) => ({ ...p, openNow: !p.openNow }))}
+        >
+          <Clock3 size={13} /> Open now
+        </Chip>
+      </Group>
+
+      <Group label="Budget">
+        {PRICES.map((pr) => (
+          <Chip
+            key={pr.label}
+            on={prefs.prices.includes(pr.value)}
+            disabled={spinning}
+            onClick={() => setPrefs((p) => ({ ...p, prices: toggle(p.prices, pr.value) }))}
+          >
+            {pr.label}
+          </Chip>
+        ))}
+      </Group>
+
+      <Group label="Cuisine">
+        {facets.cuisines.map((c) => (
+          <Chip
+            key={c}
+            on={prefs.cuisines.includes(c)}
+            disabled={spinning}
+            onClick={() => setPrefs((p) => ({ ...p, cuisines: toggle(p.cuisines, c) }))}
+          >
+            {c}
+          </Chip>
+        ))}
+      </Group>
+
+      <Group label="Vibe">
+        {facets.tags.map((t) => (
+          <Chip
+            key={t}
+            on={prefs.tags.includes(t)}
+            disabled={spinning}
+            onClick={() => setPrefs((p) => ({ ...p, tags: toggle(p.tags, t) }))}
+          >
+            {t}
+          </Chip>
+        ))}
+      </Group>
+
+      <Group label="Rating">
+        {RATINGS.map((r) => (
+          <Chip
+            key={r.label}
+            on={prefs.minRating === r.value}
+            disabled={spinning}
+            onClick={() => setPrefs((p) => ({ ...p, minRating: r.value }))}
+          >
+            <Star size={13} /> {r.label}
+          </Chip>
+        ))}
+      </Group>
+
+      <Group label="Rules">
+        <Chip
+          on={prefs.skipSeen}
+          disabled={spinning}
+          onClick={() => setPrefs((p) => ({ ...p, skipSeen: !p.skipSeen }))}
+        >
+          <Ban size={13} /> Skip recent winners
+        </Chip>
+        {diet.length > 0 && (
+          <Chip
+            on={prefs.suitsDiet}
+            disabled={spinning}
+            onClick={() => setPrefs((p) => ({ ...p, suitsDiet: !p.suitsDiet }))}
+          >
+            <ShieldCheck size={13} /> Has dishes for me
+          </Chip>
+        )}
+      </Group>
+
+      {activeCount > 0 && (
+        <button
+          onClick={() => setPrefs({ ...EMPTY, skipSeen: prefs.skipSeen })}
+          className="flex items-center gap-1.5 text-[13px] font-semibold text-root-300"
+        >
+          <X size={14} /> Clear preferences
+        </button>
+      )}
+    </div>
+  );
+
+  const countLine =
+    matches.length === 0
+      ? "Nothing matches — loosen something"
+      : `${matches.length} ${matches.length === 1 ? "place" : "places"} match` +
+        (matches.length > MAX_SLICES ? `, ${MAX_SLICES} on the wheel` : "");
+
+  const winnerCard = winner && (
+    <motion.div
+      initial={{ opacity: 0, y: 12, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0 }}
+      className="w-full rounded-2xl bg-white p-3 text-ink-900 shadow-glow"
+    >
+      <div className="flex items-center gap-3">
+        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-ink-100 sm:h-16 sm:w-16">
+          <Photo r={winner} sizes="64px" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-root-500">
+            Tonight you&apos;re eating at
+          </p>
+          <h4 className="truncate font-bold">{winner.name}</h4>
+          <div className="flex flex-wrap items-center gap-x-2 text-xs text-ink-500">
+            <Stars value={winner.rating} size={12} />
+            <span className="flex items-center gap-0.5">
+              <MapPin size={11} /> {winner.location}
+            </span>
+            <span>{priceString(winner.priceLevel)}</span>
+          </div>
+        </div>
+        <ButtonLink href={`/restaurant/${winner.slug}`} size="sm" className="shrink-0">
+          Go <ArrowRight size={14} />
+        </ButtonLink>
+      </div>
+    </motion.div>
+  );
+
   return (
     <section
       id="wheel"
       className="relative scroll-mt-24 overflow-hidden rounded-[1.75rem] bg-ink-900 p-4 text-white shadow-card sm:rounded-[2rem] sm:p-6 md:p-10"
     >
-      <div className="relative grid items-center gap-6 md:grid-cols-2 md:gap-8">
-        <div className="min-w-0">
+      {/* Phones get wheel, count, and two buttons — everything on one screen,
+          with the preference list behind a sheet. Wide screens keep the
+          two-column layout where the controls can live in the open. */}
+      <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:items-center md:gap-8">
+        <div className="order-1 min-w-0 md:order-none">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-root-300">
             <Sparkles size={14} /> Can&apos;t decide?
           </span>
-          <h2 className="mt-3 font-display text-2xl font-extrabold leading-tight sm:text-3xl md:mt-4 md:text-4xl">
-            Let the wheel
-            <br /> decide for you.
+          <h2 className="mt-2.5 font-display text-xl font-extrabold leading-tight sm:text-3xl md:mt-4 md:text-4xl">
+            Let the wheel decide.
           </h2>
-          <p className="mt-2 max-w-md text-sm text-ink-300 md:mt-3 md:text-base">
+          <p className="mt-2 hidden max-w-md text-sm text-ink-300 md:block md:text-base">
             Tell it what you&apos;re in the mood for and it only spins places you
             would actually say yes to.
           </p>
 
-          {/* Quick preferences, always visible */}
-          <div className="scrollbar-hide -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:flex-wrap md:px-0">
-            <Chip
-              on={prefs.openNow}
-              disabled={spinning}
-              onClick={() => setPrefs((p) => ({ ...p, openNow: !p.openNow }))}
-            >
-              <Clock3 size={14} /> Open now
-            </Chip>
-            {facets.areas.slice(0, 3).map((a) => (
-              <Chip
-                key={a}
-                on={prefs.areas.includes(a)}
-                disabled={spinning}
-                onClick={() => setPrefs((p) => ({ ...p, areas: toggle(p.areas, a) }))}
-              >
-                <MapPin size={14} /> {a}
-              </Chip>
-            ))}
-            {PRICES.map((pr) => (
-              <Chip
-                key={pr.label}
-                on={prefs.prices.includes(pr.value)}
-                disabled={spinning}
-                onClick={() =>
-                  setPrefs((p) => ({ ...p, prices: toggle(p.prices, pr.value) }))
-                }
-              >
-                {pr.label}
-              </Chip>
-            ))}
-            <Chip on={panelOpen} disabled={spinning} onClick={() => setPanelOpen((v) => !v)}>
-              <SlidersHorizontal size={14} /> More
-              {activeCount > 0 && (
-                <span className="rounded-full bg-root-500 px-1.5 text-[11px] font-bold text-white">
-                  {activeCount}
-                </span>
-              )}
-            </Chip>
-          </div>
+          {/* Desktop-only inline controls */}
+          <div className="mt-5 hidden md:block">{prefControls}</div>
 
-          {/* Everything else, folded away until asked for */}
-          <AnimatePresence initial={false}>
-            {panelOpen && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="overflow-hidden"
-              >
-                <div className="mt-3 space-y-3 rounded-2xl bg-white/5 p-3.5">
-                  <Group label="Cuisine">
-                    {facets.cuisines.map((c) => (
-                      <Chip
-                        key={c}
-                        on={prefs.cuisines.includes(c)}
-                        disabled={spinning}
-                        onClick={() =>
-                          setPrefs((p) => ({ ...p, cuisines: toggle(p.cuisines, c) }))
-                        }
-                      >
-                        {c}
-                      </Chip>
-                    ))}
-                  </Group>
-
-                  <Group label="Vibe">
-                    {facets.tags.map((t) => (
-                      <Chip
-                        key={t}
-                        on={prefs.tags.includes(t)}
-                        disabled={spinning}
-                        onClick={() => setPrefs((p) => ({ ...p, tags: toggle(p.tags, t) }))}
-                      >
-                        {t}
-                      </Chip>
-                    ))}
-                  </Group>
-
-                  <Group label="Rating">
-                    {RATINGS.map((r) => (
-                      <Chip
-                        key={r.label}
-                        on={prefs.minRating === r.value}
-                        disabled={spinning}
-                        onClick={() => setPrefs((p) => ({ ...p, minRating: r.value }))}
-                      >
-                        <Star size={13} /> {r.label}
-                      </Chip>
-                    ))}
-                  </Group>
-
-                  <Group label="Rules">
-                    <Chip
-                      on={prefs.skipSeen}
-                      disabled={spinning}
-                      onClick={() => setPrefs((p) => ({ ...p, skipSeen: !p.skipSeen }))}
-                    >
-                      <Ban size={13} /> Skip recent winners
-                    </Chip>
-                    {diet.length > 0 && (
-                      <Chip
-                        on={prefs.suitsDiet}
-                        disabled={spinning}
-                        onClick={() => setPrefs((p) => ({ ...p, suitsDiet: !p.suitsDiet }))}
-                      >
-                        <ShieldCheck size={13} /> Has dishes for me
-                      </Chip>
-                    )}
-                  </Group>
-
-                  {activeCount > 0 && (
-                    <button
-                      onClick={() => setPrefs({ ...EMPTY, skipSeen: prefs.skipSeen })}
-                      className="flex items-center gap-1.5 text-[13px] font-semibold text-root-300"
-                    >
-                      <X size={14} /> Clear preferences
-                    </button>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <p className="mt-3 text-sm text-ink-400" aria-live="polite">
-            {matches.length === 0
-              ? "Nothing matches — loosen something."
-              : `${matches.length} ${matches.length === 1 ? "place" : "places"} match` +
-                (matches.length > MAX_SLICES ? `, ${MAX_SLICES} on the wheel` : "")}
+          <p className="mt-4 hidden text-sm text-ink-400 md:block" aria-live="polite">
+            {countLine}
           </p>
 
           <Button
             onClick={spin}
             disabled={spinning || pool.length === 0}
             size="lg"
-            className="mt-3 w-full sm:w-auto"
+            className="mt-3 hidden md:inline-flex"
           >
             <RotateCw size={18} className={spinning ? "animate-spin" : ""} />
             {spinning ? "Spinning…" : winner ? "Spin again" : "Spin the wheel"}
           </Button>
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-[300px] flex-col items-center sm:max-w-[360px]">
-          <div ref={wrapRef} className="relative w-full" style={{ height: size }}>
+        <div className="order-2 flex w-full flex-col items-center gap-3 md:order-none">
+          <div
+            ref={wrapRef}
+            className="relative mx-auto w-full max-w-[300px] sm:max-w-[360px]"
+            style={{ height: size }}
+          >
             <div className="absolute left-1/2 top-[-6px] z-10 -translate-x-1/2">
               <div className="h-0 w-0 border-x-[12px] border-t-[20px] border-x-transparent border-t-white drop-shadow" />
             </div>
@@ -476,7 +499,6 @@ export function WheelSpinner({ restaurants }: Props) {
               style={{ width: size, height: size }}
               className="mx-auto"
             >
-              {/* The wheel is the button too — tapping it spins. */}
               <canvas
                 ref={canvasRef}
                 onClick={spin}
@@ -490,56 +512,105 @@ export function WheelSpinner({ restaurants }: Props) {
             </motion.div>
 
             {pool.length === 0 && (
-              <div className="absolute inset-0 grid place-items-center rounded-full bg-white/5 text-center text-sm text-ink-300">
-                <span className="px-6">
-                  No places fit those preferences.
+              <div className="absolute inset-0 grid place-items-center text-center text-sm text-ink-300">
+                <span className="rounded-2xl bg-white/10 px-5 py-3">
+                  Nothing fits.
                   <br />
-                  Try clearing one.
+                  Loosen a preference.
                 </span>
               </div>
             )}
           </div>
 
-          <div aria-live="polite" className="w-full">
-            <AnimatePresence>
-              {winner && (
-                <motion.div
-                  initial={{ opacity: 0, y: 12, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="mt-5 w-full rounded-2xl bg-white p-3 text-ink-900 shadow-glow"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-ink-100">
-                      <Photo r={winner} sizes="64px" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-root-500">
-                        Tonight you&apos;re eating at
-                      </p>
-                      <h4 className="truncate font-bold">{winner.name}</h4>
-                      <div className="flex flex-wrap items-center gap-x-2 text-xs text-ink-500">
-                        <Stars value={winner.rating} size={12} />
-                        <span className="flex items-center gap-0.5">
-                          <MapPin size={11} /> {winner.location}
-                        </span>
-                        <span>{priceString(winner.priceLevel)}</span>
-                      </div>
-                    </div>
-                    <ButtonLink
-                      href={`/restaurant/${winner.slug}`}
-                      size="sm"
-                      className="shrink-0"
-                    >
-                      Go <ArrowRight size={14} />
-                    </ButtonLink>
-                  </div>
-                </motion.div>
+          {/* Mobile controls, directly under the wheel */}
+          <p className="text-sm text-ink-400 md:hidden" aria-live="polite">
+            {countLine}
+          </p>
+
+          <div className="flex w-full gap-2 md:hidden">
+            <button
+              onClick={() => setPanelOpen(true)}
+              disabled={spinning}
+              className="flex min-h-[52px] items-center gap-2 rounded-full bg-white/10 px-4 text-sm font-semibold text-white transition active:scale-95 disabled:opacity-50"
+            >
+              <SlidersHorizontal size={17} />
+              Filters
+              {activeCount > 0 && (
+                <span className="rounded-full bg-root-500 px-1.5 text-[11px] font-bold">
+                  {activeCount}
+                </span>
               )}
-            </AnimatePresence>
+            </button>
+            <Button
+              onClick={spin}
+              disabled={spinning || pool.length === 0}
+              size="lg"
+              className="min-h-[52px] flex-1"
+            >
+              <RotateCw size={18} className={spinning ? "animate-spin" : ""} />
+              {spinning ? "Spinning…" : winner ? "Again" : "Spin"}
+            </Button>
+          </div>
+
+          <div aria-live="polite" className="w-full">
+            <AnimatePresence>{winnerCard}</AnimatePresence>
           </div>
         </div>
       </div>
+
+      {/* Preferences sheet — phones only; the desktop layout shows them inline */}
+      <AnimatePresence>
+        {panelOpen && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-end md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div
+              className="absolute inset-0 bg-ink-900/70"
+              onClick={() => setPanelOpen(false)}
+            />
+            <motion.div
+              initial={reduceMotion ? false : { y: "100%" }}
+              animate={{ y: 0 }}
+              exit={reduceMotion ? undefined : { y: "100%" }}
+              transition={{ type: "spring", stiffness: 340, damping: 34 }}
+              drag={reduceMotion ? false : "y"}
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={{ top: 0, bottom: 0.4 }}
+              onDragEnd={(_, info) => info.offset.y > 90 && setPanelOpen(false)}
+              className="relative max-h-[82svh] w-full overflow-y-auto rounded-t-3xl bg-ink-900 p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] text-white ring-1 ring-white/10"
+            >
+              <span
+                aria-hidden
+                className="mx-auto mb-4 block h-1 w-10 rounded-full bg-white/25"
+              />
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="font-display text-lg font-extrabold">
+                  What are you in the mood for?
+                </h3>
+                <button
+                  onClick={() => setPanelOpen(false)}
+                  aria-label="Close"
+                  className="grid h-9 w-9 place-items-center rounded-full bg-white/10 active:scale-90"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {prefControls}
+
+              <button
+                onClick={() => setPanelOpen(false)}
+                className="mt-5 min-h-[52px] w-full rounded-full bg-white font-semibold text-ink-900 transition active:scale-[0.98]"
+              >
+                Show {matches.length} {matches.length === 1 ? "place" : "places"}
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
