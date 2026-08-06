@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Loader2 } from "lucide-react";
+import { Check, Minus, Loader2 } from "lucide-react";
 import { PLANS, type PlanId } from "@/app/lib/vendor";
 import { cx } from "@/app/lib/utils";
 
@@ -64,6 +64,15 @@ export function PlanCards({
                     <Check size={11} strokeWidth={3} />
                   </span>
                   {f}
+                </li>
+              ))}
+              {/* The ceiling, stated plainly rather than discovered later. */}
+              {plan.limits?.map((l) => (
+                <li key={l} className="flex items-start gap-2 text-sm text-ink-400">
+                  <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-ink-100 text-ink-400 dark:bg-ink-800">
+                    <Minus size={11} strokeWidth={3} />
+                  </span>
+                  {l}
                 </li>
               ))}
             </ul>

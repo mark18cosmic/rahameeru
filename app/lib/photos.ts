@@ -33,6 +33,49 @@ const cache = new Map<string, Entry>();
 const inflight = new Map<string, Promise<string[]>>();
 
 /* -------------------------------------------------------------------------- */
+/* Shared cache                                                               */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The in-process cache dies with the process, so on a serverless platform the
+ * first visitor after every cold start paid for a full search — seconds, in
+ * front of an empty card. Resolved URLs are therefore also written to
+ * Firestore, where they are shared by every instance and every visitor.
+ *
+ * Best-effort in both directions: a read failure just means doing the search,
+ * and a write failure means the next instance does it again.
+ */
+const SHARED_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+async function readShared(key: string): Promise<string[] | null> {
+  try {
+    const { doc, getDoc } = await import("firebase/firestore");
+    const { db } = await import("@/app/firebase/firebaseConfig");
+    const snap = await getDoc(doc(db, "photos", encodeURIComponent(key)));
+    if (!snap.exists()) return null;
+    const data = snap.data() as { urls?: string[]; at?: number };
+    if (!data.urls?.length) return null;
+    if (Date.now() - (data.at ?? 0) > SHARED_TTL_MS) return null;
+    return data.urls;
+  } catch {
+    return null;
+  }
+}
+
+async function writeShared(key: string, urls: string[]): Promise<void> {
+  try {
+    const { doc, setDoc } = await import("firebase/firestore");
+    const { db } = await import("@/app/firebase/firebaseConfig");
+    await setDoc(doc(db, "photos", encodeURIComponent(key)), {
+      urls,
+      at: Date.now(),
+    });
+  } catch {
+    // Not worth retrying; the lookup will simply run again next time.
+  }
+}
+
+/* -------------------------------------------------------------------------- */
 /* Curated fallbacks                                                          */
 /* -------------------------------------------------------------------------- */
 
@@ -205,6 +248,14 @@ export async function resolvePhotos(
   if (running) return running;
 
   const task = (async () => {
+    // Someone else may already have paid for this search.
+    const shared = await readShared(key);
+    if (shared) {
+      cache.set(key, { urls: shared, expires: Date.now() + TTL_MS });
+      inflight.delete(key);
+      return shared;
+    }
+
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 9000);
     let urls: string[] = [];
@@ -230,10 +281,14 @@ export async function resolvePhotos(
       clearTimeout(timer);
     }
 
-    if (!urls.length) urls = fallbackUrls(name, cuisine);
+    const found = urls.length > 0;
+    if (!found) urls = fallbackUrls(name, cuisine);
 
     cache.set(key, { urls, expires: Date.now() + TTL_MS });
     inflight.delete(key);
+    // Only share real results. Caching the stock fallback would freeze a place
+    // on a generic plate even once it becomes findable.
+    if (found) void writeShared(key, urls);
     return urls;
   })();
 

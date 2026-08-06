@@ -18,12 +18,13 @@ import type { Restaurant, Review } from "@/app/lib/types";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { useVendor } from "@/app/lib/useVendor";
 import { useRestaurants } from "@/app/lib/useRestaurants";
-import { getReviews } from "@/app/lib/reviews";
+import { getReviews, replyToReview } from "@/app/lib/reviews";
 import { getVisits, dailySeries, type VisitDoc } from "@/app/lib/metrics";
 import { setVendorPlan, PLAN_BY_ID, type PlanId } from "@/app/lib/vendor";
 import { cx } from "@/app/lib/utils";
 import { ChiliLoader } from "../ui/ChiliLoader";
 import { PlanCards } from "./PlanCards";
+import { ListingEditor } from "./ListingEditor";
 
 function Sparkline({ data }: { data: { day: string; count: number }[] }) {
   const max = Math.max(1, ...data.map((d) => d.count));
@@ -79,6 +80,9 @@ export function VendorDashboard() {
   const [visits, setVisits] = useState<VisitDoc>({ total: 0, days: {} });
   const [insightsLoading, setInsightsLoading] = useState(true);
   const [planPending, setPlanPending] = useState<PlanId | null>(null);
+  const [replyTo, setReplyTo] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState("");
+  const [replySaving, setReplySaving] = useState(false);
 
   const owned: Restaurant[] = useMemo(
     () => restaurants.filter((r) => vendor?.restaurantIds.includes(r.id)),
@@ -117,6 +121,19 @@ export function VendorDashboard() {
   useEffect(() => {
     loadInsights();
   }, [loadInsights]);
+
+  const sendReply = async (reviewId: string) => {
+    if (!vendor || !replyText.trim()) return;
+    setReplySaving(true);
+    try {
+      await replyToReview(reviewId, replyText, vendor.businessName);
+      setReplyTo(null);
+      setReplyText("");
+      await loadInsights();
+    } finally {
+      setReplySaving(false);
+    }
+  };
 
   const choosePlan = async (id: PlanId) => {
     if (!vendor) return;
@@ -270,29 +287,19 @@ export function VendorDashboard() {
                       the match, or email us if it&apos;s missing.
                     </p>
                   ) : (
-                    <ul className="mt-3 space-y-2">
+                    <div className="mt-3 space-y-3">
                       {owned.map((r) => (
-                        <li
-                          key={r.id}
-                          className="flex items-center justify-between gap-3 rounded-2xl border border-ink-100 bg-white p-4 dark:border-ink-800 dark:bg-ink-900"
-                        >
-                          <div className="min-w-0">
-                            <p className="truncate font-semibold text-ink-900 dark:text-white">
-                              {r.name}
-                            </p>
-                            <p className="text-sm text-ink-500">
-                              {r.rating.toFixed(1)} · {r.reviewCount.toLocaleString()} reviews
-                            </p>
-                          </div>
+                        <div key={r.id}>
+                          <ListingEditor restaurant={r} />
                           <Link
                             href={`/restaurant/${r.slug}`}
-                            className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-root-600"
+                            className="mt-1.5 inline-flex items-center gap-1 px-1 text-sm font-semibold text-root-600"
                           >
-                            View <ExternalLink size={14} />
+                            View public page <ExternalLink size={14} />
                           </Link>
-                        </li>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   )}
                 </section>
 
@@ -323,6 +330,52 @@ export function VendorDashboard() {
                           <p className="mt-1 line-clamp-3 text-sm text-ink-500">
                             {r.content}
                           </p>
+
+                          {r.reply ? (
+                            <p className="mt-2 rounded-xl bg-ink-50 p-2.5 text-sm text-ink-600 dark:bg-ink-800/60 dark:text-ink-300">
+                              <span className="font-semibold">You replied: </span>
+                              {r.reply.text}
+                            </p>
+                          ) : replyTo === r.id ? (
+                            <div className="mt-2 space-y-2">
+                              <textarea
+                                value={replyText}
+                                onChange={(e) => setReplyText(e.target.value)}
+                                rows={2}
+                                autoFocus
+                                placeholder="Answer publicly, under their review."
+                                className="w-full rounded-xl border border-ink-200 bg-transparent p-2.5 text-sm outline-none focus:border-root-400 dark:border-ink-700"
+                              />
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => sendReply(r.id)}
+                                  disabled={replySaving || !replyText.trim()}
+                                  className="flex min-h-[36px] items-center gap-1.5 rounded-full bg-root-500 px-4 text-sm font-semibold text-white disabled:opacity-50"
+                                >
+                                  {replySaving && (
+                                    <Loader2 size={13} className="animate-spin" />
+                                  )}
+                                  Post reply
+                                </button>
+                                <button
+                                  onClick={() => setReplyTo(null)}
+                                  className="min-h-[36px] rounded-full border border-ink-200 px-4 text-sm dark:border-ink-700"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setReplyTo(r.id);
+                                setReplyText("");
+                              }}
+                              className="mt-2 text-sm font-semibold text-root-600"
+                            >
+                              Reply
+                            </button>
+                          )}
                         </li>
                       ))}
                     </ul>

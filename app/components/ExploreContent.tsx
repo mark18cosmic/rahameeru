@@ -58,7 +58,9 @@ export function ExploreContent() {
       </div>
 
       <div className="mt-5 grid grid-cols-2 gap-3 md:mt-6 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-        {loading
+        {/* Skeletons only when there is genuinely nothing to draw — the seed
+            set means that is almost never. */}
+        {loading && sorted.length === 0
           ? Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />)
           : sorted.map((r) => <RestaurantCard key={r.id} r={r} />)}
       </div>

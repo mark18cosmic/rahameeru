@@ -12,11 +12,13 @@
     "dev:stack:down": "docker compose -f docker-compose.dev.yml down"
   },
   "dependencies": {
+    "@types/leaflet": "^1.9.22",
     "@types/prop-types": "^15.7.15",
     "@vercel/analytics": "^1.4.1",
     "firebase": "^11.1.0",
     "framer-motion": "^11.15.0",
     "fuse.js": "^7.0.0",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.469.0",
     "next": "^15.1.4",
     "react": "^18.3.1",

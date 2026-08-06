@@ -27,6 +27,7 @@ import { Stars } from "../ui/Stars";
 import { Badge } from "../ui/Badge";
 import { Button, ButtonLink } from "../ui/Button";
 import { FavoriteButton } from "../FavoriteButton";
+import { MapModal } from "./MapModal";
 import { Reviews } from "./Reviews";
 import { Menu } from "./Menu";
 import { RestaurantCard } from "../RestaurantCard";
@@ -45,6 +46,7 @@ export function RestaurantDetail({
   const gallery = galleryUrls(restaurant, 4);
   const [active, setActive] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
   const [tab, setTab] = useState<Tab>("about");
   const open = isOpenNow(restaurant.hours);
   const reduceMotion = useReducedMotion();
@@ -260,9 +262,9 @@ export function RestaurantDetail({
         <aside className="lg:sticky lg:top-24 lg:h-fit">
           <div className="rounded-3xl border border-ink-100 bg-white p-5 shadow-soft dark:border-ink-800 dark:bg-ink-900">
             <div className="hidden gap-2 md:flex">
-              <ButtonLink href={mapsUrl(restaurant)} className="flex-1" target="_blank">
+              <Button onClick={() => setMapOpen(true)} className="flex-1">
                 <Navigation size={16} /> Directions
-              </ButtonLink>
+              </Button>
               <Button variant="outline" onClick={share} aria-label="Share">
                 {copied ? <Check size={16} /> : <Share2 size={16} />}
               </Button>
@@ -335,13 +337,18 @@ export function RestaurantDetail({
 
       {/* Mobile action bar — kept above the tab bar's safe area. */}
       <div className="fixed inset-x-0 bottom-[calc(3.25rem+env(safe-area-inset-bottom))] z-30 flex gap-2 border-t border-ink-100 bg-[var(--bg)] px-5 py-2.5 dark:border-ink-800 md:hidden">
-        <ButtonLink href={mapsUrl(restaurant)} className="flex-1" target="_blank">
+        <Button onClick={() => setMapOpen(true)} className="flex-1">
           <Navigation size={16} /> Directions
-        </ButtonLink>
+        </Button>
         <Button variant="outline" onClick={share} aria-label="Share">
           {copied ? <Check size={18} /> : <Share2 size={18} />}
         </Button>
       </div>
+      <MapModal
+        restaurant={restaurant}
+        open={mapOpen}
+        onClose={() => setMapOpen(false)}
+      />
     </div>
   );
 }

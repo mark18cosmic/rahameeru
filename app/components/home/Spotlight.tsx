@@ -18,7 +18,13 @@ const INTERVAL = 4500;
  * tappable, and it doubles as a preview of what the app actually holds.
  * Swiping or tapping a dot takes over from the timer.
  */
-export function Spotlight({ restaurants }: { restaurants: Restaurant[] }) {
+export function Spotlight({
+  restaurants,
+  className = "",
+}: {
+  restaurants: Restaurant[];
+  className?: string;
+}) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -36,8 +42,10 @@ export function Spotlight({ restaurants }: { restaurants: Restaurant[] }) {
   const open = isOpenNow(r.hours);
 
   return (
-    <div className="w-full">
-      <div className="relative h-44 overflow-hidden rounded-3xl bg-ink-100 dark:bg-ink-800">
+    <div className={cx("w-full", className)}>
+      {/* Fills whatever height the hero has spare, with a floor so it stays a
+          photo rather than a strip on a short screen. */}
+      <div className="relative min-h-[168px] flex-1 overflow-hidden rounded-3xl bg-ink-100 dark:bg-ink-800">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={r.id}
@@ -94,7 +102,7 @@ export function Spotlight({ restaurants }: { restaurants: Restaurant[] }) {
       </div>
 
       {picks.length > 1 && (
-        <div className="mt-3 flex justify-center gap-1.5">
+        <div className="mt-2.5 flex shrink-0 justify-center gap-1.5">
           {picks.map((p, i) => (
             <button
               key={p.id}

@@ -94,9 +94,11 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
     // Fills the screen at every size. On phones that means the viewport minus
     // the navbar and the tab bar — svh rather than vh so the height doesn't
     // jump when mobile browsers hide their URL bar mid-scroll.
-    <section className="relative flex min-h-[calc(100svh-6.75rem)] items-center overflow-hidden md:min-h-[calc(100svh-4.25rem)]">
-      <div className="mx-auto grid w-full max-w-7xl items-center gap-8 px-5 py-6 md:px-6 md:py-12 lg:grid-cols-2 lg:gap-10">
-        <div className="text-center lg:text-left">
+    <section className="relative flex min-h-[calc(100svh-6.75rem)] items-stretch overflow-hidden md:min-h-[calc(100svh-4.25rem)] lg:items-center">
+      <div className="mx-auto grid w-full max-w-7xl items-center gap-8 px-5 py-5 md:px-6 md:py-12 lg:grid-cols-2 lg:gap-10">
+        {/* Column, not a stack of blocks: the spotlight takes whatever height is
+            left over so a tall phone gets a bigger photo rather than a gap. */}
+        <div className="flex h-full flex-col text-center lg:block lg:text-left">
           <motion.span
             initial={reduceMotion ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -142,7 +144,7 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="mt-5 md:mt-7"
+            className="mt-5 shrink-0 md:mt-7"
           >
             <button
               onClick={open}
@@ -175,7 +177,7 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mt-3 flex flex-wrap justify-center gap-2 lg:justify-start"
+            className="mt-3 flex shrink-0 flex-wrap justify-center gap-2 lg:justify-start"
           >
             {QUICK_LINKS.map((q) => (
               <Link
@@ -190,11 +192,11 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
           </motion.div>
 
           {/* Phone-only spotlight; desktop has the collage instead. */}
-          <div className="mt-6 lg:hidden">
-            <Spotlight restaurants={showcase} />
+          <div className="mt-5 flex min-h-[168px] flex-1 lg:hidden">
+            <Spotlight restaurants={showcase} className="flex flex-1 flex-col" />
           </div>
 
-          <div className="mt-6 flex flex-wrap justify-center gap-5 sm:gap-8 md:mt-8 lg:justify-start">
+          <div className="mt-5 flex shrink-0 flex-wrap justify-center gap-5 sm:gap-8 md:mt-8 lg:justify-start">
             {stats.map((s) => (
               <div key={s.label} className="flex items-center gap-2.5">
                 <span className={`grid h-10 w-10 place-items-center rounded-2xl ${s.tint}`}>

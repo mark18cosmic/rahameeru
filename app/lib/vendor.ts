@@ -49,6 +49,12 @@ export type Plan = {
   cadence: string;
   tagline: string;
   features: string[];
+  /**
+   * What the tier deliberately does not include. Shown as struck-through lines
+   * on the free plan: someone choosing a plan deserves to see the ceiling
+   * before they pick, not after.
+   */
+  limits?: string[];
   highlight?: boolean;
 };
 
@@ -61,15 +67,21 @@ export type Plan = {
 export const PLANS: Plan[] = [
   {
     id: "starter",
-    name: "Starter",
+    name: "Basic",
     price: 0,
     cadence: "free",
-    tagline: "Claim your listing and keep it right.",
+    tagline: "Enough to stop the wrong details spreading.",
     features: [
-      "Claim one restaurant",
-      "Edit hours, contact details and description",
-      "Reply to reviews",
-      "Basic insights: rating, reviews, visits",
+      "One restaurant",
+      "Correct your hours, phone and address",
+      "Read your reviews",
+      "Visit count for the last 7 days",
+    ],
+    limits: [
+      "No replying to reviews",
+      "No menu management",
+      "No photo uploads",
+      "Not eligible for category or homepage placement",
     ],
   },
   {
@@ -77,13 +89,18 @@ export const PLANS: Plan[] = [
     name: "Growth",
     price: 450,
     cadence: "MVR / month",
-    tagline: "For places that live or die on the lunch rush.",
+    tagline: "For a place that lives or dies on the lunch rush.",
     features: [
       "Up to five restaurants",
-      "Full menu management with photos",
-      "30-day visit and search trends",
+      "Reply publicly to every review",
+      "Full menu management with dish photos",
+      "Upload your own gallery, no more search results",
+      "90 days of visit, search and rating trends",
+      "See which dishes people open most",
       "Promoted in one category rail",
-      "Points offers for reviewers",
+      "Issue bonus points to reviewers",
+      "Post an offer of the week",
+      "Email alert whenever a review lands",
     ],
     highlight: true,
   },
@@ -92,13 +109,18 @@ export const PLANS: Plan[] = [
     name: "Pro",
     price: 1200,
     cadence: "MVR / month",
-    tagline: "Groups, chains and anyone running several kitchens.",
+    tagline: "Groups, chains, and anyone running several kitchens.",
     features: [
+      "Everything in Growth",
       "Unlimited restaurants",
-      "Team access",
-      "Full analytics history and exports",
+      "Team accounts with roles",
       "Homepage placement slots",
-      "Priority support",
+      "Full analytics history, CSV export",
+      "Compare your listings side by side",
+      "Benchmarks against your cuisine and island",
+      "Menu scheduling for seasons and Ramadan hours",
+      "Priority support with a named contact",
+      "Early access to new vendor features",
     ],
   },
 ];

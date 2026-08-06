@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
       ...fallbackUrls(name, cuisine),
     ];
 
-    for (const url of ordered.slice(0, 6)) {
+    for (const url of ordered.slice(0, 4)) {
       try {
         const img = await fetchImage(url, controller.signal);
         if (img) {

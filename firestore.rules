@@ -19,6 +19,11 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
+    // Shared photo-lookup cache, written by /api/photo.
+    match /photos/{key} {
+      allow read, write: if true;
+    }
+
     // Visit counters, incremented by the app on a restaurant page view.
     match /metrics/{restaurantId} {
       allow read: if true;

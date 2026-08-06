@@ -53,6 +53,23 @@ function normalize(id: string, d: Record<string, any>): Restaurant {
 let cache: Restaurant[] | null = null;
 
 /**
+ * The seed set on its own, blended with nothing and available synchronously.
+ *
+ * Pages render this on the first frame instead of a screen of skeletons, then
+ * swap in the Firestore-merged list when it lands. The two are the same shape
+ * and mostly the same content, so the swap is invisible beyond a few numbers
+ * settling.
+ */
+export function getSeedRestaurants(): Restaurant[] {
+  return seedRestaurants;
+}
+
+/** Cached list if one is already in memory, for a synchronous first paint. */
+export function getCachedRestaurants(): Restaurant[] | null {
+  return cache;
+}
+
+/**
  * Loads restaurants from Firestore, merged with the local seed set. Seed data
  * fills any gaps (and covers the case where Firestore is empty or blocked), so
  * the app always has content to show. Firestore docs win on slug collisions.

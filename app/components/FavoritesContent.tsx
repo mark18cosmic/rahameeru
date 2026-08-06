@@ -29,7 +29,7 @@ export function FavoritesContent() {
         </div>
       </div>
 
-      {loading ? (
+      {loading && restaurants.length === 0 ? (
         <div className="mt-6 grid grid-cols-2 gap-3 md:mt-8 md:grid-cols-4 md:gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <CardSkeleton key={i} />

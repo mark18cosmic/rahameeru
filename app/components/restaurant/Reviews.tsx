@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { MessageSquarePlus, Loader2 } from "lucide-react";
+import { MessageSquarePlus, Loader2, CornerDownRight } from "lucide-react";
 import type { Review } from "@/app/lib/types";
 import { getReviews, addReview } from "@/app/lib/reviews";
 import { blendRating } from "@/app/lib/ratings";
@@ -187,6 +187,21 @@ export function Reviews({
                 <Stars value={r.rating} size={15} />
               </div>
               <p className="mt-3 text-ink-600 dark:text-ink-300">{r.content}</p>
+
+              {r.reply && (
+                <div className="mt-3 rounded-2xl bg-ink-50 p-3.5 dark:bg-ink-800/60">
+                  <p className="flex items-center gap-1.5 text-xs font-semibold text-ink-700 dark:text-ink-200">
+                    <CornerDownRight size={13} className="text-root-500" />
+                    {r.reply.by} replied
+                    <span className="font-normal text-ink-400">
+                      · {timeAgo(r.reply.at)}
+                    </span>
+                  </p>
+                  <p className="mt-1.5 text-sm text-ink-600 dark:text-ink-300">
+                    {r.reply.text}
+                  </p>
+                </div>
+              )}
             </div>
           ))
         )}

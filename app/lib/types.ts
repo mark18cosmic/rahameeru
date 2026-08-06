@@ -54,6 +54,14 @@ export interface Restaurant {
   createdAt?: number;
 }
 
+export interface ReviewReply {
+  /** What the restaurant wrote back. */
+  text: string;
+  /** Display name shown next to the reply. */
+  by: string;
+  at: number;
+}
+
 export interface Review {
   id: string;
   restaurantId: string;
@@ -62,4 +70,6 @@ export interface Review {
   rating: number;
   content: string;
   createdAt: number;
+  /** Set when the venue answers. Only the listing's owner can write this. */
+  reply?: ReviewReply;
 }

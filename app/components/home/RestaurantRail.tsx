@@ -170,7 +170,7 @@ export function RestaurantRail({
         ref={scroller}
         className="scrollbar-hide -mx-5 flex snap-x snap-proximity gap-3 overflow-x-auto overscroll-x-contain scroll-pl-5 px-5 pb-2 md:mx-0 md:scroll-pl-0 md:gap-4 md:px-0"
       >
-        {loading
+        {loading && restaurants.length === 0
           ? Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="w-[228px] shrink-0 snap-start md:w-[280px]">
                 <CardSkeleton />
