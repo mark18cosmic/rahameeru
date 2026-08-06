@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { refreshRestaurants, REFRESH_EVENT } from "@/app/lib/restaurants";
+import { ChiliMark } from "./ui/ChiliMark";
 
 /** How far you have to drag before letting go actually refreshes. */
 const THRESHOLD = 72;
@@ -118,16 +119,12 @@ export function PullToRefresh() {
         transition={{ duration: 0.15 }}
         className="grid h-10 w-10 place-items-center rounded-full bg-white shadow-card ring-1 ring-black/5 dark:bg-ink-800 dark:ring-white/10"
       >
-        {/* A chili, to match the app's loader — it fills as you pull, then
-            spins while the data reloads. */}
-        <motion.svg
-          viewBox="0 0 64 80"
-          width="20"
-          height="25"
+        {/* The same chili as every other loading state: it fills as you pull,
+            then spins while the data reloads. */}
+        <motion.div
+          className="text-root-500"
           animate={
-            busy && !reduceMotion
-              ? { rotate: 360 }
-              : { rotate: progress * 180 }
+            busy && !reduceMotion ? { rotate: 360 } : { rotate: progress * 180 }
           }
           transition={
             busy && !reduceMotion
@@ -135,20 +132,8 @@ export function PullToRefresh() {
               : { duration: 0.1 }
           }
         >
-          <path
-            d="M32 18c0-6 4-10 9-11"
-            fill="none"
-            stroke="#3f8f4a"
-            strokeWidth="5"
-            strokeLinecap="round"
-          />
-          <circle cx="32" cy="20" r="5" fill="#4CAF50" />
-          <path
-            d="M32 22c11 0 19 9 19 21 0 16-12 30-24 30-6 0-10-3-10-7 0-4 4-6 9-7 9-2 14-9 14-18 0-8-4-13-8-15z"
-            fill="#F84B3B"
-            opacity={busy ? 1 : 0.35 + progress * 0.65}
-          />
-        </motion.svg>
+          <ChiliMark size={19} fill={busy ? 0.9 : progress * 0.9} />
+        </motion.div>
       </motion.span>
     </div>
   );

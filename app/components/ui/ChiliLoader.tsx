@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { ChiliMark } from "./ChiliMark";
 
 /**
  * The app's loading state: a chili bouncing under three curls of steam.
@@ -50,41 +51,15 @@ export function ChiliLoader({
         ))}
 
         {/* Chili */}
-        <motion.svg
-          viewBox="0 0 64 80"
-          width={size}
-          height={size * 1.25}
-          className="absolute inset-0"
+        <motion.div
+          className="absolute inset-0 grid place-items-center text-root-500"
           animate={
-            reduceMotion
-              ? undefined
-              : { y: [0, -8, 0], rotate: [-6, 6, -6] }
+            reduceMotion ? undefined : { y: [0, -8, 0], rotate: [-6, 6, -6] }
           }
           transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
         >
-          {/* Stalk */}
-          <path
-            d="M32 18c0-6 4-10 9-11"
-            fill="none"
-            stroke="#3f8f4a"
-            strokeWidth="5"
-            strokeLinecap="round"
-          />
-          <circle cx="32" cy="20" r="5" fill="#4CAF50" />
-          {/* Body */}
-          <path
-            d="M32 22c11 0 19 9 19 21 0 16-12 30-24 30-6 0-10-3-10-7 0-4 4-6 9-7 9-2 14-9 14-18 0-8-4-13-8-15z"
-            fill="#F84B3B"
-          />
-          {/* Highlight */}
-          <path
-            d="M36 30c4 3 6 8 6 13"
-            fill="none"
-            stroke="rgba(255,255,255,0.55)"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-        </motion.svg>
+          <ChiliMark size={size * 0.72} fill={0.16} />
+        </motion.div>
 
         {/* Shadow the chili bounces on, so it reads as weight rather than drift */}
         <motion.span

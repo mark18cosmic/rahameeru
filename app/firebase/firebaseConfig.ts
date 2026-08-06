@@ -6,6 +6,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import { getStorage, connectStorageEmulator } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -21,6 +22,8 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+/** Review photos live here. */
+export const storage = getStorage(app);
 
 /**
  * Point the SDK at the local Emulator Suite when one is configured.
@@ -42,6 +45,7 @@ if (emulatorHost) {
     connectAuthEmulator(auth, `http://${emulatorHost}:9099`, {
       disableWarnings: true,
     });
+    connectStorageEmulator(storage, emulatorHost, 9199);
   } catch {
     // Already connected on a previous module evaluation (hot reload) — the SDK
     // throws rather than no-opping, and a second call has nothing to do anyway.

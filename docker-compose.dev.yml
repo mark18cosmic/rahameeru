@@ -17,6 +17,7 @@ services:
       - "4000:4000" # Emulator UI
       - "8080:8080" # Firestore
       - "9099:9099" # Auth
+      - "9199:9199" # Storage
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/').then(()=>process.exit(0)).catch(()=>process.exit(1))"]
       interval: 5s

@@ -18,6 +18,7 @@ import type { MenuItem, MenuSection } from "@/app/lib/types";
 import { cx, dishPhotoUrl } from "@/app/lib/utils";
 import { flagsFor } from "@/app/lib/diet";
 import { usePreferences } from "@/app/lib/usePreferences";
+import { useReviews } from "@/app/lib/useReviews";
 import { BLUR } from "../ui/Photo";
 import { DishSheet } from "./DishSheet";
 
@@ -47,11 +48,15 @@ function formatPrice(mvr: number): string {
  */
 export function Menu({
   sections,
+  restaurantId,
   restaurantName,
+  restaurantSlug,
   cuisine = [],
 }: {
   sections: MenuSection[];
+  restaurantId: string;
   restaurantName: string;
+  restaurantSlug: string;
   cuisine?: string[];
 }) {
   const [query, setQuery] = useState("");
@@ -61,6 +66,8 @@ export function Menu({
   const [onlySuitable, setOnlySuitable] = useState(false);
   const reduceMotion = useReducedMotion();
   const { diet } = usePreferences();
+  // Dish scores come from what reviewers said they ordered.
+  const { dishes: dishRatings } = useReviews(restaurantId);
 
   const toggleFilter = (key: FilterKey) =>
     setFilters((f) => (f.includes(key) ? f.filter((x) => x !== key) : [...f, key]));
@@ -278,6 +285,7 @@ export function Menu({
                     <ul className="divide-y divide-ink-100 px-3 dark:divide-ink-800 md:px-4">
                       {section.items.map((item) => {
                         const flags = flagsFor(item, diet);
+                        const score = dishRatings.get(item.name.trim().toLowerCase());
                         return (
                           <li key={item.name}>
                             <button
@@ -320,6 +328,15 @@ export function Menu({
                                   </span>
                                 )}
                                 <span className="mt-1 flex flex-wrap items-center gap-1.5">
+                                  {score && (
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-saffron-400/20 px-2 py-0.5 text-[11px] font-bold text-saffron-500">
+                                      <Star size={10} className="fill-saffron-500" />
+                                      {score.average.toFixed(1)}
+                                      <span className="font-medium text-ink-400">
+                                        ({score.count})
+                                      </span>
+                                    </span>
+                                  )}
                                   {flags.length > 0 && (
                                     <span className="inline-flex items-center gap-1 rounded-full bg-root-50 px-2 py-0.5 text-[11px] font-semibold text-root-700 dark:bg-root-900/25 dark:text-root-300">
                                       <ShieldAlert size={10} /> Check ingredients
@@ -371,9 +388,12 @@ export function Menu({
 
       <DishSheet
         item={dish}
+        restaurantId={restaurantId}
         restaurantName={restaurantName}
+        restaurantSlug={restaurantSlug}
         cuisine={cuisine}
         diet={diet}
+        score={dish ? dishRatings.get(dish.name.trim().toLowerCase()) : undefined}
         onClose={() => setDish(null)}
       />
     </section>

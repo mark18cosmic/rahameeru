@@ -1,0 +1,12 @@
+rules_version = '2';
+
+// Local development only — the emulator has nothing real to protect.
+// In production: signed-in writes, size and content-type limits, and reads
+// open only for review photos. See docs/setup.md.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}

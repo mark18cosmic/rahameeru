@@ -241,7 +241,9 @@ export function RestaurantDetail({
               {tab === "menu" && hasMenu && (
                 <Menu
                   sections={restaurant.menu!}
+                  restaurantId={restaurant.id}
                   restaurantName={restaurant.name}
+                  restaurantSlug={restaurant.slug}
                   cuisine={restaurant.cuisine}
                 />
               )}
@@ -250,6 +252,7 @@ export function RestaurantDetail({
                 <Reviews
                   restaurantId={restaurant.id}
                   restaurantName={restaurant.name}
+                  menu={restaurant.menu}
                   baseCount={restaurant.baseReviewCount ?? restaurant.reviewCount}
                   baseRating={restaurant.baseRating ?? restaurant.rating}
                 />

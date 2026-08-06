@@ -74,6 +74,20 @@ select:focus-visible {
   outline: none;
 }
 
+/* No visible scrollbars anywhere. Overlay bars on macOS and iOS already behave
+   this way; this makes Windows, Linux and Android match instead of drawing a
+   grey gutter down every sheet and rail. Scrolling itself is untouched, and
+   keyboard and trackpad scrolling still work normally. */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 @layer utilities {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;

@@ -62,6 +62,15 @@ export interface ReviewReply {
   at: number;
 }
 
+/** A dish the reviewer actually ordered, with their verdict on it. */
+export interface DishVerdict {
+  name: string;
+  /** 1–5, or undefined if they picked the dish without rating it. */
+  rating?: number;
+}
+
+export type VisitType = "dine-in" | "takeaway" | "delivery";
+
 export interface Review {
   id: string;
   restaurantId: string;
@@ -70,6 +79,15 @@ export interface Review {
   rating: number;
   content: string;
   createdAt: number;
+  /** What they ordered. This is what makes dish-level ratings possible. */
+  dishes?: DishVerdict[];
+  /** Download URLs for photos they added. */
+  photos?: string[];
+  visitType?: VisitType;
+  /** Minutes waited for food, as reported. */
+  waitMinutes?: number;
+  /** Rufiyaa per person, as reported. */
+  spendPerHead?: number;
   /** Set when the venue answers. Only the listing's owner can write this. */
   reply?: ReviewReply;
 }

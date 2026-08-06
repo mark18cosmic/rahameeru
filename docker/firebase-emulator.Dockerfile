@@ -10,13 +10,13 @@ RUN apt-get update \
 RUN npm install -g firebase-tools@13
 
 WORKDIR /workspace
-COPY firebase.json .firebaserc firestore.rules ./
+COPY firebase.json .firebaserc firestore.rules storage.rules ./
 
 # Pre-download the emulator jars at build time so `up` doesn't stall on a
 # first-run fetch (and so the container works on a slow connection).
 RUN firebase setup:emulators:firestore
 
-# 4000 UI · 8080 Firestore · 9099 Auth
-EXPOSE 4000 8080 9099
+# 4000 UI · 8080 Firestore · 9099 Auth · 9199 Storage
+EXPOSE 4000 8080 9099 9199
 
-CMD ["firebase", "emulators:start", "--project", "rahameeru-local", "--only", "auth,firestore"]
+CMD ["firebase", "emulators:start", "--project", "rahameeru-local", "--only", "auth,firestore,storage"]

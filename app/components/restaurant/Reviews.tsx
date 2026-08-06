@@ -1,20 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { MessageSquarePlus, Loader2, CornerDownRight } from "lucide-react";
-import type { Review } from "@/app/lib/types";
-import { getReviews, addReview } from "@/app/lib/reviews";
+import { useState } from "react";
+import Image from "next/image";
+import {
+  MessageSquarePlus,
+  Loader2,
+  CornerDownRight,
+  Clock,
+  Wallet,
+  ShoppingBag,
+  Bike,
+  UtensilsCrossed,
+} from "lucide-react";
+import type { MenuSection, VisitType } from "@/app/lib/types";
 import { blendRating } from "@/app/lib/ratings";
 import { refreshRestaurants } from "@/app/lib/restaurants";
+import { useReviews } from "@/app/lib/useReviews";
 import { usePoints } from "@/app/lib/usePoints";
 import { awardForReview } from "@/app/lib/rewards";
 import { PointsToast } from "./PointsToast";
+import { ReviewForm } from "./ReviewForm";
 import { useAuth } from "@/app/providers/AuthProvider";
-import { Stars, StarInput } from "../ui/Stars";
+import { Stars } from "../ui/Stars";
 import { Button } from "../ui/Button";
 import { Modal } from "../ui/Modal";
-import { Textarea, Label } from "../ui/Field";
+
+const VISIT_LABEL: Record<VisitType, { label: string; icon: typeof Clock }> = {
+  "dine-in": { label: "Ate in", icon: UtensilsCrossed },
+  takeaway: { label: "Takeaway", icon: ShoppingBag },
+  delivery: { label: "Delivery", icon: Bike },
+};
 
 function timeAgo(ts: number): string {
   const s = Math.floor((Date.now() - ts) / 1000);
@@ -35,11 +50,14 @@ function timeAgo(ts: number): string {
 export function Reviews({
   restaurantId,
   restaurantName,
+  menu,
   baseCount,
   baseRating,
 }: {
   restaurantId: string;
   restaurantName: string;
+  /** Lets the form offer the actual dishes to rate. */
+  menu?: MenuSection[];
   /** Listed review count, before anything posted in the app. */
   baseCount: number;
   /** Listed rating, before anything posted in the app. */
@@ -47,65 +65,31 @@ export function Reviews({
 }) {
   const { user } = useAuth();
   const { award } = usePoints();
+  const { reviews, loading, refresh } = useReviews(restaurantId);
   const [earned, setEarned] = useState<{
     amount: number;
     lines: { label: string; amount: number }[];
   } | null>(null);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [text, setText] = useState("");
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const load = () => {
-    getReviews(restaurantId)
-      .then(setReviews)
-      .finally(() => setLoading(false));
-  };
-  useEffect(load, [restaurantId]);
-
-  const submit = async () => {
-    if (!user) return;
-    if (rating === 0) return setError("Please pick a rating.");
-    if (text.trim().length < 4) return setError("Add a few words to your review.");
-    setSaving(true);
-    setError(null);
-    try {
-      await addReview({
-        restaurantId,
-        userId: user.uid,
-        name: user.displayName ?? user.email?.split("@")[0] ?? "Anonymous",
-        rating,
-        content: text.trim(),
-      });
-      // Points are issued in the restaurant's name — see lib/rewards.ts.
-      const earning = awardForReview({
-        contentLength: text.trim().length,
-        isFirstForVendor: reviews.length === 0,
-      });
-      await award({
-        restaurantId,
-        restaurantName,
-        amount: earning.amount,
-        reason: `Reviewed ${restaurantName}`,
-      });
-      setEarned(earning);
-
-      setText("");
-      setRating(0);
-      setOpen(false);
-      setLoading(true);
-      // The list pages memoise their aggregate, so drop it — otherwise the
-      // rating you just changed keeps showing the old number elsewhere.
-      refreshRestaurants();
-      load();
-    } catch {
-      setError("Couldn't save your review. Try again.");
-    } finally {
-      setSaving(false);
-    }
+  const posted = async ({ contentLength }: { contentLength: number }) => {
+    // Points are issued in the restaurant's name — see lib/rewards.ts.
+    const earning = awardForReview({
+      contentLength,
+      isFirstForVendor: reviews.length === 0,
+    });
+    await award({
+      restaurantId,
+      restaurantName,
+      amount: earning.amount,
+      reason: `Reviewed ${restaurantName}`,
+    });
+    setEarned(earning);
+    setOpen(false);
+    // The list pages memoise their aggregate, so drop it — otherwise the rating
+    // you just changed keeps showing the old number elsewhere.
+    refreshRestaurants();
+    refresh();
   };
 
   // Same Bayesian blend the listing pages use, recomputed from the reviews on
@@ -188,6 +172,71 @@ export function Reviews({
               </div>
               <p className="mt-3 text-ink-600 dark:text-ink-300">{r.content}</p>
 
+              {r.photos && r.photos.length > 0 && (
+                <div className="mt-3 flex gap-2">
+                  {r.photos.map((src) => (
+                    <a
+                      key={src}
+                      href={src}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="relative h-24 w-24 overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800"
+                    >
+                      <Image
+                        src={src}
+                        alt=""
+                        fill
+                        sizes="96px"
+                        loading="lazy"
+                        className="object-cover transition md:hover:scale-105"
+                      />
+                    </a>
+                  ))}
+                </div>
+              )}
+
+              {r.dishes && r.dishes.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {r.dishes.map((d) => (
+                    <span
+                      key={d.name}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-ink-100 px-2.5 py-1 text-[12px] text-ink-700 dark:bg-ink-800 dark:text-ink-200"
+                    >
+                      {d.name}
+                      {typeof d.rating === "number" && (
+                        <span className="font-semibold text-saffron-500">
+                          {d.rating}/5
+                        </span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {(r.visitType || r.waitMinutes || r.spendPerHead) && (
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-500">
+                  {r.visitType && VISIT_LABEL[r.visitType] && (
+                    <span className="flex items-center gap-1">
+                      {(() => {
+                        const Icon = VISIT_LABEL[r.visitType].icon;
+                        return <Icon size={12} />;
+                      })()}
+                      {VISIT_LABEL[r.visitType].label}
+                    </span>
+                  )}
+                  {typeof r.waitMinutes === "number" && (
+                    <span className="flex items-center gap-1">
+                      <Clock size={12} /> waited {r.waitMinutes} min
+                    </span>
+                  )}
+                  {typeof r.spendPerHead === "number" && (
+                    <span className="flex items-center gap-1">
+                      <Wallet size={12} /> MVR {r.spendPerHead} a head
+                    </span>
+                  )}
+                </div>
+              )}
+
               {r.reply && (
                 <div className="mt-3 rounded-2xl bg-ink-50 p-3.5 dark:bg-ink-800/60">
                   <p className="flex items-center gap-1.5 text-xs font-semibold text-ink-700 dark:text-ink-200">
@@ -207,30 +256,19 @@ export function Reviews({
         )}
       </div>
 
-      <Modal open={open} onClose={() => setOpen(false)} title="Write a review">
-        <div className="space-y-4">
-          <div>
-            <Label>Your rating</Label>
-            <StarInput value={rating} onChange={setRating} />
-          </div>
-          <div>
-            <Label>Your review</Label>
-            <Textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="What did you order? How was the vibe, service, value?"
-            />
-          </div>
-          {error && <p className="text-sm text-root-600">{error}</p>}
-          <div className="flex justify-end gap-2">
-            <Button variant="ghost" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={submit} disabled={saving}>
-              {saving && <Loader2 size={16} className="animate-spin" />}
-              Post review
-            </Button>
-          </div>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Write a review"
+        maxWidth="max-w-xl"
+      >
+        <div className="max-h-[70svh] overflow-y-auto pr-1">
+          <ReviewForm
+            restaurantId={restaurantId}
+            menu={menu}
+            onPosted={posted}
+            onCancel={() => setOpen(false)}
+          />
         </div>
       </Modal>
     </div>

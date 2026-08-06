@@ -53,8 +53,13 @@ const RATINGS = [
 /** The pointer sits at the top of the wheel; canvas angle 0 points right. */
 const POINTER_ANGLE = 270;
 const SPIN_MS = 4200;
-/** Slices past this stop being readable, so the pool is sampled down to it. */
-const MAX_SLICES = 10;
+/**
+ * Every match goes on the wheel — capping it silently excluded places people
+ * had explicitly filtered for. Labels adapt instead: they shorten as slices
+ * multiply, and past LABEL_LIMIT the wheel is drawn as colour alone, with the
+ * winner named on the card underneath.
+ */
+const LABEL_LIMIT = 22;
 
 type Prefs = {
   areas: string[];
@@ -141,17 +146,8 @@ export function WheelSpinner({ restaurants }: Props) {
     });
   }, [restaurants, prefs, seen, diet]);
 
-  /** Slices actually drawn: a random sample, so a big pool isn't just A–J. */
-  const pool = useMemo(() => {
-    if (matches.length <= MAX_SLICES) return matches;
-    const copy = [...matches];
-    const out: Restaurant[] = [];
-    while (out.length < MAX_SLICES && copy.length) {
-      out.push(copy.splice(Math.floor(Math.random() * copy.length), 1)[0]);
-    }
-    return out;
-    // Re-sampled whenever the filters change, not on every render.
-  }, [matches]);
+  /** Everything that matched, in the order it will be drawn. */
+  const pool = matches;
 
   const activeCount =
     prefs.areas.length +
@@ -203,9 +199,16 @@ export function WheelSpinner({ restaurants }: Props) {
     const cy = size / 2;
     const radius = size / 2 - 6;
     const slice = (2 * Math.PI) / pool.length;
-    const hub = Math.max(20, size * 0.08);
-    const fontSize = Math.max(10, Math.round(size * 0.042));
-    const maxChars = pool.length > 8 ? 11 : 14;
+    const hub = Math.max(18, size * 0.075);
+    // Type and label length track how many slices there are, so a big pool
+    // stays legible instead of turning into overlapping text.
+    const dense = pool.length > 12;
+    const fontSize = Math.max(
+      8,
+      Math.round(size * (dense ? 0.032 : 0.042) * (pool.length > 18 ? 0.85 : 1))
+    );
+    const maxChars = pool.length > 18 ? 6 : pool.length > 12 ? 9 : pool.length > 8 ? 11 : 14;
+    const showLabels = pool.length <= LABEL_LIMIT;
 
     pool.forEach((r, i) => {
       const start = i * slice;
@@ -216,9 +219,10 @@ export function WheelSpinner({ restaurants }: Props) {
       ctx.fillStyle = WHEEL_COLORS[i % WHEEL_COLORS.length];
       ctx.fill();
       ctx.strokeStyle = "rgba(255,255,255,0.85)";
-      ctx.lineWidth = 2;
+      ctx.lineWidth = pool.length > 18 ? 1 : 2;
       ctx.stroke();
 
+      if (!showLabels) return;
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(start + slice / 2);
@@ -228,7 +232,7 @@ export function WheelSpinner({ restaurants }: Props) {
       ctx.font = `600 ${fontSize}px Inter, system-ui, sans-serif`;
       const label =
         r.name.length > maxChars ? r.name.slice(0, maxChars - 1) + "…" : r.name;
-      ctx.fillText(label, radius - 12, 0);
+      ctx.fillText(label, radius - (dense ? 8 : 12), 0);
       ctx.restore();
     });
 
@@ -292,8 +296,13 @@ export function WheelSpinner({ restaurants }: Props) {
       disabled={disabled}
       aria-pressed={on}
       className={cx(
+        // Two surfaces to sit on: the dark wheel card and the themed sheet.
+        // Explicit light/dark values rather than translucent white, which
+        // disappeared against the light sheet background.
         "inline-flex min-h-[38px] shrink-0 items-center gap-1.5 rounded-full px-3.5 text-[13px] font-medium transition active:scale-95 disabled:opacity-50",
-        on ? "bg-white text-ink-900" : "bg-white/10 text-ink-200 hover:bg-white/20"
+        on
+          ? "bg-root-500 text-white md:bg-white md:text-ink-900"
+          : "bg-ink-100 text-ink-600 dark:bg-white/10 dark:text-ink-200 md:bg-white/10 md:text-ink-200 md:hover:bg-white/20"
       )}
     >
       {children}
@@ -408,8 +417,8 @@ export function WheelSpinner({ restaurants }: Props) {
   const countLine =
     matches.length === 0
       ? "Nothing matches — loosen something"
-      : `${matches.length} ${matches.length === 1 ? "place" : "places"} match` +
-        (matches.length > MAX_SLICES ? `, ${MAX_SLICES} on the wheel` : "");
+      : `${matches.length} ${matches.length === 1 ? "place" : "places"} on the wheel` +
+        (matches.length > LABEL_LIMIT ? " — too many to label, spin to see" : "");
 
   const winnerCard = winner && (
     <motion.div
@@ -466,9 +475,19 @@ export function WheelSpinner({ restaurants }: Props) {
           {/* Desktop-only inline controls */}
           <div className="mt-5 hidden md:block">{prefControls}</div>
 
-          <p className="mt-4 hidden text-sm text-ink-400 md:block" aria-live="polite">
-            {countLine}
-          </p>
+          <div className="mt-4 hidden items-center gap-3 md:flex">
+            <p className="text-sm text-ink-400" aria-live="polite">
+              {countLine}
+            </p>
+            {activeCount > 0 && (
+              <button
+                onClick={() => setPrefs({ ...EMPTY, skipSeen: prefs.skipSeen })}
+                className="text-sm font-semibold text-root-300 transition hover:text-root-200"
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
 
           <Button
             onClick={spin}
@@ -523,8 +542,16 @@ export function WheelSpinner({ restaurants }: Props) {
           </div>
 
           {/* Mobile controls, directly under the wheel */}
-          <p className="text-sm text-ink-400 md:hidden" aria-live="polite">
+          <p className="flex items-center gap-3 text-sm text-ink-400 md:hidden" aria-live="polite">
             {countLine}
+            {activeCount > 0 && (
+              <button
+                onClick={() => setPrefs({ ...EMPTY, skipSeen: prefs.skipSeen })}
+                className="font-semibold text-root-300"
+              >
+                Clear
+              </button>
+            )}
           </p>
 
           <div className="flex w-full gap-2 md:hidden">
@@ -580,33 +607,56 @@ export function WheelSpinner({ restaurants }: Props) {
               dragConstraints={{ top: 0, bottom: 0 }}
               dragElastic={{ top: 0, bottom: 0.4 }}
               onDragEnd={(_, info) => info.offset.y > 90 && setPanelOpen(false)}
-              className="relative max-h-[82svh] w-full overflow-y-auto rounded-t-3xl bg-ink-900 p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] text-white ring-1 ring-white/10"
+              // The sheet lives outside the dark wheel card, so it takes the
+              // page's theme rather than inheriting the card's dark surface.
+              className="relative flex max-h-[86svh] w-full flex-col rounded-t-3xl bg-white text-ink-900 ring-1 ring-black/5 dark:bg-ink-900 dark:text-white dark:ring-white/10"
             >
-              <span
-                aria-hidden
-                className="mx-auto mb-4 block h-1 w-10 rounded-full bg-white/25"
-              />
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="font-display text-lg font-extrabold">
-                  What are you in the mood for?
-                </h3>
-                <button
-                  onClick={() => setPanelOpen(false)}
-                  aria-label="Close"
-                  className="grid h-9 w-9 place-items-center rounded-full bg-white/10 active:scale-90"
-                >
-                  <X size={18} />
-                </button>
+              {/* Header and footer are pinned; only the middle scrolls, which
+                  is what stops the last group being cut in half. */}
+              <div className="shrink-0 px-5 pt-3">
+                <span
+                  aria-hidden
+                  className="mx-auto mb-3 block h-1 w-10 rounded-full bg-ink-200 dark:bg-white/25"
+                />
+                <div className="flex items-center justify-between gap-3 pb-3">
+                  <h3 className="font-display text-lg font-extrabold">
+                    What are you in the mood for?
+                  </h3>
+                  <div className="flex shrink-0 items-center gap-2">
+                    {activeCount > 0 && (
+                      <button
+                        onClick={() => setPrefs({ ...EMPTY, skipSeen: prefs.skipSeen })}
+                        className="text-sm font-semibold text-root-600 dark:text-root-300"
+                      >
+                        Clear all
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setPanelOpen(false)}
+                      aria-label="Close"
+                      className="grid h-9 w-9 place-items-center rounded-full bg-ink-100 active:scale-90 dark:bg-white/10"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              {prefControls}
+              <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-2">
+                {prefControls}
+              </div>
 
-              <button
-                onClick={() => setPanelOpen(false)}
-                className="mt-5 min-h-[52px] w-full rounded-full bg-white font-semibold text-ink-900 transition active:scale-[0.98]"
-              >
-                Show {matches.length} {matches.length === 1 ? "place" : "places"}
-              </button>
+              <div className="shrink-0 border-t border-ink-100 px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 dark:border-ink-800">
+                <button
+                  onClick={() => setPanelOpen(false)}
+                  disabled={matches.length === 0}
+                  className="min-h-[52px] w-full rounded-full bg-root-500 font-semibold text-white transition active:scale-[0.98] disabled:opacity-50"
+                >
+                  {matches.length === 0
+                    ? "Nothing matches"
+                    : `Show ${matches.length} ${matches.length === 1 ? "place" : "places"}`}
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}
@@ -618,7 +668,7 @@ export function WheelSpinner({ restaurants }: Props) {
 function Group({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-400">
+      <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-500 dark:text-ink-400">
         {label}
       </p>
       <div className="flex flex-wrap gap-1.5">{children}</div>

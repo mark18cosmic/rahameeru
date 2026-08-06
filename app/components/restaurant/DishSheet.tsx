@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { X, Star, Flame, Leaf, ShieldAlert, UtensilsCrossed } from "lucide-react";
+import { X, Star, Flame, Leaf, ShieldAlert, UtensilsCrossed, Plus, Check } from "lucide-react";
 import type { MenuItem } from "@/app/lib/types";
 import { dishPhotoUrl, cx } from "@/app/lib/utils";
 import { flagsFor, flagLabel, DIET_BY_KEY, type DietKey } from "@/app/lib/diet";
+import { useCart } from "@/app/lib/useCart";
 import { BLUR } from "../ui/Photo";
 
 /** Ingredient words worth surfacing when the restaurant hasn't listed any. */
@@ -42,18 +43,33 @@ function formatPrice(mvr: number): string {
 
 export function DishSheet({
   item,
+  restaurantId,
   restaurantName,
+  restaurantSlug,
   cuisine,
   diet,
+  score,
   onClose,
 }: {
   item: MenuItem | null;
+  restaurantId: string;
   restaurantName: string;
+  restaurantSlug: string;
   cuisine: string[];
   diet: DietKey[];
+  /** What reviewers gave this dish, if anyone has rated it. */
+  score?: { average: number; count: number };
   onClose: () => void;
 }) {
   const reduceMotion = useReducedMotion();
+  const { add, items } = useCart();
+  const inBill = item
+    ? items.find(
+        (i) =>
+          i.restaurantId === restaurantId &&
+          i.dish.toLowerCase() === item.name.toLowerCase()
+      )?.qty ?? 0
+    : 0;
   const flags = item ? flagsFor(item, diet) : [];
   const listed = item?.ingredients ?? [];
   const spotted = item && listed.length === 0 ? mentionedIngredients(item) : [];
@@ -116,6 +132,19 @@ export function DishSheet({
                   {formatPrice(item.price)}
                 </span>
               </div>
+
+              {score && (
+                <p className="mt-2 flex items-center gap-1.5 text-sm">
+                  <Star size={15} className="fill-saffron-500 text-saffron-500" />
+                  <b className="text-ink-900 dark:text-white">
+                    {score.average.toFixed(1)}
+                  </b>
+                  <span className="text-ink-500">
+                    from {score.count} {score.count === 1 ? "person" : "people"} who
+                    ordered it
+                  </span>
+                </p>
+              )}
 
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {item.popular && (
@@ -187,6 +216,33 @@ export function DishSheet({
                   </p>
                 )}
               </div>
+
+              {/* Adds to the running bill in the header — nothing is ordered. */}
+              <button
+                onClick={() =>
+                  add({
+                    restaurantId,
+                    restaurantName,
+                    restaurantSlug,
+                    dish: item.name,
+                    price: item.price,
+                  })
+                }
+                className="mt-5 flex min-h-[50px] w-full items-center justify-center gap-2 rounded-full bg-root-500 font-semibold text-white transition hover:bg-root-600 active:scale-[0.98]"
+              >
+                {inBill > 0 ? (
+                  <>
+                    <Check size={17} /> In your bill ({inBill}) · add another
+                  </>
+                ) : (
+                  <>
+                    <Plus size={17} /> Add to bill · {formatPrice(item.price)}
+                  </>
+                )}
+              </button>
+              <p className="mt-1.5 text-center text-[11px] text-ink-400">
+                Works out what an evening costs. It doesn&apos;t order anything.
+              </p>
             </div>
           </motion.div>
         </motion.div>

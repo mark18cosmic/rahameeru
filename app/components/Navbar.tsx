@@ -11,18 +11,19 @@ import {
   User as UserIcon,
   Sun,
   Moon,
-  Menu,
-  X,
   LogOut,
   Compass,
   Search as SearchIcon,
   Info,
+  Receipt,
 } from "lucide-react";
 import logo from "@/public/rahameeruLogo.png";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { useSearch } from "@/app/providers/SearchProvider";
 import { useTheme } from "@/app/providers/ThemeProvider";
 import { cx } from "@/app/lib/utils";
+import { useCart } from "@/app/lib/useCart";
+import { BillSheet } from "./cart/BillSheet";
 import { ButtonLink } from "./ui/Button";
 
 const NAV = [
@@ -32,20 +33,15 @@ const NAV = [
   { href: "/about", label: "About", icon: Info },
 ];
 
-/**
- * On phones the bottom tab bar already covers Explore/Search/Favorites, so the
- * sheet only carries what the tab bar leaves out.
- */
-const MOBILE_ONLY = NAV.filter((n) => n.href === "/about");
-
 export default function Navbar() {
   const { user, logout } = useAuth();
   const { open } = useSearch();
   const { theme, toggle } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
+  const { count } = useCart();
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [billOpen, setBillOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -55,7 +51,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setMobileOpen(false), [pathname]);
+  useEffect(() => setBillOpen(false), [pathname]);
 
   return (
     <header
@@ -100,14 +96,26 @@ export default function Navbar() {
           <button
             onClick={open}
             aria-label="Search"
-            className="grid h-9 w-9 place-items-center rounded-full text-ink-600 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800 md:flex md:h-auto md:w-auto md:min-w-[200px] md:items-center md:gap-2 md:rounded-full md:border md:border-ink-200 md:py-2 md:pl-3 md:pr-2 md:text-sm md:text-ink-500 md:hover:border-ink-300 md:hover:bg-transparent md:dark:border-ink-700"
+            className="hidden min-w-[200px] items-center gap-2 rounded-full border border-ink-200 py-2 pl-3 pr-2 text-sm text-ink-500 transition hover:border-ink-300 dark:border-ink-700 md:flex"
           >
-            <Search size={18} className="md:hidden" />
-            <Search size={16} className="hidden md:block" />
+            <Search size={16} />
             <span className="hidden md:inline">Search…</span>
             <kbd className="ml-auto hidden rounded bg-ink-100 px-1.5 py-0.5 text-[10px] text-ink-500 dark:bg-ink-800 md:inline">
               ⌘K
             </kbd>
+          </button>
+
+          <button
+            onClick={() => setBillOpen(true)}
+            aria-label={count > 0 ? `Your bill, ${count} items` : "Your bill"}
+            className="relative grid h-9 w-9 place-items-center rounded-full text-ink-600 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800"
+          >
+            <Receipt size={19} />
+            {count > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-root-500 px-1 text-[10px] font-bold text-white">
+                {count > 9 ? "9+" : count}
+              </span>
+            )}
           </button>
 
           <button
@@ -119,7 +127,7 @@ export default function Navbar() {
           </button>
 
           {user ? (
-            <div className="relative">
+            <div className="relative hidden md:block">
               <button
                 onClick={() => setMenuOpen((v) => !v)}
                 onBlur={() => setTimeout(() => setMenuOpen(false), 150)}
@@ -170,43 +178,10 @@ export default function Navbar() {
             </ButtonLink>
           )}
 
-          <button
-            onClick={() => setMobileOpen((v) => !v)}
-            className="grid h-9 w-9 place-items-center rounded-full text-ink-700 hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800 md:hidden"
-            aria-label="Menu"
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
         </div>
       </nav>
 
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-ink-100 bg-white dark:border-ink-800 dark:bg-ink-900 md:hidden"
-          >
-            <div className="flex flex-col p-3">
-              {MOBILE_ONLY.map((n) => (
-                <Link
-                  key={n.href}
-                  href={n.href}
-                  className="flex min-h-[48px] items-center gap-2.5 rounded-xl px-4 py-3 text-ink-700 hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-ink-800"
-                >
-                  <n.icon size={18} /> {n.label}
-                </Link>
-              ))}
-              {!user && (
-                <ButtonLink href="/login" className="mt-2 w-full">
-                  Sign in
-                </ButtonLink>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <BillSheet open={billOpen} onClose={() => setBillOpen(false)} />
     </header>
   );
 }
