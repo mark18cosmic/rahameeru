@@ -80,8 +80,14 @@ export default function Footer() {
         ))}
       </div>
       {/* Extra bottom padding clears the mobile tab bar. */}
-      <div className="border-t border-ink-100 py-5 pb-[calc(5rem+env(safe-area-inset-bottom))] text-center text-sm text-ink-400 dark:border-ink-800 md:pb-5">
-        © {new Date().getFullYear()} Rahameeru Reviews. All rights reserved.
+      <div className="flex flex-col items-center gap-1 border-t border-ink-100 py-5 pb-[calc(5rem+env(safe-area-inset-bottom))] text-center text-sm text-ink-400 dark:border-ink-800 md:flex-row md:justify-between md:px-6 md:pb-5">
+        <p>© {new Date().getFullYear()} Rahameeru Reviews. All rights reserved.</p>
+        <p>
+          Created by{" "}
+          <span className="font-semibold text-ink-600 dark:text-ink-300">
+            KM Solutions
+          </span>
+        </p>
       </div>
     </footer>
   );
