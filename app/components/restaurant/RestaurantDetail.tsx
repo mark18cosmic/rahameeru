@@ -12,6 +12,7 @@ import {
   Share2,
   ChevronLeft,
   Check,
+  QrCode,
 } from "lucide-react";
 import type { Restaurant } from "@/app/lib/types";
 import {
@@ -28,6 +29,7 @@ import { Badge } from "../ui/Badge";
 import { Button, ButtonLink } from "../ui/Button";
 import { FavoriteButton } from "../FavoriteButton";
 import { MapModal } from "./MapModal";
+import { ScanSheet } from "../scan/ScanSheet";
 import { Reviews } from "./Reviews";
 import { Menu } from "./Menu";
 import { RestaurantCard } from "../RestaurantCard";
@@ -47,6 +49,7 @@ export function RestaurantDetail({
   const [active, setActive] = useState(0);
   const [copied, setCopied] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
+  const [scanOpen, setScanOpen] = useState(false);
   const [tab, setTab] = useState<Tab>("about");
   const open = isOpenNow(restaurant.hours);
   const reduceMotion = useReducedMotion();
@@ -268,10 +271,36 @@ export function RestaurantDetail({
               <Button onClick={() => setMapOpen(true)} className="flex-1">
                 <Navigation size={16} /> Directions
               </Button>
+              <Button
+                variant="outline"
+                onClick={() => setScanOpen(true)}
+                aria-label="Scan for points"
+                title="Scan the code on your table"
+              >
+                <QrCode size={16} />
+              </Button>
               <Button variant="outline" onClick={share} aria-label="Share">
                 {copied ? <Check size={16} /> : <Share2 size={16} />}
               </Button>
             </div>
+
+            {/* Reads as an offer, not a utility — the points are the point. */}
+            <button
+              onClick={() => setScanOpen(true)}
+              className="mt-3 hidden w-full items-center gap-3 rounded-2xl border border-dashed border-root-300 p-3 text-left transition hover:bg-root-50 active:scale-[0.99] dark:border-root-500/40 dark:hover:bg-root-900/20 md:flex"
+            >
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-root-100 text-root-600 dark:bg-root-500/15 dark:text-root-300">
+                <QrCode size={17} />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-sm font-semibold text-ink-900 dark:text-white">
+                  Here right now?
+                </span>
+                <span className="block text-xs text-ink-500">
+                  Scan the table code for points
+                </span>
+              </span>
+            </button>
 
             <div className="space-y-3 text-sm md:mt-5">
               {restaurant.address && (
@@ -343,6 +372,13 @@ export function RestaurantDetail({
         <Button onClick={() => setMapOpen(true)} className="flex-1">
           <Navigation size={16} /> Directions
         </Button>
+        <Button
+          variant="outline"
+          onClick={() => setScanOpen(true)}
+          aria-label="Scan for points"
+        >
+          <QrCode size={18} />
+        </Button>
         <Button variant="outline" onClick={share} aria-label="Share">
           {copied ? <Check size={18} /> : <Share2 size={18} />}
         </Button>
@@ -351,6 +387,13 @@ export function RestaurantDetail({
         restaurant={restaurant}
         open={mapOpen}
         onClose={() => setMapOpen(false)}
+      />
+
+      <ScanSheet
+        restaurantId={restaurant.id}
+        restaurantName={restaurant.name}
+        open={scanOpen}
+        onClose={() => setScanOpen(false)}
       />
     </div>
   );
