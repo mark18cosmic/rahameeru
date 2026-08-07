@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   MessageSquarePlus,
@@ -52,6 +52,8 @@ export function Reviews({
   restaurantId,
   restaurantName,
   menu,
+  autoOpen,
+  onAutoOpened,
   baseCount,
   baseRating,
 }: {
@@ -59,6 +61,9 @@ export function Reviews({
   restaurantName: string;
   /** Lets the form offer the actual dishes to rate. */
   menu?: MenuSection[];
+  /** Opens the form on mount — set when arriving from a scan. */
+  autoOpen?: boolean;
+  onAutoOpened?: () => void;
   /** Listed review count, before anything posted in the app. */
   baseCount: number;
   /** Listed rating, before anything posted in the app. */
@@ -72,6 +77,12 @@ export function Reviews({
     lines: { label: string; amount: number }[];
   } | null>(null);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!autoOpen || !user) return;
+    setOpen(true);
+    onAutoOpened?.();
+  }, [autoOpen, user, onAutoOpened]);
 
   const posted = async ({ contentLength }: { contentLength: number }) => {
     // Points are issued in the restaurant's name — see lib/rewards.ts.

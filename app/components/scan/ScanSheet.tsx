@@ -3,7 +3,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X, QrCode, Camera, Keyboard, Trophy, Info } from "lucide-react";
+import {
+  X,
+  QrCode,
+  Camera,
+  Keyboard,
+  Trophy,
+  Info,
+  ImageUp,
+  RotateCw,
+} from "lucide-react";
 import { SCAN_POINTS, FIRST_SCAN_BONUS } from "@/app/lib/scan";
 import { cx } from "@/app/lib/utils";
 
@@ -46,9 +55,12 @@ export function ScanSheet({
   const stream = useRef<MediaStream | null>(null);
   const stop = useRef(false);
 
+  const photoInput = useRef<HTMLInputElement>(null);
   const [mode, setMode] = useState<"camera" | "code">("camera");
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [starting, setStarting] = useState(true);
+  const [attempt, setAttempt] = useState(0);
 
   /**
    * A scanned QR carries the venue as well as the code, so it can be followed
@@ -81,71 +93,110 @@ export function ScanSheet({
   useEffect(() => {
     if (!open || mode !== "camera") return;
     stop.current = false;
+    setStarting(true);
+    setError(null);
 
     (async () => {
-      try {
-        const media = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" },
-        });
-        stream.current = media;
-        if (video.current) {
-          video.current.srcObject = media;
-          video.current.setAttribute("playsinline", "true");
-          await video.current.play();
-        }
-
-        const hit = (value: string) => {
-          if (!follow(value)) return false;
-          stop.current = true;
-          if (navigator.vibrate) navigator.vibrate(20);
-          return true;
-        };
-
-        if (window.BarcodeDetector) {
-          // Native decoding where the browser has it: no download, no canvas.
-          const detector = new window.BarcodeDetector({ formats: ["qr_code"] });
-          const tick = async () => {
-            if (stop.current || !video.current) return;
-            try {
-              const found = await detector.detect(video.current);
-              for (const f of found) if (hit(f.rawValue)) return;
-            } catch {
-              // Unreadable frame — try the next one.
-            }
-            requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-          return;
-        }
-
-        // iOS Safari has no BarcodeDetector, so decode in JS. Pulled in only
-        // when it's actually needed, and only ~15 fps — a phone camera gives
-        // plenty of chances and this keeps the device cool.
-        const jsQR = (await import("jsqr")).default;
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d", { willReadFrequently: true });
-
-        const scan = () => {
-          if (stop.current || !video.current || !ctx) return;
-          const v = video.current;
-          if (v.videoWidth) {
-            // Quarter resolution is ample for a code held up to the lens, and
-            // it keeps each frame's decode under a few milliseconds.
-            const w = (canvas.width = Math.min(480, v.videoWidth));
-            const h = (canvas.height = Math.round((v.videoHeight / v.videoWidth) * w));
-            ctx.drawImage(v, 0, 0, w, h);
-            const found = jsQR(ctx.getImageData(0, 0, w, h).data, w, h, {
-              inversionAttempts: "dontInvert",
-            });
-            if (found && hit(found.data)) return;
-          }
-          window.setTimeout(scan, 66);
-        };
-        scan();
-      } catch {
-        setError("Couldn't open the camera. Type the code underneath it instead.");
-        setMode("code");
+      // getUserMedia only exists in a secure context. Locally that includes
+      // localhost, but a phone hitting a dev server over the LAN gets nothing,
+      // and the failure is otherwise silent.
+      if (!navigator.mediaDevices?.getUserMedia) {
+        setError(
+          window.isSecureContext
+            ? "This browser won't share a camera. Type the code instead."
+            : "Cameras need a secure connection (https). Type the code instead."
+        );
+        setStarting(false);
+        return;
       }
+
+      let media: MediaStream;
+      try {
+        media = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" } },
+          audio: false,
+        });
+      } catch (err) {
+        const name = (err as DOMException)?.name;
+        setError(
+          name === "NotAllowedError"
+            ? "Camera access was blocked. Allow it in your browser settings, or type the code."
+            : name === "NotFoundError"
+              ? "No camera found on this device."
+              : "Couldn't start the camera. Try again, or type the code."
+        );
+        setStarting(false);
+        return;
+      }
+
+      stream.current = media;
+      const v = video.current;
+      if (v) {
+        // Safari on iOS needs all three set on the element itself, not just as
+        // React props, or it either refuses to autoplay or takes over the
+        // whole screen with its native player.
+        v.setAttribute("playsinline", "true");
+        v.setAttribute("autoplay", "true");
+        v.setAttribute("muted", "true");
+        v.muted = true;
+        v.srcObject = media;
+        try {
+          await v.play();
+        } catch {
+          // Some versions reject the first play() and start anyway.
+        }
+      }
+      setStarting(false);
+
+      const hit = (value: string) => {
+        if (!follow(value)) return false;
+        stop.current = true;
+        if (navigator.vibrate) navigator.vibrate(20);
+        return true;
+      };
+
+      if (window.BarcodeDetector) {
+        // Native decoding where the browser has it: no download, no canvas.
+        const detector = new window.BarcodeDetector({ formats: ["qr_code"] });
+        const tick = async () => {
+          if (stop.current || !video.current) return;
+          try {
+            const found = await detector.detect(video.current);
+            for (const f of found) if (hit(f.rawValue)) return;
+          } catch {
+            // Unreadable frame — try the next one.
+          }
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        return;
+      }
+
+      // Safari has no BarcodeDetector, and most people here are on iPhones, so
+      // this path is the important one: decode frames ourselves. Pulled in only
+      // when needed, at quarter resolution and ~15fps, which is plenty for a
+      // code held up to the lens and keeps the phone cool.
+      const jsQR = (await import("jsqr")).default;
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+      const scan = () => {
+        if (stop.current || !video.current || !ctx) return;
+        const el = video.current;
+        if (el.videoWidth) {
+          const w = (canvas.width = Math.min(480, el.videoWidth));
+          const h = (canvas.height = Math.round(
+            (el.videoHeight / el.videoWidth) * w
+          ));
+          ctx.drawImage(el, 0, 0, w, h);
+          const found = jsQR(ctx.getImageData(0, 0, w, h).data, w, h, {
+            inversionAttempts: "dontInvert",
+          });
+          if (found && hit(found.data)) return;
+        }
+        window.setTimeout(scan, 66);
+      };
+      scan();
     })();
 
     return () => {
@@ -153,7 +204,29 @@ export function ScanSheet({
       stream.current?.getTracks().forEach((t) => t.stop());
       stream.current = null;
     };
-  }, [open, mode, follow]);
+  }, [open, mode, follow, attempt]);
+
+  /** Last resort: decode a photo of the code from the library. */
+  const decodePhoto = async (file: File) => {
+    setError(null);
+    try {
+      const jsQR = (await import("jsqr")).default;
+      const bitmap = await createImageBitmap(file);
+      const canvas = document.createElement("canvas");
+      const w = (canvas.width = Math.min(1000, bitmap.width));
+      const h = (canvas.height = Math.round((bitmap.height / bitmap.width) * w));
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      ctx?.drawImage(bitmap, 0, 0, w, h);
+      bitmap.close?.();
+      const data = ctx?.getImageData(0, 0, w, h);
+      const found = data && jsQR(data.data, w, h, { inversionAttempts: "attemptBoth" });
+      if (!found || !follow(found.data)) {
+        setError("No code found in that picture. Try a straighter, closer shot.");
+      }
+    } catch {
+      setError("Couldn't read that image.");
+    }
+  };
 
   useEffect(() => {
     if (!open) {
@@ -220,14 +293,50 @@ export function ScanSheet({
                     ref={video}
                     playsInline
                     muted
+                    autoPlay
                     className="h-full w-full object-cover"
                   />
-                  {/* Framing guide */}
                   <span className="pointer-events-none absolute inset-8 rounded-2xl border-2 border-white/70" />
+
+                  {(starting || error) && (
+                    <div className="absolute inset-0 grid place-items-center bg-ink-900/85 p-6 text-center">
+                      {error ? (
+                        <div>
+                          <p className="text-sm text-white">{error}</p>
+                          <button
+                            onClick={() => setAttempt((a) => a + 1)}
+                            className="mt-3 inline-flex min-h-[40px] items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-ink-900"
+                          >
+                            <RotateCw size={15} /> Try again
+                          </button>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-white/80">Starting the camera…</p>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <p className="mt-3 text-center text-sm text-ink-500">
                   Point it at the code on your table.
                 </p>
+
+                <button
+                  onClick={() => photoInput.current?.click()}
+                  className="mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full border border-ink-200 text-sm font-semibold dark:border-ink-700"
+                >
+                  <ImageUp size={16} /> Use a photo of the code
+                </button>
+                <input
+                  ref={photoInput}
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) decodePhoto(file);
+                    e.target.value = "";
+                  }}
+                />
                 {restaurantId && (
                   <button
                     onClick={() => setMode("code")}

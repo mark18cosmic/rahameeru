@@ -20,7 +20,7 @@ import type { DishVerdict, MenuSection, VisitType } from "@/app/lib/types";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/app/firebase/firebaseConfig";
 import { addReview, uploadReviewPhoto } from "@/app/lib/reviews";
-import { scanDocId, dayKey, VERIFIED_WINDOW_MS } from "@/app/lib/scan";
+import { scanDocId, weekKey, VERIFIED_WINDOW_MS } from "@/app/lib/scan";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { cx } from "@/app/lib/utils";
 import { StarInput } from "../ui/Stars";
@@ -127,15 +127,16 @@ export function ReviewForm({
         urls.push(await uploadReviewPhoto(restaurantId, user.uid, photo.file));
       }
 
-      // A scan today, or late last night, marks this as a verified visit.
+      // A scan in the last day marks this as a verified visit. The claim is
+      // keyed by week, so check this week's and last week's records.
       let verifiedVisit = false;
       try {
-        const yesterday = dayKey(new Date(Date.now() - VERIFIED_WINDOW_MS));
-        const [todayScan, lastScan] = await Promise.all([
+        const lastWeek = weekKey(new Date(Date.now() - 7 * 86400000));
+        const [thisWeekScan, lastWeekScan] = await Promise.all([
           getDoc(doc(db, "scans", scanDocId(user.uid, restaurantId))),
-          getDoc(doc(db, "scans", scanDocId(user.uid, restaurantId, yesterday))),
+          getDoc(doc(db, "scans", scanDocId(user.uid, restaurantId, lastWeek))),
         ]);
-        const scan = todayScan.exists() ? todayScan : lastScan;
+        const scan = thisWeekScan.exists() ? thisWeekScan : lastWeekScan;
         verifiedVisit =
           scan.exists() && Date.now() - (scan.data().at ?? 0) < VERIFIED_WINDOW_MS;
       } catch {

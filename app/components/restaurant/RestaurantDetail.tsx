@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
@@ -51,6 +52,17 @@ export function RestaurantDetail({
   const [mapOpen, setMapOpen] = useState(false);
   const [scanOpen, setScanOpen] = useState(false);
   const [tab, setTab] = useState<Tab>("about");
+  const params = useSearchParams();
+  // Scanning a table code lands here with ?review=1 — go straight to the form
+  // rather than making someone find the tab while their food goes cold.
+  const [autoReview, setAutoReview] = useState(false);
+
+  useEffect(() => {
+    if (params.get("review")) {
+      setTab("reviews");
+      setAutoReview(true);
+    }
+  }, [params]);
   const open = isOpenNow(restaurant.hours);
   const reduceMotion = useReducedMotion();
   const hasMenu = Boolean(restaurant.menu?.length);
@@ -256,6 +268,8 @@ export function RestaurantDetail({
                   restaurantId={restaurant.id}
                   restaurantName={restaurant.name}
                   menu={restaurant.menu}
+                  autoOpen={autoReview}
+                  onAutoOpened={() => setAutoReview(false)}
                   baseCount={restaurant.baseReviewCount ?? restaurant.reviewCount}
                   baseRating={restaurant.baseRating ?? restaurant.rating}
                 />

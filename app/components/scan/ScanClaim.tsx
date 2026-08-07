@@ -16,7 +16,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/app/firebase/firebaseConfig";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { usePoints } from "@/app/lib/usePoints";
-import { SCAN_POINTS, FIRST_SCAN_BONUS, dayKey, scanDocId } from "@/app/lib/scan";
+import { SCAN_POINTS, FIRST_SCAN_BONUS, weekKey, scanDocId } from "@/app/lib/scan";
 import { ChiliLoader } from "../ui/ChiliLoader";
 
 type State =
@@ -91,7 +91,7 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
     await setDoc(doc(db, "scans", id), {
       userId: user.uid,
       restaurantId,
-      day: dayKey(),
+      week: weekKey(),
       at: Date.now(),
     });
 
@@ -177,11 +177,11 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
     <Shell
       icon={<CheckCircle2 size={26} />}
       tone="good"
-      title={state.already ? "Already checked in today" : `You're at ${state.name}`}
+      title={state.already ? "Already claimed this code" : `You're at ${state.name}`}
       body={
         state.already
-          ? "Points are once a day per restaurant — but the review is still worth writing."
-          : "Verified from the code on your table. Enjoy it."
+          ? "Each code can be claimed once — the next goes up on Monday. Your review still counts, and it'll show as a verified visit."
+          : "Verified from the code on your table. Write a review while it's in front of you and it'll carry a verified visit mark."
       }
     >
       {!state.already && (
@@ -197,7 +197,7 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
 
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
         <Link
-          href={`/restaurant/${state.slug}?tab=reviews`}
+          href={`/restaurant/${state.slug}?review=1`}
           className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full bg-root-500 px-6 font-semibold text-white"
         >
           <MessageSquarePlus size={17} /> Write a review

@@ -2,8 +2,8 @@ import { NextRequest } from "next/server";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/app/firebase/firebaseConfig";
 import {
-  dayCode,
-  dayKey,
+  weekCode,
+  weekKey as weekKeyOf,
   metresBetween,
   SCAN_RADIUS_M,
 } from "@/app/lib/scan";
@@ -14,9 +14,9 @@ import { getRestaurants } from "@/app/lib/restaurants";
  * doing the scanning.
  *
  * The secret lives on the vendor record; this route reads it, recomputes the
- * day's code and compares. Yesterday's code is also accepted, because a table
- * tent printed for "today" is still the right code at 00:20 to someone who
- * started dinner at 23:00.
+ * week's code and compares. Last week's code is accepted for the first twelve
+ * hours of a new week, so a Sunday-night dinner that runs past midnight isn't
+ * turned away before the restaurant has had a chance to reprint.
  */
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -60,15 +60,25 @@ export async function GET(req: NextRequest): Promise<Response> {
     return fail("This restaurant hasn't set up scanning yet.");
   }
 
-  const today = await dayCode(vendor.scanSecret, restaurantId);
-  const yesterday = await dayCode(
-    vendor.scanSecret,
-    restaurantId,
-    dayKey(new Date(Date.now() - 24 * 60 * 60 * 1000))
-  );
+  const current = await weekCode(vendor.scanSecret, restaurantId);
+  let accepted = code === current;
 
-  if (code !== today && code !== yesterday) {
-    return fail("That code has expired. Ask for the current one.");
+  if (!accepted) {
+    // Grace period: Monday's first twelve hours still take last week's code.
+    const now = new Date();
+    const hoursIntoWeek = ((now.getDay() + 6) % 7) * 24 + now.getHours();
+    if (hoursIntoWeek < 12) {
+      const previous = await weekCode(
+        vendor.scanSecret,
+        restaurantId,
+        weekKeyOf(new Date(Date.now() - 7 * 86400000))
+      );
+      accepted = code === previous;
+    }
+  }
+
+  if (!accepted) {
+    return fail("That code has expired. Ask for this week's.");
   }
 
   // Location is a check, not a requirement: browsers deny it often enough that

@@ -8,6 +8,7 @@ import { Hero } from "./Hero";
 import { CategoryStrip } from "./CategoryStrip";
 import { WheelSpinner } from "./WheelSpinner";
 import { RestaurantRail } from "./RestaurantRail";
+import { ReviewInvite } from "./ReviewInvite";
 
 export function HomeContent() {
   const { restaurants, loading } = useRestaurants();
@@ -61,6 +62,8 @@ export function HomeContent() {
           loading={loading}
           href="/search"
         />
+
+        <ReviewInvite restaurants={rails.byRating} />
 
         <RestaurantRail
           title="Good for a date"
