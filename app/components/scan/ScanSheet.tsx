@@ -34,8 +34,9 @@ export function ScanSheet({
   open,
   onClose,
 }: {
-  restaurantId: string;
-  restaurantName: string;
+  /** Omitted when opened from the profile: the code carries the venue. */
+  restaurantId?: string;
+  restaurantName?: string;
   open: boolean;
   onClose: () => void;
 }) {
@@ -49,35 +50,39 @@ export function ScanSheet({
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const go = useCallback(
-    (value: string) => {
-      router.push(`/scan/${restaurantId}?k=${value}`);
+  /**
+   * A scanned QR carries the venue as well as the code, so it can be followed
+   * wherever the sheet was opened from. A typed code only makes sense on a
+   * restaurant's own page, where we know which venue it belongs to.
+   */
+  const follow = useCallback(
+    (raw: string): boolean => {
+      const trimmed = raw.trim();
+      try {
+        const url = new URL(trimmed);
+        const match = url.pathname.match(/\/scan\/([^/?#]+)/);
+        const k = url.searchParams.get("k");
+        if (match && k) {
+          router.push(`/scan/${match[1]}?k=${k}`);
+          return true;
+        }
+      } catch {
+        // Not a URL — treat it as a printed code for the page we're on.
+      }
+      if (restaurantId && /^[a-f0-9]{6,20}$/i.test(trimmed)) {
+        router.push(`/scan/${restaurantId}?k=${trimmed.toLowerCase()}`);
+        return true;
+      }
+      return false;
     },
     [router, restaurantId]
   );
-
-  /** Pulls the code out of a scanned URL, or accepts a bare code. */
-  const parse = (raw: string): string | null => {
-    const trimmed = raw.trim();
-    try {
-      const url = new URL(trimmed);
-      const k = url.searchParams.get("k");
-      if (k) return k;
-    } catch {
-      // Not a URL — fall through to treating it as the printed code.
-    }
-    return /^[a-f0-9]{6,20}$/i.test(trimmed) ? trimmed.toLowerCase() : null;
-  };
 
   useEffect(() => {
     if (!open || mode !== "camera") return;
     stop.current = false;
 
     (async () => {
-      if (!window.BarcodeDetector) {
-        setMode("code");
-        return;
-      }
       try {
         const media = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: "environment" },
@@ -85,26 +90,58 @@ export function ScanSheet({
         stream.current = media;
         if (video.current) {
           video.current.srcObject = media;
+          video.current.setAttribute("playsinline", "true");
           await video.current.play();
         }
 
-        const detector = new window.BarcodeDetector({ formats: ["qr_code"] });
-        const tick = async () => {
-          if (stop.current || !video.current) return;
-          try {
-            const found = await detector.detect(video.current);
-            const hit = found.map((f) => parse(f.rawValue)).find(Boolean);
-            if (hit) {
-              stop.current = true;
-              if (navigator.vibrate) navigator.vibrate(20);
-              return go(hit);
-            }
-          } catch {
-            // A frame that couldn't be read — try the next one.
-          }
-          requestAnimationFrame(tick);
+        const hit = (value: string) => {
+          if (!follow(value)) return false;
+          stop.current = true;
+          if (navigator.vibrate) navigator.vibrate(20);
+          return true;
         };
-        requestAnimationFrame(tick);
+
+        if (window.BarcodeDetector) {
+          // Native decoding where the browser has it: no download, no canvas.
+          const detector = new window.BarcodeDetector({ formats: ["qr_code"] });
+          const tick = async () => {
+            if (stop.current || !video.current) return;
+            try {
+              const found = await detector.detect(video.current);
+              for (const f of found) if (hit(f.rawValue)) return;
+            } catch {
+              // Unreadable frame — try the next one.
+            }
+            requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          return;
+        }
+
+        // iOS Safari has no BarcodeDetector, so decode in JS. Pulled in only
+        // when it's actually needed, and only ~15 fps — a phone camera gives
+        // plenty of chances and this keeps the device cool.
+        const jsQR = (await import("jsqr")).default;
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+        const scan = () => {
+          if (stop.current || !video.current || !ctx) return;
+          const v = video.current;
+          if (v.videoWidth) {
+            // Quarter resolution is ample for a code held up to the lens, and
+            // it keeps each frame's decode under a few milliseconds.
+            const w = (canvas.width = Math.min(480, v.videoWidth));
+            const h = (canvas.height = Math.round((v.videoHeight / v.videoWidth) * w));
+            ctx.drawImage(v, 0, 0, w, h);
+            const found = jsQR(ctx.getImageData(0, 0, w, h).data, w, h, {
+              inversionAttempts: "dontInvert",
+            });
+            if (found && hit(found.data)) return;
+          }
+          window.setTimeout(scan, 66);
+        };
+        scan();
       } catch {
         setError("Couldn't open the camera. Type the code underneath it instead.");
         setMode("code");
@@ -116,7 +153,7 @@ export function ScanSheet({
       stream.current?.getTracks().forEach((t) => t.stop());
       stream.current = null;
     };
-  }, [open, mode, go]);
+  }, [open, mode, follow]);
 
   useEffect(() => {
     if (!open) {
@@ -127,9 +164,9 @@ export function ScanSheet({
   }, [open]);
 
   const submitCode = () => {
-    const parsed = parse(code);
-    if (!parsed) return setError("That doesn't look like a code. It's ten characters.");
-    go(parsed);
+    if (!follow(code)) {
+      setError("That doesn't look like a code. It's ten characters.");
+    }
   };
 
   return (
@@ -145,7 +182,7 @@ export function ScanSheet({
 
           <motion.div
             role="dialog"
-            aria-label={`Scan at ${restaurantName}`}
+            aria-label={restaurantName ? `Scan at ${restaurantName}` : "Scan a code"}
             initial={reduceMotion ? false : { y: "6%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={reduceMotion ? undefined : { y: "5%", opacity: 0 }}
@@ -177,7 +214,7 @@ export function ScanSheet({
             </div>
 
             {mode === "camera" ? (
-              <div className="px-5 pb-5">
+              <div className="px-5 pb-4">
                 <div className="relative aspect-square overflow-hidden rounded-2xl bg-ink-900">
                   <video
                     ref={video}
@@ -191,15 +228,17 @@ export function ScanSheet({
                 <p className="mt-3 text-center text-sm text-ink-500">
                   Point it at the code on your table.
                 </p>
-                <button
-                  onClick={() => setMode("code")}
-                  className="mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full border border-ink-200 text-sm font-semibold dark:border-ink-700"
-                >
-                  <Keyboard size={16} /> Type the code instead
-                </button>
+                {restaurantId && (
+                  <button
+                    onClick={() => setMode("code")}
+                    className="mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full border border-ink-200 text-sm font-semibold dark:border-ink-700"
+                  >
+                    <Keyboard size={16} /> Type the code instead
+                  </button>
+                )}
               </div>
             ) : (
-              <div className="px-5 pb-5">
+              <div className="px-5 pb-4">
                 <label className="block">
                   <span className="mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-200">
                     Code printed under the QR
@@ -232,7 +271,7 @@ export function ScanSheet({
                   Check in
                 </button>
 
-                {typeof window !== "undefined" && window.BarcodeDetector && (
+                {(
                   <button
                     onClick={() => {
                       setError(null);
@@ -255,9 +294,11 @@ export function ScanSheet({
               </div>
             )}
 
-            <div className="flex items-center gap-2 border-t border-ink-100 px-5 py-3 text-xs text-ink-500 dark:border-ink-800">
+            <div className="flex items-center gap-2 border-t border-ink-100 px-5 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 text-xs text-ink-500 dark:border-ink-800 sm:pb-3">
               <Trophy size={14} className="shrink-0 text-saffron-500" />
-              Points are held in {restaurantName}&apos;s name, once a day.
+              {restaurantName
+                ? `Points are held in ${restaurantName}'s name, once a day.`
+                : "Points are held in each restaurant's name, once a day."}
             </div>
           </motion.div>
         </motion.div>

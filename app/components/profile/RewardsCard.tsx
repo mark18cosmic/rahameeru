@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Trophy, Info } from "lucide-react";
+import { Trophy, Info, QrCode } from "lucide-react";
 import { usePoints } from "@/app/lib/usePoints";
 import { tierFor, REVIEW_POINTS, DETAIL_BONUS, FIRST_REVIEW_BONUS } from "@/app/lib/rewards";
 import { cx } from "@/app/lib/utils";
+import { ScanSheet } from "../scan/ScanSheet";
 
 function timeAgo(ts: number): string {
   const s = Math.floor((Date.now() - ts) / 1000);
@@ -23,6 +25,7 @@ function timeAgo(ts: number): string {
 
 export function RewardsCard() {
   const { points, loading } = usePoints();
+  const [scanOpen, setScanOpen] = useState(false);
   const { current, next, progress } = tierFor(points.total);
 
   const vendors = Object.entries(points.byVendor)
@@ -139,7 +142,16 @@ export function RewardsCard() {
         </div>
       )}
 
-      <p className="mt-5 flex items-start gap-2 text-xs leading-relaxed text-ink-400">
+      <button
+        onClick={() => setScanOpen(true)}
+        className="mt-5 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-root-500 font-semibold text-white transition hover:bg-root-600 active:scale-[0.98]"
+      >
+        <QrCode size={17} /> Scan a table code
+      </button>
+
+      <ScanSheet open={scanOpen} onClose={() => setScanOpen(false)} />
+
+      <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-ink-400">
         <Info size={13} className="mt-0.5 shrink-0" />
         Points are held in each restaurant&apos;s name. What they&apos;re worth
         is up to that restaurant — none are redeemable until a venue opts in, so

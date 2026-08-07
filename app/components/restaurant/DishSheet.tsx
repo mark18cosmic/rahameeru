@@ -123,7 +123,7 @@ export function DishSheet({
               />
             </div>
 
-            <div className="p-5">
+            <div className="p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] sm:pb-5">
               <div className="flex items-start justify-between gap-3">
                 <h3 className="font-display text-xl font-extrabold text-ink-900 dark:text-white">
                   {item.name}

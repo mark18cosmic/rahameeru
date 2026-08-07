@@ -236,7 +236,7 @@ export function MapModal({
               <>
                 <div ref={holder} className="min-h-0 flex-1 bg-ink-100 dark:bg-ink-800" />
 
-                <div className="border-t border-ink-100 p-3 dark:border-ink-800">
+                <div className="border-t border-ink-100 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] dark:border-ink-800 sm:pb-3">
                   {message && (
                     <p className="mb-2 flex items-start gap-2 rounded-xl bg-saffron-400/15 px-3 py-2 text-xs text-ink-600 dark:text-ink-300">
                       <AlertCircle size={14} className="mt-0.5 shrink-0 text-saffron-500" />
