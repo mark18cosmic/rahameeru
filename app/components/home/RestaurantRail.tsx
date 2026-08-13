@@ -17,27 +17,27 @@ export type Accent = "root" | "sky" | "emerald" | "violet" | "amber" | "rose";
 
 const ACCENTS: Record<Accent, { chip: string; link: string }> = {
   root: {
-    chip: "bg-root-100 text-root-600 dark:bg-root-500/15 dark:text-root-300",
+    chip: "clay-on-color bg-gradient-to-br from-root-400 to-root-600 text-white",
     link: "text-root-600 hover:text-root-700",
   },
   sky: {
-    chip: "bg-sky-100 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300",
+    chip: "clay-on-color bg-gradient-to-br from-sky-400 to-sky-600 text-white",
     link: "text-sky-600 hover:text-sky-700",
   },
   emerald: {
-    chip: "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300",
+    chip: "clay-on-color bg-gradient-to-br from-emerald-400 to-emerald-600 text-white",
     link: "text-emerald-600 hover:text-emerald-700",
   },
   violet: {
-    chip: "bg-violet-100 text-violet-600 dark:bg-violet-500/15 dark:text-violet-300",
+    chip: "clay-on-color bg-gradient-to-br from-violet-400 to-violet-600 text-white",
     link: "text-violet-600 hover:text-violet-700",
   },
   amber: {
-    chip: "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300",
+    chip: "clay-on-color bg-gradient-to-br from-amber-400 to-amber-600 text-white",
     link: "text-amber-600 hover:text-amber-700",
   },
   rose: {
-    chip: "bg-rose-100 text-rose-600 dark:bg-rose-500/15 dark:text-rose-300",
+    chip: "clay-on-color bg-gradient-to-br from-rose-400 to-rose-600 text-white",
     link: "text-rose-600 hover:text-rose-700",
   },
 };
@@ -136,10 +136,10 @@ export function RestaurantRail({
                     dir === -1 ? `Scroll ${title} left` : `Scroll ${title} right`
                   }
                   className={cx(
-                    "grid h-9 w-9 place-items-center rounded-full border transition active:scale-90",
+                    "grid h-10 w-10 place-items-center rounded-full transition",
                     disabled
-                      ? "cursor-not-allowed border-ink-100 text-ink-300 dark:border-ink-800 dark:text-ink-700"
-                      : "border-ink-200 text-ink-700 hover:border-root-300 hover:bg-root-50 hover:text-root-600 dark:border-ink-700 dark:text-ink-200 dark:hover:bg-ink-800"
+                      ? "clay-inset cursor-not-allowed text-ink-300 dark:text-ink-700"
+                      : "clay-sm clay-press text-ink-700 dark:text-ink-200"
                   )}
                 >
                   <Icon size={18} />
@@ -168,7 +168,10 @@ export function RestaurantRail({
           instead of flush against it. */}
       <div
         ref={scroller}
-        className="scrollbar-hide -mx-5 flex snap-x snap-proximity gap-3 overflow-x-auto overscroll-x-contain scroll-pl-5 px-5 pb-2 md:mx-0 md:scroll-pl-0 md:gap-4 md:px-0"
+        // pt/pb are generous because clay cards throw a deep drop shadow and
+        // lift on hover — `overflow-x-auto` clips both axes, so a tight
+        // padding sliced the shadow off along the top and bottom edges.
+        className="scrollbar-hide -mx-5 flex snap-x snap-proximity gap-3 overflow-x-auto overscroll-x-contain scroll-pl-5 px-5 pb-7 pt-2 md:mx-0 md:scroll-pl-0 md:gap-4 md:px-0"
       >
         {loading && restaurants.length === 0
           ? Array.from({ length: 4 }).map((_, i) => (

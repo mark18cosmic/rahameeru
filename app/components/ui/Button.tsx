@@ -7,16 +7,16 @@ import { cx } from "@/app/lib/utils";
 type Variant = "primary" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
+// Clay presses rather than scales — `clay-press` handles the transform, so the
+// old `active:scale` would fight it.
 const base =
-  "inline-flex items-center justify-center gap-2 font-semibold rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-root-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97]";
+  "inline-flex items-center justify-center gap-2 font-semibold rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-root-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
 
 const variants: Record<Variant, string> = {
-  primary:
-    "bg-root-500 text-white hover:bg-root-600 shadow-glow hover:shadow-[0_14px_50px_-10px_rgba(248,75,59,0.6)]",
+  primary: "clay-root clay-press",
   secondary:
-    "bg-ink-900 text-white hover:bg-ink-800 dark:bg-white dark:text-ink-900",
-  outline:
-    "border border-ink-200 text-ink-800 hover:border-ink-400 hover:bg-ink-50 dark:border-ink-700 dark:text-ink-100 dark:hover:bg-ink-800",
+    "clay-press bg-gradient-to-br from-ink-700 to-ink-900 text-white shadow-[0_18px_34px_-14px_rgba(23,21,18,0.6),inset_0_8px_14px_-6px_rgba(255,255,255,0.25),inset_-5px_-7px_14px_-6px_rgba(0,0,0,0.5)] dark:from-white dark:to-ink-100 dark:text-ink-900",
+  outline: "clay-sm clay-press text-ink-800 dark:text-ink-100",
   ghost:
     "text-ink-700 hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800",
 };

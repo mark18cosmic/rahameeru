@@ -28,13 +28,15 @@ export default function MobileTabBar() {
   if (pathname.startsWith("/vendor") || pathname.startsWith("/admin")) return null;
 
   return (
-    // Solid, not translucent: content scrolling underneath a blurred bar was
-    // the muddiest part of the phone layout.
+    // A floating clay slab rather than a bar welded to the bottom edge — the
+    // material only reads as moulded when the page shows around it. Solid, not
+    // translucent: content scrolling under a blurred bar was the muddiest part
+    // of the phone layout.
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-ink-100 bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-1px_12px_-6px_rgba(23,21,18,0.35)] dark:border-ink-800 dark:bg-ink-900 md:hidden"
+      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 md:hidden"
     >
-      <ul className="flex items-stretch">
+      <ul className="clay flex items-stretch rounded-[1.75rem] px-1.5 py-1">
         {TABS.map((t) => {
           const activeTab =
             t.href === "/" ? pathname === "/" : pathname.startsWith(t.href);
@@ -45,7 +47,7 @@ export default function MobileTabBar() {
               {activeTab && (
                 <motion.span
                   layoutId="tabbar-pill"
-                  className="absolute inset-x-2.5 top-1 h-7 rounded-full bg-root-50 dark:bg-root-900/30"
+                  className="clay-inset absolute inset-x-1 inset-y-0.5 rounded-[1.25rem]"
                   transition={{ type: "spring", stiffness: 400, damping: 32 }}
                 />
               )}
@@ -69,7 +71,7 @@ export default function MobileTabBar() {
           );
 
           const classes =
-            "relative flex min-h-[52px] w-full flex-col items-center justify-center gap-0.5 pt-1 transition-transform active:scale-95";
+            "relative flex min-h-[52px] w-full flex-col items-center justify-center gap-0.5 rounded-[1.25rem] transition-transform active:scale-95";
 
           return (
             <li key={t.href} className="flex-1">

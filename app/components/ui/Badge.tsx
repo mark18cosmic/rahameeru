@@ -11,10 +11,11 @@ export function Badge({
   tone?: "neutral" | "brand" | "success" | "outline";
 }) {
   const tones = {
-    neutral: "bg-ink-100 text-ink-700 dark:bg-ink-800 dark:text-ink-200",
-    brand: "bg-root-100 text-root-700 dark:bg-root-900/40 dark:text-root-300",
-    success: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300",
-    outline: "border border-ink-200 text-ink-600 dark:border-ink-700 dark:text-ink-300",
+    neutral: "clay-sm text-ink-700 dark:text-ink-200",
+    brand: "clay-root",
+    success:
+      "bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-[0_10px_20px_-10px_rgba(16,185,129,0.6),inset_0_5px_9px_-4px_rgba(255,255,255,0.55),inset_-3px_-4px_9px_-4px_rgba(6,95,70,0.45)]",
+    outline: "clay-inset text-ink-600 dark:text-ink-300",
   };
   return (
     <span

@@ -1,3 +1,5 @@
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 import type { Restaurant, OpeningHours, PriceLevel } from "./types";
 
 export function slugify(input: string): string {
@@ -11,6 +13,12 @@ export function slugify(input: string): string {
 
 export function cx(...classes: (string | false | null | undefined)[]): string {
   return classes.filter(Boolean).join(" ");
+}
+
+/** Like `cx`, but later Tailwind utilities win over earlier conflicting ones.
+    The lightswind components expect this; use `cx` for plain concatenation. */
+export function cn(...inputs: ClassValue[]): string {
+  return twMerge(clsx(inputs));
 }
 
 export function priceString(level: PriceLevel): string {

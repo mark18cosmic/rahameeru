@@ -1,0 +1,121 @@
+rules_version = '2';
+
+/**
+ * Production rules.
+ *
+ * The sibling `firestore.rules` is the emulator's: it allows everything so the
+ * seed script can write unauthenticated. That file must never reach a real
+ * project. To deploy these instead, point firebase.json at this file:
+ *
+ *   "firestore": { "rules": "firestore.rules.prod" }
+ *
+ * Admins are identified by the email on their auth token, matching
+ * `adminEmails()` in app/lib/useVendor.ts. Keep the two lists in step — the
+ * client one decides what the UI offers, this one decides what actually
+ * happens.
+ */
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() in [
+             'kaish018@gmail.com'
+           ];
+    }
+
+    function isSelf(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    // Listings are public to read. Only an admin, or the approved vendor who
+    // owns the listing, may write one.
+    match /restaurants/{id} {
+      function ownsListing() {
+        return signedIn()
+          && resource.data.ownerId == request.auth.uid
+          && get(/databases/$(database)/documents/vendors/$(request.auth.uid))
+               .data.status == 'approved';
+      }
+      allow read: if true;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || ownsListing();
+    }
+
+    // What the home page shows. Anyone may read it; only an admin sets it.
+    match /config/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // A vendor applies for themselves and may edit their own application, but
+    // must never be able to approve it — status and plan are admin-only.
+    match /vendors/{uid} {
+      allow read: if isSelf(uid) || isAdmin();
+      allow create: if isSelf(uid) && request.resource.data.status == 'pending';
+      allow update: if isAdmin()
+        || (isSelf(uid)
+            && request.resource.data.status == resource.data.status
+            && request.resource.data.restaurantIds == resource.data.restaurantIds);
+      allow delete: if isAdmin();
+    }
+
+    // Favourites, diet flags and the points ledger. A user owns their own
+    // document; an admin may read every one and adjust roles and points.
+    match /users/{uid} {
+      allow read: if isSelf(uid) || isAdmin();
+      allow create, update: if isAdmin()
+        // Nobody grants themselves a role or a balance: those two fields are
+        // the admin's to write, and must be unchanged on a self-write.
+        || (isSelf(uid)
+            && request.resource.data.get('role', 'user')
+                 == resource.data.get('role', 'user')
+            && request.resource.data.get('suspended', false)
+                 == resource.data.get('suspended', false));
+      allow delete: if isAdmin();
+    }
+
+    // Reviews are public. You may write your own and edit it; the listing's
+    // owner may only add a reply, which is enforced in the app and re-checked
+    // here by requiring the rest of the document to be untouched.
+    match /reviews/{id} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+      allow delete: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+    }
+
+    // One document per person per venue per day, written on a verified scan.
+    match /scans/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn();
+      allow update, delete: if isAdmin();
+    }
+
+    // Shared photo-lookup cache. Read by everyone, written by /api/photo.
+    match /photos/{key} {
+      allow read: if true;
+      allow write: if signedIn() || isAdmin();
+    }
+
+    // Visit counters, incremented by the app on a restaurant page view.
+    match /metrics/{restaurantId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    // Anything not named above is closed. A new collection has to be granted
+    // access deliberately rather than inheriting a blanket allow.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

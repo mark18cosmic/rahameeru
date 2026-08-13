@@ -24,7 +24,7 @@ function timeAgo(ts: number): string {
 }
 
 export function RewardsCard() {
-  const { points, loading } = usePoints();
+  const { points, loading, unlimited } = usePoints();
   const [scanOpen, setScanOpen] = useState(false);
   const { current, next, progress } = tierFor(points.total);
 
@@ -38,10 +38,10 @@ export function RewardsCard() {
     .sort((a, b) => b.amount - a.amount);
 
   return (
-    <section className="rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+    <section className="clay rounded-[2rem] p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="grid h-11 w-11 place-items-center rounded-2xl bg-saffron-400/20 text-saffron-500">
+          <span className="clay-saffron grid h-11 w-11 place-items-center rounded-2xl">
             <Trophy size={20} />
           </span>
           <div>
@@ -53,20 +53,21 @@ export function RewardsCard() {
         </div>
         <div className="text-right">
           <p className="font-display text-2xl font-extrabold text-ink-900 dark:text-white">
-            {loading ? "—" : points.total.toLocaleString()}
+            {loading ? "—" : unlimited ? "∞" : points.total.toLocaleString()}
           </p>
           <span
             className={cx(
               "inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold",
-              current.chip
+              unlimited ? "clay-root" : current.chip
             )}
           >
-            {current.name}
+            {unlimited ? "Admin" : current.name}
           </span>
         </div>
       </div>
 
-      {next && (
+      {/* Tier progress is meaningless against an unlimited balance. */}
+      {next && !unlimited && (
         <div className="mt-4">
           <div className="h-2 overflow-hidden rounded-full bg-ink-100 dark:bg-ink-800">
             <motion.div

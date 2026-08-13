@@ -7,11 +7,25 @@
 :root {
   --bg: #faf8f5;
   --fg: #26221d;
+
+  /* Claymorphism. Every clay surface is the same recipe: a soft coloured drop
+     shadow to lift it off the page, a bright inset lip along the top edge, and
+     a darker inset along the bottom-right so the shape reads as moulded rather
+     than printed. Only these four values change between light and dark. */
+  --clay-surface: #fffdfb;
+  --clay-lip: rgba(255, 255, 255, 0.95);
+  --clay-shade: rgba(160, 32, 20, 0.1);
+  --clay-drop: 0 18px 38px -16px rgba(56, 32, 24, 0.32);
 }
 
 .dark {
   --bg: #171512;
   --fg: #f7f6f4;
+
+  --clay-surface: #221f1a;
+  --clay-lip: rgba(255, 255, 255, 0.07);
+  --clay-shade: rgba(0, 0, 0, 0.5);
+  --clay-drop: 0 18px 38px -16px rgba(0, 0, 0, 0.7);
 }
 
 html {
@@ -121,6 +135,97 @@ select:focus-visible {
       background: rgba(23, 21, 18, 0.72);
     }
   }
+  /* --- Claymorphism ---------------------------------------------------- */
+
+  /* The base puffy surface. Pair with a radius utility; clay needs a generous
+     one — below about 1rem the inset lip reads as a bevel instead. */
+  .clay {
+    background: var(--clay-surface);
+    box-shadow:
+      var(--clay-drop),
+      inset 0 8px 14px -6px var(--clay-lip),
+      inset -5px -7px 14px -6px var(--clay-shade);
+  }
+
+  /* Chips, buttons, icon tiles — same recipe, shallower, so small shapes don't
+     look inflated next to the cards they sit on. */
+  .clay-sm {
+    background: var(--clay-surface);
+    box-shadow:
+      0 8px 18px -10px rgba(56, 32, 24, 0.3),
+      inset 0 5px 9px -4px var(--clay-lip),
+      inset -3px -4px 9px -4px var(--clay-shade);
+  }
+  .dark .clay-sm {
+    box-shadow:
+      0 8px 18px -10px rgba(0, 0, 0, 0.65),
+      inset 0 5px 9px -4px var(--clay-lip),
+      inset -3px -4px 9px -4px var(--clay-shade);
+  }
+
+  /* The inverse: a well pressed into the page, for inputs and the active slot
+     of a tab bar. No drop shadow — nothing is floating. */
+  .clay-inset {
+    background: var(--clay-surface);
+    box-shadow:
+      inset 3px 5px 11px -4px var(--clay-shade),
+      inset -2px -3px 8px -4px var(--clay-lip);
+  }
+
+  /* Press feedback that suits the material: the shape sinks toward the page
+     rather than scaling. Pointer-only, since a phone tap has no hover to
+     return from and the transform fights momentum scrolling. */
+  .clay-press {
+    transition:
+      box-shadow 0.22s ease,
+      transform 0.22s ease;
+  }
+  .clay-press:active {
+    transform: translateY(2px);
+    box-shadow:
+      0 6px 14px -10px rgba(56, 32, 24, 0.4),
+      inset 0 4px 8px -4px var(--clay-lip),
+      inset -2px -3px 8px -4px var(--clay-shade);
+  }
+  @media (hover: hover) {
+    .clay-press:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 24px 44px -18px rgba(56, 32, 24, 0.38),
+        inset 0 8px 14px -6px var(--clay-lip),
+        inset -5px -7px 14px -6px var(--clay-shade);
+    }
+  }
+
+  /* Tinted clay. The lip and shade stay as they are — only the body colour
+     changes — so a coral chip and a white card catch light the same way. */
+  .clay-root {
+    background: linear-gradient(145deg, #ff7d71, #f84b3b);
+    color: #fff;
+    box-shadow:
+      0 18px 34px -14px rgba(248, 75, 59, 0.55),
+      inset 0 8px 14px -6px rgba(255, 255, 255, 0.55),
+      inset -5px -7px 14px -6px rgba(127, 28, 19, 0.45);
+  }
+  .clay-saffron {
+    background: linear-gradient(145deg, #ffc24b, #f5a623);
+    color: #3a352e;
+    box-shadow:
+      0 18px 34px -14px rgba(245, 166, 35, 0.5),
+      inset 0 8px 14px -6px rgba(255, 255, 255, 0.6),
+      inset -5px -7px 14px -6px rgba(150, 95, 10, 0.4);
+  }
+
+  /* Moulds any coloured background into clay. The lip and shade are neutral
+     black/white rather than tinted, so one class works over every category
+     hue without needing a shadow variant per colour. */
+  .clay-on-color {
+    box-shadow:
+      0 12px 22px -12px rgba(23, 21, 18, 0.5),
+      inset 0 5px 9px -4px rgba(255, 255, 255, 0.65),
+      inset -3px -4px 9px -4px rgba(0, 0, 0, 0.28);
+  }
+
   .glass {
     background: rgba(250, 248, 245, 0.72);
     backdrop-filter: saturate(160%) blur(14px);

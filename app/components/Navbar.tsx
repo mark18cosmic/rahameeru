@@ -83,7 +83,7 @@ export default function Navbar() {
               className={cx(
                 "rounded-full px-3.5 py-2 text-sm font-medium transition",
                 pathname === n.href
-                  ? "text-root-600"
+                  ? "clay-inset font-semibold text-root-600"
                   : "text-ink-600 hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800"
               )}
             >
@@ -96,11 +96,11 @@ export default function Navbar() {
           <button
             onClick={open}
             aria-label="Search"
-            className="hidden min-w-[200px] items-center gap-2 rounded-full border border-ink-200 py-2 pl-3 pr-2 text-sm text-ink-500 transition hover:border-ink-300 dark:border-ink-700 md:flex"
+            className="clay-inset hidden min-w-[200px] items-center gap-2 rounded-full py-2 pl-3.5 pr-2 text-sm text-ink-500 transition dark:text-ink-300 md:flex"
           >
             <Search size={16} />
             <span className="hidden md:inline">Search…</span>
-            <kbd className="ml-auto hidden rounded bg-ink-100 px-1.5 py-0.5 text-[10px] text-ink-500 dark:bg-ink-800 md:inline">
+            <kbd className="clay-sm ml-auto hidden rounded-md px-1.5 py-0.5 text-[10px] text-ink-500 dark:text-ink-300 md:inline">
               ⌘K
             </kbd>
           </button>
@@ -108,7 +108,7 @@ export default function Navbar() {
           <button
             onClick={() => setBillOpen(true)}
             aria-label={count > 0 ? `Your bill, ${count} items` : "Your bill"}
-            className="relative grid h-9 w-9 place-items-center rounded-full text-ink-600 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800"
+            className="clay-sm clay-press relative grid h-10 w-10 place-items-center rounded-full text-ink-600 dark:text-ink-200"
           >
             <ShoppingBag size={19} strokeWidth={1.9} />
             {count > 0 && (
@@ -121,7 +121,7 @@ export default function Navbar() {
           <button
             onClick={toggle}
             aria-label="Toggle theme"
-            className="grid h-9 w-9 place-items-center rounded-full text-ink-600 transition hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800"
+            className="clay-sm clay-press grid h-10 w-10 place-items-center rounded-full text-ink-600 dark:text-ink-200"
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
@@ -131,7 +131,7 @@ export default function Navbar() {
               <button
                 onClick={() => setMenuOpen((v) => !v)}
                 onBlur={() => setTimeout(() => setMenuOpen(false), 150)}
-                className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-root-500 text-sm font-bold text-white"
+                className="clay-root grid h-10 w-10 place-items-center overflow-hidden rounded-full text-sm font-bold"
               >
                 {user.photoURL ? (
                   <Image src={user.photoURL} alt="" width={36} height={36} className="h-full w-full object-cover" />
@@ -145,7 +145,7 @@ export default function Navbar() {
                     initial={{ opacity: 0, y: 8, scale: 0.97 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.97 }}
-                    className="absolute right-0 mt-2 w-52 overflow-hidden rounded-2xl border border-ink-100 bg-white py-1 shadow-card dark:border-ink-800 dark:bg-ink-900"
+                    className="clay absolute right-0 mt-3 w-52 overflow-hidden rounded-[1.5rem] py-1"
                   >
                     <div className="border-b border-ink-100 px-4 py-3 dark:border-ink-800">
                       <p className="truncate text-sm font-semibold text-ink-900 dark:text-white">

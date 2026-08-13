@@ -36,6 +36,11 @@ const config: Config = {
           400: "#FFC24B",
           500: "#F5A623",
         },
+        // The lightswind components reference `bg-background` / `text-foreground`.
+        // Point them at this app's surface vars rather than pulling in the
+        // library's Tailwind plugin, which redefines the whole palette.
+        background: "var(--bg)",
+        foreground: "var(--fg)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],

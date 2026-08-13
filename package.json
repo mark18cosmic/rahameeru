@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx scripts/seed-emulator.ts",
+    "create-admin": "tsx scripts/create-admin.ts",
     "dev:stack": "docker compose -f docker-compose.dev.yml up --build",
     "dev:stack:down": "docker compose -f docker-compose.dev.yml down"
   },
@@ -16,16 +17,20 @@
     "@types/prop-types": "^15.7.15",
     "@types/qrcode": "^1.5.6",
     "@vercel/analytics": "^1.4.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "firebase": "^11.1.0",
     "framer-motion": "^11.15.0",
     "fuse.js": "^7.0.0",
     "jsqr": "^1.4.0",
     "leaflet": "^1.9.4",
+    "lightswind": "^3.2.3",
     "lucide-react": "^0.469.0",
     "next": "^15.1.4",
     "qrcode": "^1.5.4",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@types/node": "^20",

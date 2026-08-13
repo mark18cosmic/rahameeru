@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/app/firebase/firebaseConfig";
 import { useAuth } from "@/app/providers/AuthProvider";
+import { adminEmails } from "./useVendor";
 import {
   EMPTY_POINTS,
   applyAward,
@@ -66,5 +67,26 @@ export function usePoints() {
     [user, points]
   );
 
-  return { points, award, loading, signedIn: Boolean(user) };
+  /**
+   * Admins spend without a balance. The ledger is still written, so their
+   * activity stays auditable — `unlimited` only tells the UI to stop showing a
+   * balance and to stop refusing a redemption for want of points.
+   */
+  const unlimited =
+    Boolean(user?.email) &&
+    adminEmails().includes(user!.email!.toLowerCase());
+
+  const canAfford = useCallback(
+    (cost: number) => unlimited || points.total >= cost,
+    [unlimited, points.total]
+  );
+
+  return {
+    points,
+    award,
+    loading,
+    signedIn: Boolean(user),
+    unlimited,
+    canAfford,
+  };
 }

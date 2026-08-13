@@ -74,8 +74,9 @@ export default function RootLayout({
               </a>
               <PullToRefresh />
               <Navbar />
-              {/* Bottom padding clears the mobile tab bar. */}
-              <div id="content" className="min-h-screen pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
+              {/* Bottom padding clears the mobile tab bar, which now floats
+                  clear of the bottom edge and so needs its own gap too. */}
+              <div id="content" className="min-h-screen pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:pb-0">
                 {children}
               </div>
               <Footer />

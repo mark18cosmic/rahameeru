@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   Search,
@@ -13,11 +14,14 @@ import {
   Coffee,
 } from "lucide-react";
 import type { Restaurant } from "@/app/lib/types";
-import { Photo } from "../ui/Photo";
+import { photoUrl } from "@/app/lib/utils";
 import { CountUp } from "../ui/CountUp";
-import { Spotlight } from "./Spotlight";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { useSearch } from "@/app/providers/SearchProvider";
+import {
+  ThreeDMarquee,
+  type MarqueeImage,
+} from "../lightswind/3d-marquee";
 
 /** Cycled through the search placeholder so the field doesn't read as dead. */
 const HINTS = ["biryani", "open now", "rooftop", "cheap and quick", "coffee"];
@@ -29,25 +33,20 @@ const QUICK_LINKS = [
 ];
 
 /**
- * The desktop collage, as a mosaic rather than free-floating cards.
+ * Enough tiles to fill the tilted plane without repeating obviously — the
+ * marquee doubles this internally, so twelve becomes twenty-four on screen.
  *
- * The old version positioned five tiles absolutely, which left a hole in the
- * middle-right at most widths. These six spans tile a 3×4 grid exactly — every
- * column adds up to four rows — so the block reads as one composed image with
- * no gap to explain.
+ * Kept deliberately low: no listing carries a stored photo, so every distinct
+ * tile is one `/api/photo` lookup on a cold cache. Twelve is the point where
+ * the plane still looks full without turning the first paint of the home page
+ * into a wall of image searches.
  */
-const SLOTS = [
-  { className: "col-start-1 row-start-1 row-span-2", delay: 0 },
-  { className: "col-start-2 row-start-1 row-span-3", delay: 0.6 },
-  { className: "col-start-3 row-start-1 row-span-2", delay: 1.2 },
-  { className: "col-start-1 row-start-3 row-span-2", delay: 1.8 },
-  { className: "col-start-3 row-start-3 row-span-2", delay: 0.9 },
-  { className: "col-start-2 row-start-4 row-span-1", delay: 2.4 },
-];
+const MARQUEE_TILES = 12;
 
 export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
   const { user } = useAuth();
   const { open } = useSearch();
+  const router = useRouter();
   const reduceMotion = useReducedMotion();
   const [hint, setHint] = useState(HINTS[0]);
 
@@ -61,10 +60,19 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
     return () => clearInterval(id);
   }, [reduceMotion]);
 
-  // Collage shows real places, photographed by name, rather than stock plates.
-  const showcase = useMemo(() => {
+  // The marquee shows real places, best-rated first, and each tile links to
+  // that restaurant — so the backdrop is navigation, not decoration.
+  const tiles = useMemo<MarqueeImage[]>(() => {
     const ranked = [...restaurants].sort((a, b) => b.rating - a.rating);
-    return ranked.slice(0, SLOTS.length);
+    if (!ranked.length) return [];
+    return Array.from({ length: MARQUEE_TILES }, (_, i) => {
+      const r = ranked[i % ranked.length];
+      return {
+        src: photoUrl(r, Math.floor(i / ranked.length)),
+        alt: r.name,
+        href: `/restaurant/${r.slug}`,
+      };
+    });
   }, [restaurants]);
 
   const stats = useMemo(() => {
@@ -76,7 +84,7 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
         value: restaurants.length,
         format: (n: number) => (n ? String(n) : "—"),
         label: "Places listed",
-        tint: "bg-root-100 text-root-600 dark:bg-root-500/15 dark:text-root-300",
+        tint: "clay-root",
       },
       {
         icon: Star,
@@ -84,14 +92,14 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
         format: (n: number) =>
           n > 999 ? `${(n / 1000).toFixed(1)}k` : String(n || "—"),
         label: "Reviews",
-        tint: "bg-saffron-400/25 text-saffron-500 dark:bg-saffron-500/15",
+        tint: "clay-saffron",
       },
       {
         icon: MapPin,
         value: islands.size,
         format: (n: number) => (n ? String(n) : "—"),
         label: "Islands",
-        tint: "bg-sky-100 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300",
+        tint: "clay-sm text-root-500",
       },
     ];
   }, [restaurants]);
@@ -103,14 +111,32 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
     // the navbar and the tab bar — svh rather than vh so the height doesn't
     // jump when mobile browsers hide their URL bar mid-scroll.
     <section className="relative flex min-h-[calc(100svh-6.75rem)] items-stretch overflow-hidden md:min-h-[calc(100svh-4.25rem)] lg:items-center">
-      <div className="mx-auto grid w-full max-w-7xl items-center gap-8 px-5 py-5 md:px-6 md:py-12 lg:grid-cols-2 lg:gap-10">
-        {/* Column, not a stack of blocks: the spotlight takes whatever height is
-            left over so a tall phone gets a bigger photo rather than a gap. */}
+      {/* --- Tilted photo plane, behind everything ------------------------ */}
+      {tiles.length > 0 && (
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
+          <ThreeDMarquee
+            images={tiles}
+            cols={4}
+            // Tiles are links, so the plane itself takes pointer events back.
+            className="pointer-events-auto h-full max-sm:h-full rounded-none bg-transparent opacity-45 dark:bg-transparent dark:opacity-30"
+            onImageClick={(image) => {
+              if (image.href) router.push(image.href);
+            }}
+          />
+          {/* Scrim. The headline sits over moving photos, so the plane is
+              washed toward the page colour — heaviest on the text side —
+              rather than relying on a text shadow to stay legible. */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--bg)] via-[var(--bg)]/85 to-[var(--bg)]/40 lg:from-[var(--bg)] lg:via-[var(--bg)]/80 lg:to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[var(--bg)] to-transparent" />
+        </div>
+      )}
+
+      <div className="mx-auto grid w-full max-w-7xl items-center gap-8 px-5 py-5 md:px-6 md:py-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
         <div className="flex h-full flex-col text-center lg:block lg:text-left">
           <motion.span
             initial={reduceMotion ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 rounded-full border border-root-200 bg-root-50 px-3.5 py-1.5 text-sm font-medium text-root-700 dark:border-root-900/40 dark:bg-root-900/20 dark:text-root-300"
+            className="clay-sm inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-root-700 dark:text-root-300"
           >
             <Star size={14} className="fill-saffron-500 text-saffron-500" />
             Malé &amp; Hulhumalé
@@ -141,7 +167,7 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mx-auto mt-3 max-w-lg text-base text-ink-500 md:mt-5 md:text-lg lg:mx-0"
+            className="mx-auto mt-3 max-w-lg text-base text-ink-500 dark:text-ink-300 md:mt-5 md:text-lg lg:mx-0"
           >
             Menus, opening hours and what people actually thought — for the
             places you can walk to. Spin the wheel if you&apos;d rather not
@@ -156,9 +182,11 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
           >
             <button
               onClick={open}
-              className="mx-auto flex min-h-[52px] w-full max-w-lg items-center gap-3 rounded-2xl border border-ink-200 bg-white px-5 py-4 text-left shadow-soft transition hover:shadow-card active:scale-[0.99] dark:border-ink-700 dark:bg-ink-900 lg:mx-0"
+              className="clay clay-press mx-auto flex min-h-[60px] w-full max-w-lg items-center gap-3 rounded-[1.75rem] px-5 py-4 text-left lg:mx-0"
             >
-              <Search className="shrink-0 text-root-500" />
+              <span className="clay-root grid h-10 w-10 shrink-0 place-items-center rounded-2xl">
+                <Search size={18} />
+              </span>
               <span className="truncate text-ink-400">
                 Try{" "}
                 <AnimatePresence mode="wait">
@@ -168,13 +196,13 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={reduceMotion ? undefined : { opacity: 0, y: -6 }}
                     transition={{ duration: 0.25 }}
-                    className="inline-block text-ink-500"
+                    className="inline-block text-ink-500 dark:text-ink-300"
                   >
                     “{hint}”
                   </motion.span>
                 </AnimatePresence>
               </span>
-              <kbd className="ml-auto hidden shrink-0 rounded bg-ink-100 px-2 py-1 text-xs text-ink-500 dark:bg-ink-800 sm:block">
+              <kbd className="clay-inset ml-auto hidden shrink-0 rounded-lg px-2 py-1 text-xs text-ink-500 dark:text-ink-300 sm:block">
                 ⌘K
               </kbd>
             </button>
@@ -185,13 +213,13 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mt-3 flex shrink-0 flex-wrap justify-center gap-2 lg:justify-start"
+            className="mt-4 flex shrink-0 flex-wrap justify-center gap-2.5 lg:justify-start"
           >
             {QUICK_LINKS.map((q) => (
               <Link
                 key={q.label}
                 href={q.href}
-                className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full border border-ink-200 bg-white px-3.5 text-[13px] font-medium text-ink-700 transition active:scale-95 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200 md:hover:border-root-300 md:hover:text-root-600"
+                className="clay-sm clay-press inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 text-[13px] font-semibold text-ink-700 dark:text-ink-200"
               >
                 <q.icon size={14} className="text-root-500" />
                 {q.label}
@@ -199,15 +227,15 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
             ))}
           </motion.div>
 
-          {/* Phone-only spotlight; desktop has the collage instead. */}
-          <div className="mt-5 flex min-h-[168px] flex-1 lg:hidden">
-            <Spotlight restaurants={showcase} className="flex flex-1 flex-col" />
-          </div>
-
-          <div className="mt-5 flex shrink-0 flex-wrap justify-center gap-5 sm:gap-8 md:mt-8 lg:justify-start">
+          <div className="mt-auto flex shrink-0 flex-wrap justify-center gap-4 pt-6 sm:gap-6 md:pt-8 lg:justify-start">
             {stats.map((s) => (
-              <div key={s.label} className="flex items-center gap-2.5">
-                <span className={`grid h-10 w-10 place-items-center rounded-2xl ${s.tint}`}>
+              <div
+                key={s.label}
+                className="clay flex items-center gap-3 rounded-[1.5rem] px-4 py-3"
+              >
+                <span
+                  className={`grid h-11 w-11 place-items-center rounded-2xl ${s.tint}`}
+                >
                   <s.icon size={19} />
                 </span>
                 <div className="text-left">
@@ -221,36 +249,9 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
           </div>
         </div>
 
-        {/* Mosaic — desktop only; on phones it would be pure weight. */}
-        <div className="hidden h-[470px] grid-cols-3 grid-rows-4 gap-3 lg:grid">
-          {showcase.map((r, i) => (
-            <motion.div
-              key={r.id}
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.15 + i * 0.07, duration: 0.45 }}
-              className={`group relative overflow-hidden rounded-2xl bg-ink-100 shadow-card ring-1 ring-black/5 dark:bg-ink-800 ${SLOTS[i].className}`}
-              style={
-                reduceMotion
-                  ? undefined
-                  : { animation: `drift 9s ease-in-out ${SLOTS[i].delay}s infinite` }
-              }
-            >
-              <Link href={`/restaurant/${r.slug}`} className="block h-full w-full">
-                <Photo
-                  r={r}
-                  sizes="260px"
-                  priority={i < 2}
-                  className="md:group-hover:scale-105"
-                />
-                {/* Name only on hover, so the mosaic stays a picture at rest. */}
-                <span className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-ink-900/70 p-2 text-xs font-semibold text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                  <span className="block truncate">{r.name}</span>
-                </span>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
+        {/* Right column is deliberately empty on desktop: it is the window onto
+            the marquee, which the scrim keeps clear of the text. */}
+        <div className="hidden lg:block" aria-hidden />
       </div>
     </section>
   );
