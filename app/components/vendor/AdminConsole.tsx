@@ -40,7 +40,11 @@ const FILTERS: { key: VendorStatus | "all"; label: string }[] = [
  * component offers — the real guard is the Firestore rules, since anything
  * client-side can be bypassed by anyone willing to open a console.
  */
-export function AdminConsole() {
+export function AdminConsole({
+  /** Set when rendered inside the admin console's own tabs, which already
+      supply the page heading and padding. */
+  embedded = false,
+}: { embedded?: boolean } = {}) {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: vendorLoading } = useVendor();
   const { restaurants } = useRestaurants();
@@ -126,31 +130,37 @@ export function AdminConsole() {
   const pendingCount = vendors.filter((v) => v.status === "pending").length;
 
   return (
-    <div className="mx-auto max-w-5xl px-5 py-8 md:px-6 md:py-12">
-      <div className="flex items-center gap-3">
-        <span className="grid h-11 w-11 place-items-center rounded-2xl bg-ink-900 text-white dark:bg-white dark:text-ink-900">
-          <ShieldCheck size={20} />
-        </span>
-        <div>
-          <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white sm:text-3xl">
-            Vendor claims
-          </h1>
-          <p className="text-sm text-ink-500">
-            {pendingCount} waiting on you · {vendors.length} total
-          </p>
+    <div className={embedded ? "" : "mx-auto max-w-5xl px-5 py-8 md:px-6 md:py-12"}>
+      {embedded ? (
+        <p className="text-sm text-ink-500">
+          {pendingCount} waiting on you · {vendors.length} total
+        </p>
+      ) : (
+        <div className="flex items-center gap-3">
+          <span className="clay-on-color grid h-11 w-11 place-items-center rounded-2xl bg-ink-900 text-white dark:bg-white dark:text-ink-900">
+            <ShieldCheck size={20} />
+          </span>
+          <div>
+            <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white sm:text-3xl">
+              Vendor claims
+            </h1>
+            <p className="text-sm text-ink-500">
+              {pendingCount} waiting on you · {vendors.length} total
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="mt-6 flex flex-wrap items-center gap-2">
+      <div className="mt-4 flex flex-wrap items-center gap-2">
         {FILTERS.map((f) => (
           <button
             key={f.key}
             onClick={() => setFilter(f.key)}
             className={cx(
-              "min-h-[40px] rounded-full border px-4 text-sm font-medium transition active:scale-95",
+              "min-h-[44px] rounded-full px-4 text-sm font-semibold transition",
               filter === f.key
-                ? "border-root-500 bg-root-500 text-white"
-                : "border-ink-200 text-ink-600 dark:border-ink-700 dark:text-ink-300"
+                ? "clay-root"
+                : "clay-sm clay-press text-ink-600 dark:text-ink-300"
             )}
           >
             {f.label}
@@ -231,7 +241,7 @@ export function AdminConsole() {
                   </div>
 
                   {v.about && (
-                    <p className="mt-3 rounded-2xl bg-ink-50 p-3 text-sm text-ink-600 dark:bg-ink-800/60 dark:text-ink-300">
+                    <p className="clay-inset mt-3 rounded-2xl p-3 text-sm text-ink-600 dark:text-ink-300">
                       {v.about}
                     </p>
                   )}
@@ -242,7 +252,7 @@ export function AdminConsole() {
                         <Link
                           key={r.id}
                           href={`/restaurant/${r.slug}`}
-                          className="rounded-full bg-ink-100 px-3 py-1.5 text-xs font-medium text-ink-700 transition hover:bg-ink-200 dark:bg-ink-800 dark:text-ink-200"
+                          className="clay-sm clay-press rounded-full px-3 py-2 text-xs font-semibold text-ink-700 dark:text-ink-200"
                         >
                           {r.name} ↗
                         </Link>
@@ -268,7 +278,7 @@ export function AdminConsole() {
                         <button
                           onClick={() => decide(v, "approved")}
                           disabled={busy === v.uid}
-                          className="flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full bg-emerald-600 font-semibold text-white transition hover:bg-emerald-700 active:scale-[0.98] disabled:opacity-60"
+                          className="clay-on-color clay-press flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-full bg-emerald-500 font-semibold text-white disabled:opacity-60"
                         >
                           {busy === v.uid ? (
                             <Loader2 size={16} className="animate-spin" />
@@ -280,7 +290,7 @@ export function AdminConsole() {
                         <button
                           onClick={() => decide(v, "rejected")}
                           disabled={busy === v.uid}
-                          className="flex min-h-[44px] flex-1 items-center justify-center gap-2 clay-sm clay-press rounded-full font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.98] disabled:opacity-60 dark:text-ink-100 dark:hover:bg-ink-800"
+                          className="clay-sm clay-press flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-full font-semibold text-ink-700 disabled:opacity-60 dark:text-ink-100"
                         >
                           <X size={16} /> Reject
                         </button>
@@ -293,7 +303,7 @@ export function AdminConsole() {
                       <button
                         onClick={() => decide(v, v.status === "approved" ? "suspended" : "approved")}
                         disabled={busy === v.uid}
-                        className="min-h-[40px] clay-sm clay-press rounded-full px-4 text-sm font-medium transition hover:bg-ink-50 disabled:opacity-60 dark:hover:bg-ink-800"
+                        className="clay-sm clay-press min-h-[44px] rounded-full px-4 text-sm font-semibold disabled:opacity-60"
                       >
                         {v.status === "approved" ? "Suspend" : "Approve now"}
                       </button>

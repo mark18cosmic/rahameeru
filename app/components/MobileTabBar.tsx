@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Home, Compass, Search, Heart, User } from "lucide-react";
+import { Home, Compass, Search, Heart, User, ShieldCheck } from "lucide-react";
 import { useSearch } from "@/app/providers/SearchProvider";
+import { useVendor } from "@/app/lib/useVendor";
 import { cx } from "@/app/lib/utils";
 
 /**
  * Bottom tab bar for phones. Five items is the practical ceiling before the
- * targets get too narrow to hit reliably.
+ * targets get too narrow to hit reliably — the sixth is admin-only, so it
+ * costs width for one account rather than for everybody.
  */
 const TABS = [
   { href: "/", label: "Home", icon: Home },
@@ -19,9 +21,17 @@ const TABS = [
   { href: "/profile", label: "You", icon: User },
 ];
 
+const ADMIN_TAB: (typeof TABS)[number] = {
+  href: "/admin",
+  label: "Admin",
+  icon: ShieldCheck,
+};
+
 export default function MobileTabBar() {
   const pathname = usePathname();
   const { open } = useSearch();
+  const { isAdmin } = useVendor();
+  const tabs = isAdmin ? [...TABS, ADMIN_TAB] : TABS;
 
   // The vendor and admin areas are a different product with different
   // navigation; the diner tab bar would just be five wrong answers there.
@@ -34,10 +44,10 @@ export default function MobileTabBar() {
     // of the phone layout.
     <nav
       aria-label="Primary"
-      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 md:hidden"
+      className="fixed inset-x-3 bottom-[var(--tabbar-inset)] z-40 md:hidden"
     >
-      <ul className="clay flex items-stretch rounded-[1.75rem] px-1.5 py-1">
-        {TABS.map((t) => {
+      <ul className="clay flex h-[var(--tabbar-h)] items-stretch rounded-[1.75rem] px-1.5 py-1">
+        {tabs.map((t) => {
           const activeTab =
             t.href === "/" ? pathname === "/" : pathname.startsWith(t.href);
           const Icon = t.icon;

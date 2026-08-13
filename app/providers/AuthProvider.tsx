@@ -7,7 +7,26 @@ import React, {
   useState,
 } from "react";
 import { onAuthStateChanged, signOut, type User } from "firebase/auth";
-import { auth } from "@/app/firebase/firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "@/app/firebase/firebaseConfig";
+
+/** Keeps `users/{uid}` in step with the account, so admins can see everyone. */
+async function recordProfile(u: User) {
+  try {
+    await setDoc(
+      doc(db, "users", u.uid),
+      {
+        email: u.email ?? "",
+        name: u.displayName ?? "",
+        photoURL: u.photoURL ?? "",
+        lastSeenAt: Date.now(),
+      },
+      { merge: true }
+    );
+  } catch {
+    // Rules may refuse this for a signed-out race; nothing here is critical.
+  }
+}
 
 interface AuthContextValue {
   user: User | null;
@@ -29,6 +48,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
       setLoading(false);
+      // Stamp a profile document on every sign-in. The client SDK cannot list
+      // Firebase Auth, so the admin console's user table is built from these —
+      // without this, anyone who signed in but never favourited anything was
+      // invisible to it. Best-effort and merged, so it never clobbers points
+      // or favourites and never blocks sign-in if the write is refused.
+      if (u) void recordProfile(u);
     });
     return () => unsub();
   }, []);

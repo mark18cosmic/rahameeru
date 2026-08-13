@@ -23,6 +23,7 @@ import { AdminConsole } from "../AdminConsole";
 import { RestaurantManager } from "./RestaurantManager";
 import { UserManager } from "./UserManager";
 import { SiteSettingsPanel } from "./SiteSettingsPanel";
+import { AddVendor } from "./AddVendor";
 
 const TABS = [
   { key: "restaurants", label: "Restaurants", icon: Store },
@@ -46,6 +47,8 @@ export function AdminHome() {
   const { isAdmin, loading: vendorLoading } = useVendor();
   const [tab, setTab] = useState<TabKey>("restaurants");
   const [settings, setSettings] = useState<SiteSettings>(DEFAULT_SETTINGS);
+  // Bumped after adding a vendor, to remount the queue so it re-fetches.
+  const [vendorsKey, setVendorsKey] = useState(0);
 
   const loadSettings = useCallback(async () => {
     setSettings(await getSiteSettings());
@@ -129,8 +132,14 @@ export function AdminHome() {
         )}
         {tab === "users" && <UserManager />}
         {/* The vendor-claims queue already exists and gates itself; reused
-            whole rather than duplicated here. */}
-        {tab === "vendors" && <AdminConsole />}
+            whole rather than duplicated here, with adding a vendor outright
+            stacked above the review list. */}
+        {tab === "vendors" && (
+          <div className="space-y-5">
+            <AddVendor onCreated={() => setVendorsKey((k) => k + 1)} />
+            <AdminConsole key={vendorsKey} embedded />
+          </div>
+        )}
         {tab === "settings" && (
           <SiteSettingsPanel settings={settings} onSaved={loadSettings} />
         )}

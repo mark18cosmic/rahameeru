@@ -8,6 +8,7 @@ import {
   serverTimestamp,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "@/app/firebase/firebaseConfig";
 
@@ -151,13 +152,72 @@ export async function applyAsVendor(
   });
 }
 
-export async function getVendor(uid: string): Promise<VendorProfile | null> {
+/**
+ * The vendor record for an account.
+ *
+ * Falls back to an email match because an admin can create a vendor before
+ * that person has ever signed in — there is no uid to key it by at that point.
+ * Once they do sign in, the email lookup finds the record and adopts it onto
+ * their uid, so the next read is the fast path again.
+ */
+export async function getVendor(
+  uid: string,
+  email?: string | null
+): Promise<VendorProfile | null> {
   try {
     const snap = await getDoc(doc(db, COLLECTION, uid));
-    return snap.exists() ? (snap.data() as VendorProfile) : null;
+    if (snap.exists()) return snap.data() as VendorProfile;
+
+    if (!email) return null;
+    const matches = await getDocs(
+      query(collection(db, COLLECTION), where("email", "==", email.toLowerCase()))
+    );
+    const found = matches.docs[0];
+    if (!found) return null;
+
+    const profile = { ...(found.data() as VendorProfile), uid };
+    // Re-key onto the uid so this costs one read next time, not two.
+    await setDoc(doc(db, COLLECTION, uid), profile);
+    return profile;
   } catch {
     return null;
   }
+}
+
+/**
+ * Creates a vendor directly, already approved.
+ *
+ * For the case where an admin has spoken to a restaurant and is setting them
+ * up, rather than waiting for an application to review. Keyed by email until
+ * the person signs in — see getVendor.
+ */
+export async function createVendorAsAdmin(input: {
+  businessName: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  about?: string;
+  restaurantIds?: string[];
+}): Promise<string> {
+  const email = input.email.trim().toLowerCase();
+  const id = `email_${email.replace(/[^a-z0-9]+/g, "_")}`;
+  await setDoc(
+    doc(db, COLLECTION, id),
+    {
+      ...input,
+      email,
+      about: input.about ?? "",
+      uid: id,
+      restaurantIds: input.restaurantIds ?? [],
+      status: "approved" satisfies VendorStatus,
+      plan: "starter" satisfies PlanId,
+      createdAt: Date.now(),
+      decidedAt: Date.now(),
+      createdByAdmin: true,
+    },
+    { merge: true }
+  );
+  return id;
 }
 
 /** Admin view: every application, newest first. */

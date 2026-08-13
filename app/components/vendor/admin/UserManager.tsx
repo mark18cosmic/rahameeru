@@ -3,11 +3,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Ban, Info, Loader2, ShieldCheck, Trophy, UserCheck } from "lucide-react";
 import {
+  listAllAuthUsers,
   listUsers,
   setUserPoints,
   updateUser,
   type ManagedUser,
 } from "@/app/lib/admin";
+import { useAuth } from "@/app/providers/AuthProvider";
 import { cx } from "@/app/lib/utils";
 import { Input } from "../../ui/Field";
 
@@ -19,12 +21,29 @@ export function UserManager() {
   const [q, setQ] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
   const [grant, setGrant] = useState<Record<string, string>>({});
+  const [complete, setComplete] = useState(false);
+  const { user } = useAuth();
 
   const load = useCallback(async () => {
     setLoading(true);
-    setUsers(await listUsers());
+    // The Firestore documents carry points, roles and suspensions; the Admin
+    // SDK route carries everyone. Merge so the table is complete without
+    // losing the app state, and fall back to Firestore alone when the route
+    // has no service account configured.
+    const stored = await listUsers();
+    const all = user ? await listAllAuthUsers(await user.getIdToken()) : null;
+    if (!all) {
+      setUsers(stored);
+      setComplete(false);
+    } else {
+      const byUid = new Map(stored.map((u) => [u.uid, u]));
+      setUsers(
+        all.map((u) => ({ ...u, ...byUid.get(u.uid), suspended: u.suspended }))
+      );
+      setComplete(true);
+    }
     setLoading(false);
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     load();
@@ -65,13 +84,15 @@ export function UserManager() {
     <div>
       {/* Said plainly rather than letting the admin assume the list is
           everyone — the client SDK cannot enumerate Firebase Auth. */}
-      <p className="clay-inset flex items-start gap-2 rounded-2xl p-3 text-sm text-ink-500 dark:text-ink-300">
-        <Info size={16} className="mt-0.5 shrink-0" />
-        This lists accounts that have app state — favourites, diet flags or
-        points. Someone who signed in but never used a feature won&apos;t appear
-        until they do. A full account list needs the Firebase Admin SDK on a
-        server.
-      </p>
+      {!complete && (
+        <p className="clay-inset flex items-start gap-2 rounded-2xl p-3 text-sm text-ink-500 dark:text-ink-300">
+          <Info size={16} className="mt-0.5 shrink-0" />
+          Showing accounts that have signed in since this build, or that have
+          app state. To list <strong>every</strong> account, set{" "}
+          <code className="font-mono text-xs">FIREBASE_SERVICE_ACCOUNT</code> in
+          the environment — the admin route needs it to read Firebase Auth.
+        </p>
+      )}
 
       <Input
         value={q}

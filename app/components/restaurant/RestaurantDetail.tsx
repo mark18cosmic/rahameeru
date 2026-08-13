@@ -381,8 +381,11 @@ export function RestaurantDetail({
         </section>
       )}
 
-      {/* Mobile action bar — kept above the tab bar's safe area. */}
-      <div className="clay fixed inset-x-3 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30 flex gap-2 rounded-[1.75rem] px-3 py-2.5 md:hidden">
+      {/* Mobile action bar, docked onto the tab bar so the two read as one
+          stack rather than two floating slabs. It sits exactly one tab-bar
+          height up, shares its horizontal inset, and squares off the bottom
+          corners where they meet — the radius only rounds the top. */}
+      <div className="clay fixed inset-x-3 bottom-[calc(var(--tabbar-inset)+var(--tabbar-h))] z-30 flex gap-2 rounded-t-[1.75rem] px-3 pb-4 pt-2.5 md:hidden">
         <Button onClick={() => setMapOpen(true)} className="flex-1">
           <Navigation size={16} /> Directions
         </Button>

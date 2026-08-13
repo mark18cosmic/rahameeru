@@ -106,6 +106,8 @@ export type SiteSettings = {
   pinned: string[];
   /** Hidden from every listing without deleting the record. */
   hidden: string[];
+  /** Slugs of deleted listings. Tombstones — see deleteRestaurant. */
+  deleted: string[];
   showWheel: boolean;
   showCategories: boolean;
   showReviewInvite: boolean;
@@ -118,6 +120,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   rails: ["featured", "openNow", "dateSpots", "cafes", "fastFood", "recent"],
   pinned: [],
   hidden: [],
+  deleted: [],
   showWheel: true,
   showCategories: true,
   showReviewInvite: true,
@@ -217,9 +220,80 @@ export async function saveRestaurant(
   return docId;
 }
 
-export async function deleteRestaurant(id: string): Promise<void> {
-  await deleteDoc(doc(db, "restaurants", id));
+/**
+ * Deletes a listing for good.
+ *
+ * Removing the Firestore document is only half of it — the seed set ships in
+ * the bundle, so a seeded restaurant reappears on the next read. The slug is
+ * therefore tombstoned in `config/site.deleted`, which `getRestaurants` honours
+ * regardless of where the listing came from. `restoreRestaurant` is the undo.
+ */
+export async function deleteRestaurant(
+  id: string,
+  slug?: string
+): Promise<void> {
+  await deleteDoc(doc(db, "restaurants", id)).catch(() => {
+    // A seed-only listing has no document; the tombstone is what matters.
+  });
+  if (slug) {
+    const current = await getSiteSettings();
+    await saveSiteSettings({
+      deleted: Array.from(new Set([...current.deleted, slug])),
+    });
+  }
   refreshRestaurants();
+}
+
+/** Brings a deleted listing back by clearing its tombstone. */
+export async function restoreRestaurant(slug: string): Promise<void> {
+  const current = await getSiteSettings();
+  await saveSiteSettings({
+    deleted: current.deleted.filter((s) => s !== slug),
+  });
+  refreshRestaurants();
+}
+
+/** Deletes several listings in one pass, tombstoning each. */
+export async function deleteRestaurants(
+  items: { id: string; slug: string }[]
+): Promise<void> {
+  for (const { id } of items) {
+    await deleteDoc(doc(db, "restaurants", id)).catch(() => {});
+  }
+  const current = await getSiteSettings();
+  await saveSiteSettings({
+    deleted: Array.from(
+      new Set([...current.deleted, ...items.map((i) => i.slug)])
+    ),
+  });
+  refreshRestaurants();
+}
+
+/** Features or unfeatures several listings at once. */
+export async function bulkSetFeatured(
+  ids: string[],
+  featured: boolean
+): Promise<void> {
+  for (const id of ids) {
+    await setDoc(
+      doc(db, "restaurants", id),
+      { featured, updatedAt: Date.now() },
+      { merge: true }
+    );
+  }
+  refreshRestaurants();
+}
+
+/** Hides or shows several listings at once. */
+export async function bulkSetHidden(
+  ids: string[],
+  hidden: boolean
+): Promise<void> {
+  const current = await getSiteSettings();
+  const next = hidden
+    ? Array.from(new Set([...current.hidden, ...ids]))
+    : current.hidden.filter((x) => !ids.includes(x));
+  await saveSiteSettings({ hidden: next });
 }
 
 /** Replaces the whole menu for a listing. */
@@ -293,6 +367,43 @@ export type ManagedUser = {
   role?: "user" | "vendor" | "admin";
   note?: string;
 };
+
+/**
+ * Every Firebase Auth account, via the server route.
+ *
+ * Returns null when the route isn't configured with a service account, which
+ * is the signal to fall back to the Firestore-derived list rather than showing
+ * an empty table.
+ */
+export async function listAllAuthUsers(
+  idToken: string
+): Promise<ManagedUser[] | null> {
+  try {
+    const res = await fetch("/api/admin/users", {
+      headers: { Authorization: `Bearer ${idToken}` },
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as {
+      users: {
+        uid: string;
+        email?: string;
+        name?: string;
+        disabled: boolean;
+        lastSignInAt?: string;
+      }[];
+    };
+    return data.users.map((u) => ({
+      uid: u.uid,
+      email: u.email,
+      name: u.name,
+      points: 0,
+      suspended: u.disabled,
+      role: "user" as const,
+    }));
+  } catch {
+    return null;
+  }
+}
 
 export async function listUsers(): Promise<ManagedUser[]> {
   try {

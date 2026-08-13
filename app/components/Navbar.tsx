@@ -16,6 +16,7 @@ import {
   Search as SearchIcon,
   Info,
   ShoppingBag,
+  ShieldCheck,
 } from "lucide-react";
 import logo from "@/public/rahameeruLogo.png";
 import { useAuth } from "@/app/providers/AuthProvider";
@@ -23,6 +24,7 @@ import { useSearch } from "@/app/providers/SearchProvider";
 import { useTheme } from "@/app/providers/ThemeProvider";
 import { cx } from "@/app/lib/utils";
 import { useCart } from "@/app/lib/useCart";
+import { useVendor } from "@/app/lib/useVendor";
 import { BillSheet } from "./cart/BillSheet";
 import { ButtonLink } from "./ui/Button";
 
@@ -40,6 +42,7 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const { count } = useCart();
+  const { isAdmin } = useVendor();
   const [scrolled, setScrolled] = useState(false);
   const [billOpen, setBillOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -159,6 +162,12 @@ export default function Navbar() {
                     <Link href="/favorites" className="flex items-center gap-2 px-4 py-2.5 text-sm text-ink-700 hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-ink-800">
                       <Heart size={16} /> Favorites
                     </Link>
+                    {/* Otherwise /admin is only reachable by typing the URL. */}
+                    {isAdmin && (
+                      <Link href="/admin" className="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-root-600 hover:bg-ink-50 dark:hover:bg-ink-800">
+                        <ShieldCheck size={16} /> Admin
+                      </Link>
+                    )}
                     <button
                       onClick={async () => {
                         await logout();

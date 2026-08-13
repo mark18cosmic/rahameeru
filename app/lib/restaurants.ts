@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "@/app/firebase/firebaseConfig";
 import type { Restaurant, PriceLevel } from "./types";
 import { seedRestaurants } from "./data";
@@ -74,6 +74,24 @@ export function getCachedRestaurants(): Restaurant[] | null {
  * fills any gaps (and covers the case where Firestore is empty or blocked), so
  * the app always has content to show. Firestore docs win on slug collisions.
  */
+/**
+ * Slugs an admin has deleted.
+ *
+ * Deleting is not just removing the Firestore document: the seed set is
+ * compiled into the bundle, so a seeded restaurant reappears on the very next
+ * read. A tombstone list is the only thing that can keep one deleted, and it
+ * doubles as the undo — clearing the slug brings the listing back.
+ */
+async function deletedSlugs(): Promise<Set<string>> {
+  try {
+    const snap = await getDoc(doc(db, "config", "site"));
+    const list = snap.exists() ? (snap.data().deleted as string[]) : null;
+    return new Set(Array.isArray(list) ? list : []);
+  } catch {
+    return new Set();
+  }
+}
+
 export async function getRestaurants(): Promise<Restaurant[]> {
   if (cache) return cache;
   let remote: Restaurant[] = [];
@@ -83,9 +101,11 @@ export async function getRestaurants(): Promise<Restaurant[]> {
   } catch {
     remote = [];
   }
+  const gone = await deletedSlugs();
   const bySlug = new Map<string, Restaurant>();
   for (const r of seedRestaurants) bySlug.set(r.slug, r);
   for (const r of remote) if (r.name) bySlug.set(r.slug, r);
+  for (const slug of gone) bySlug.delete(slug);
 
   // Fold in what people have actually rated. One aggregate read covers the
   // whole list, so this costs the same whether it's a rail or the full grid.

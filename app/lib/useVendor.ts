@@ -32,7 +32,7 @@ export function useVendor() {
       return;
     }
     setLoading(true);
-    setVendor(await getVendor(user.uid));
+    setVendor(await getVendor(user.uid, user.email));
     setLoading(false);
   }, [user]);
 

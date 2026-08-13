@@ -16,7 +16,10 @@ import {
 import type { MenuSection, Restaurant } from "@/app/lib/types";
 import { useRestaurants } from "@/app/lib/useRestaurants";
 import {
+  bulkSetFeatured,
+  bulkSetHidden,
   deleteRestaurant,
+  deleteRestaurants,
   saveMenu,
   savePhotos,
   saveRestaurant,
@@ -434,6 +437,29 @@ export function RestaurantManager({
   const [creating, setCreating] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [confirmBulkDelete, setConfirmBulkDelete] = useState(false);
+
+  const toggleSelected = (id: string) =>
+    setSelected((s) => {
+      const next = new Set(s);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
+  const runBulk = async (fn: () => Promise<void>) => {
+    setBulkBusy(true);
+    try {
+      await fn();
+      setSelected(new Set());
+      setConfirmBulkDelete(false);
+      onSettingsChange();
+    } finally {
+      setBulkBusy(false);
+    }
+  };
 
   const shown = useMemo(() => {
     const term = q.trim().toLowerCase();
@@ -494,9 +520,98 @@ export function RestaurantManager({
         </div>
       )}
 
-      <p className="mt-5 text-sm text-ink-500">
-        {loading ? "Loading…" : `${shown.length} listings`}
-      </p>
+      <div className="mt-5 flex flex-wrap items-center gap-2">
+        <p className="text-sm text-ink-500">
+          {loading ? "Loading…" : `${shown.length} listings`}
+        </p>
+        <button
+          onClick={() =>
+            setSelected(
+              selected.size === shown.length
+                ? new Set()
+                : new Set(shown.map((r) => r.id))
+            )
+          }
+          className="clay-sm clay-press ml-auto min-h-[38px] rounded-full px-3.5 text-xs font-semibold"
+        >
+          {selected.size === shown.length && shown.length > 0
+            ? "Clear selection"
+            : "Select all"}
+        </button>
+      </div>
+
+      {/* Bulk bar. Sticks to the bottom on a phone so the actions stay in
+          reach no matter how far down the list the selection happened. */}
+      {selected.size > 0 && (
+        <div className="clay sticky bottom-[calc(6rem+env(safe-area-inset-bottom))] z-20 mt-3 flex flex-wrap items-center gap-2 rounded-[1.5rem] p-3 md:bottom-4">
+          <span className="text-sm font-bold text-ink-900 dark:text-white">
+            {selected.size} selected
+          </span>
+          <button
+            onClick={() => runBulk(() => bulkSetFeatured([...selected], true))}
+            disabled={bulkBusy}
+            className="clay-sm clay-press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
+          >
+            Feature
+          </button>
+          <button
+            onClick={() => runBulk(() => bulkSetFeatured([...selected], false))}
+            disabled={bulkBusy}
+            className="clay-sm clay-press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
+          >
+            Unfeature
+          </button>
+          <button
+            onClick={() => runBulk(() => bulkSetHidden([...selected], true))}
+            disabled={bulkBusy}
+            className="clay-sm clay-press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
+          >
+            Hide
+          </button>
+          <button
+            onClick={() => runBulk(() => bulkSetHidden([...selected], false))}
+            disabled={bulkBusy}
+            className="clay-sm clay-press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
+          >
+            Show
+          </button>
+
+          {confirmBulkDelete ? (
+            <>
+              <button
+                onClick={() =>
+                  runBulk(() =>
+                    deleteRestaurants(
+                      restaurants
+                        .filter((r) => selected.has(r.id))
+                        .map((r) => ({ id: r.id, slug: r.slug }))
+                    )
+                  )
+                }
+                disabled={bulkBusy}
+                className="clay-root clay-press inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-3.5 text-xs font-bold disabled:opacity-60"
+              >
+                {bulkBusy && <Loader2 size={13} className="animate-spin" />}
+                Delete {selected.size} for good
+              </button>
+              <button
+                onClick={() => setConfirmBulkDelete(false)}
+                className="clay-sm clay-press min-h-[40px] rounded-full px-3.5 text-xs font-semibold"
+              >
+                Keep
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => setConfirmBulkDelete(true)}
+              disabled={bulkBusy}
+              className="clay-sm clay-press ml-auto inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-root-600 disabled:opacity-60"
+            >
+              <Trash2 size={13} /> Delete
+            </button>
+          )}
+        </div>
+      )}
 
       <div className="mt-3 space-y-3">
         {shown.map((r) => {
@@ -505,6 +620,18 @@ export function RestaurantManager({
           return (
             <div key={r.id} className="clay rounded-[1.75rem] p-4">
               <div className="flex items-start gap-3">
+                <button
+                  onClick={() => toggleSelected(r.id)}
+                  role="checkbox"
+                  aria-checked={selected.has(r.id)}
+                  aria-label={`Select ${r.name}`}
+                  className={cx(
+                    "mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-xl transition",
+                    selected.has(r.id) ? "clay-root" : "clay-inset"
+                  )}
+                >
+                  {selected.has(r.id) && <Check size={15} strokeWidth={3} />}
+                </button>
                 <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800">
                   <Photo r={r} sizes="64px" />
                 </div>
@@ -585,7 +712,8 @@ export function RestaurantManager({
                       onClick={async () => {
                         setBusy(r.id);
                         try {
-                          await deleteRestaurant(r.id);
+                          await deleteRestaurant(r.id, r.slug);
+                          onSettingsChange();
                         } finally {
                           setBusy(null);
                           setConfirmDelete(null);
