@@ -17,27 +17,27 @@ export type Accent = "root" | "sky" | "emerald" | "violet" | "amber" | "rose";
 
 const ACCENTS: Record<Accent, { chip: string; link: string }> = {
   root: {
-    chip: "clay-on-color bg-gradient-to-br from-root-400 to-root-600 text-white",
+    chip: "clay-on-color bg-root-500 text-white",
     link: "text-root-600 hover:text-root-700",
   },
   sky: {
-    chip: "clay-on-color bg-gradient-to-br from-sky-400 to-sky-600 text-white",
+    chip: "clay-on-color bg-sky-500 text-white",
     link: "text-sky-600 hover:text-sky-700",
   },
   emerald: {
-    chip: "clay-on-color bg-gradient-to-br from-emerald-400 to-emerald-600 text-white",
+    chip: "clay-on-color bg-emerald-500 text-white",
     link: "text-emerald-600 hover:text-emerald-700",
   },
   violet: {
-    chip: "clay-on-color bg-gradient-to-br from-violet-400 to-violet-600 text-white",
+    chip: "clay-on-color bg-violet-500 text-white",
     link: "text-violet-600 hover:text-violet-700",
   },
   amber: {
-    chip: "clay-on-color bg-gradient-to-br from-amber-400 to-amber-600 text-white",
+    chip: "clay-on-color bg-amber-500 text-white",
     link: "text-amber-600 hover:text-amber-700",
   },
   rose: {
-    chip: "clay-on-color bg-gradient-to-br from-rose-400 to-rose-600 text-white",
+    chip: "clay-on-color bg-rose-500 text-white",
     link: "text-rose-600 hover:text-rose-700",
   },
 };

@@ -15,7 +15,7 @@ const base =
 const variants: Record<Variant, string> = {
   primary: "clay-root clay-press",
   secondary:
-    "clay-press bg-gradient-to-br from-ink-700 to-ink-900 text-white shadow-[0_18px_34px_-14px_rgba(23,21,18,0.6),inset_0_8px_14px_-6px_rgba(255,255,255,0.25),inset_-5px_-7px_14px_-6px_rgba(0,0,0,0.5)] dark:from-white dark:to-ink-100 dark:text-ink-900",
+    "clay-on-color clay-press bg-ink-900 text-white dark:bg-white dark:text-ink-900",
   outline: "clay-sm clay-press text-ink-800 dark:text-ink-100",
   ghost:
     "text-ink-700 hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800",

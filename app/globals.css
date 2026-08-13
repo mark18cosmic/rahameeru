@@ -197,10 +197,11 @@ select:focus-visible {
     }
   }
 
-  /* Tinted clay. The lip and shade stay as they are — only the body colour
-     changes — so a coral chip and a white card catch light the same way. */
+  /* Tinted clay. Flat colour, never a gradient: the inset lip and shade are
+     what give the shape its form, and a gradient underneath only muddies
+     them. Only the body colour changes between the tints. */
   .clay-root {
-    background: linear-gradient(145deg, #ff7d71, #f84b3b);
+    background: #f84b3b;
     color: #fff;
     box-shadow:
       0 18px 34px -14px rgba(248, 75, 59, 0.55),
@@ -208,7 +209,7 @@ select:focus-visible {
       inset -5px -7px 14px -6px rgba(127, 28, 19, 0.45);
   }
   .clay-saffron {
-    background: linear-gradient(145deg, #ffc24b, #f5a623);
+    background: #f5a623;
     color: #3a352e;
     box-shadow:
       0 18px 34px -14px rgba(245, 166, 35, 0.5),

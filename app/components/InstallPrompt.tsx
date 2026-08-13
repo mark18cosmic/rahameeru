@@ -115,7 +115,7 @@ export function InstallPrompt() {
           transition={{ type: "spring", stiffness: 260, damping: 28 }}
           className="fixed inset-x-0 z-[60] px-3 pb-[env(safe-area-inset-bottom)] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] md:bottom-4 md:left-auto md:right-4 md:w-[380px] md:px-0"
         >
-          <div className="relative overflow-hidden rounded-3xl border border-ink-100 bg-white p-4 shadow-card dark:border-ink-800 dark:bg-ink-900">
+          <div className="clay relative overflow-hidden rounded-[2rem] p-4">
             <button
               onClick={dismiss}
               aria-label="Dismiss"
@@ -146,7 +146,7 @@ export function InstallPrompt() {
             {ios ? (
               <ol className="mt-4 space-y-2 rounded-2xl bg-ink-50 p-3 text-sm text-ink-700 dark:bg-ink-800 dark:text-ink-200">
                 <li className="flex items-center gap-2">
-                  <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white text-ink-700 dark:bg-ink-900 dark:text-ink-200">
+                  <span className="clay-sm grid h-6 w-6 shrink-0 place-items-center rounded-full text-ink-700 dark:text-ink-200">
                     1
                   </span>
                   Tap

@@ -260,11 +260,11 @@ export function ScanSheet({
             animate={{ y: 0, opacity: 1 }}
             exit={reduceMotion ? undefined : { y: "5%", opacity: 0 }}
             transition={{ type: "spring", stiffness: 330, damping: 32 }}
-            className="relative w-full overflow-hidden rounded-t-3xl bg-white dark:bg-ink-900 sm:max-w-md sm:rounded-3xl"
+            className="clay relative w-full overflow-hidden rounded-t-[2rem] sm:max-w-md sm:rounded-[2rem]"
           >
             <div className="flex items-start justify-between gap-3 p-5 pb-3">
               <div className="flex items-center gap-2.5">
-                <span className="grid h-9 w-9 place-items-center rounded-2xl bg-ink-900 text-white dark:bg-white dark:text-ink-900">
+                <span className="clay-on-color grid h-9 w-9 place-items-center rounded-2xl bg-ink-900 text-white dark:bg-white dark:text-ink-900">
                   <QrCode size={18} />
                 </span>
                 <div>
@@ -322,7 +322,7 @@ export function ScanSheet({
 
                 <button
                   onClick={() => photoInput.current?.click()}
-                  className="mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full border border-ink-200 text-sm font-semibold dark:border-ink-700"
+                  className="mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 clay-sm clay-press rounded-full text-sm font-semibold "
                 >
                   <ImageUp size={16} /> Use a photo of the code
                 </button>
@@ -340,7 +340,7 @@ export function ScanSheet({
                 {restaurantId && (
                   <button
                     onClick={() => setMode("code")}
-                    className="mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full border border-ink-200 text-sm font-semibold dark:border-ink-700"
+                    className="mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 clay-sm clay-press rounded-full text-sm font-semibold "
                   >
                     <Keyboard size={16} /> Type the code instead
                   </button>
@@ -364,7 +364,7 @@ export function ScanSheet({
                     autoCapitalize="none"
                     autoCorrect="off"
                     spellCheck={false}
-                    className="w-full rounded-2xl border border-ink-200 bg-transparent px-4 py-3 font-mono tracking-[0.2em] outline-none focus:border-root-400 dark:border-ink-700"
+                    className="w-full clay-inset rounded-2xl px-4 py-3 font-mono tracking-[0.2em] outline-none focus:border-root-400 "
                   />
                 </label>
 
@@ -388,7 +388,7 @@ export function ScanSheet({
                     }}
                     className={cx(
                       "mt-3 flex min-h-[46px] w-full items-center justify-center gap-2",
-                      "rounded-full border border-ink-200 text-sm font-semibold dark:border-ink-700"
+                      "clay-sm clay-press rounded-full text-sm font-semibold "
                     )}
                   >
                     <Camera size={16} /> Use the camera

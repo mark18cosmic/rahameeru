@@ -56,9 +56,9 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
 
   return (
     <section className="mt-8 md:mt-12">
-      <div className="grid items-center gap-6 overflow-hidden rounded-[1.75rem] border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900 sm:rounded-[2rem] md:grid-cols-2 md:gap-10 md:p-10">
+      <div className="clay grid items-center gap-6 overflow-hidden rounded-[1.75rem] p-5 sm:rounded-[2rem] md:grid-cols-2 md:gap-10 md:p-10">
         <div className="min-w-0">
-          <span className="inline-flex items-center gap-2 rounded-full bg-root-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-root-600 dark:bg-root-900/25 dark:text-root-300">
+          <span className="clay-sm inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-root-600 dark:text-root-300">
             <Star size={13} className="fill-root-500 text-root-500" /> Worth writing
           </span>
 
@@ -74,11 +74,11 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               href={suggestion ? `/restaurant/${suggestion.slug}?review=1` : "/explore"}
-              className="inline-flex min-h-[48px] items-center gap-2 rounded-full bg-root-500 px-5 font-semibold text-white transition hover:bg-root-600 active:scale-[0.98]"
+              className="clay-root clay-press inline-flex min-h-[48px] items-center gap-2 rounded-full px-5 font-semibold"
             >
               Write one now <ArrowRight size={16} />
             </Link>
-            <span className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-ink-200 px-4 text-sm text-ink-600 dark:border-ink-700 dark:text-ink-300">
+            <span className="clay-sm inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-sm text-ink-600 dark:text-ink-300">
               <QrCode size={15} className="text-root-500" />
               +{SCAN_POINTS} more if you scan at the table
             </span>
@@ -87,7 +87,7 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
 
         {/* The review assembling itself */}
         <div className="relative">
-          <div className="rounded-3xl border border-ink-100 bg-ink-50 p-4 dark:border-ink-800 dark:bg-ink-800/40">
+          <div className="clay-inset rounded-[1.75rem] p-4">
             <div className="flex items-center gap-3">
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-root-100 font-bold text-root-600 dark:bg-root-900/40 dark:text-root-300">
                 A
@@ -152,7 +152,7 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
                     shown >= 2 ? { opacity: 1, y: 0 } : { opacity: 0.2, y: 0 }
                   }
                   transition={{ delay: 0.1 + i * 0.09 }}
-                  className="rounded-full bg-white px-2.5 py-1 text-[11px] text-ink-700 dark:bg-ink-900 dark:text-ink-200"
+                  className="clay-sm rounded-full px-2.5 py-1 text-[11px] text-ink-700 dark:text-ink-200"
                 >
                   {d} <b className="text-saffron-500">{5 - i}/5</b>
                 </motion.span>

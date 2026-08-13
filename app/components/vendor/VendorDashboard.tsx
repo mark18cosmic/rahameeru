@@ -60,7 +60,7 @@ function Stat({
   tint: string;
 }) {
   return (
-    <div className="rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+    <div className="clay rounded-[2rem] p-5">
       <span className={cx("grid h-10 w-10 place-items-center rounded-2xl", tint)}>
         <Icon size={18} />
       </span>
@@ -261,7 +261,7 @@ export function VendorDashboard() {
                 />
               </div>
 
-              <div className="mt-4 rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+              <div className="mt-4 clay rounded-[2rem] p-5">
                 <div className="flex items-center justify-between">
                   <h2 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
                     Visits, last 14 days
@@ -326,7 +326,7 @@ export function VendorDashboard() {
                       {reviews.slice(0, 5).map((r) => (
                         <li
                           key={r.id}
-                          className="rounded-2xl border border-ink-100 bg-white p-4 dark:border-ink-800 dark:bg-ink-900"
+                          className="clay rounded-[1.5rem] p-4"
                         >
                           <div className="flex items-center justify-between gap-2">
                             <p className="truncate font-semibold text-ink-900 dark:text-white">
@@ -354,7 +354,7 @@ export function VendorDashboard() {
                                 rows={2}
                                 autoFocus
                                 placeholder="Answer publicly, under their review."
-                                className="w-full rounded-xl border border-ink-200 bg-transparent p-2.5 text-sm outline-none focus:border-root-400 dark:border-ink-700"
+                                className="w-full clay-inset rounded-xl p-2.5 text-sm outline-none focus:border-root-400 "
                               />
                               <div className="flex gap-2">
                                 <button
@@ -369,7 +369,7 @@ export function VendorDashboard() {
                                 </button>
                                 <button
                                   onClick={() => setReplyTo(null)}
-                                  className="min-h-[36px] rounded-full border border-ink-200 px-4 text-sm dark:border-ink-700"
+                                  className="min-h-[36px] clay-sm clay-press rounded-full px-4 text-sm "
                                 >
                                   Cancel
                                 </button>

@@ -212,7 +212,7 @@ export function MapModal({
             animate={{ y: 0, opacity: 1 }}
             exit={reduceMotion ? undefined : { y: "5%", opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 30 }}
-            className="relative flex h-[85svh] w-full flex-col overflow-hidden rounded-t-3xl bg-white dark:bg-ink-900 sm:h-[600px] sm:max-w-2xl sm:rounded-3xl"
+            className="clay relative flex h-[85svh] w-full flex-col overflow-hidden rounded-t-[2rem] sm:h-[600px] sm:max-w-2xl sm:rounded-[2rem]"
           >
             <div className="flex items-start justify-between gap-3 p-4">
               <div className="min-w-0">
@@ -290,7 +290,7 @@ export function MapModal({
                       href={mapsUrl(restaurant)}
                       target="_blank"
                       rel="noreferrer"
-                      className="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-full border border-ink-200 text-ink-600 transition active:scale-90 dark:border-ink-700 dark:text-ink-300"
+                      className="clay-sm clay-press grid h-[38px] w-[38px] shrink-0 place-items-center rounded-full text-ink-600 dark:text-ink-300"
                       aria-label="Open in Google Maps"
                     >
                       <ExternalLink size={15} />

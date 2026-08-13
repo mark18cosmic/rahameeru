@@ -51,7 +51,7 @@ export function DietPicker() {
   );
 
   return (
-    <section className="rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+    <section className="clay rounded-[2rem] p-5">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">

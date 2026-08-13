@@ -236,7 +236,7 @@ export function RestaurantDetail({
                   {hasMenu && (
                     <button
                       onClick={() => setTab("menu")}
-                      className="mt-6 flex w-full items-center justify-between rounded-2xl border border-ink-200 p-4 text-left transition hover:border-root-300 hover:bg-root-50/50 active:scale-[0.99] dark:border-ink-700 dark:hover:bg-ink-800"
+                      className="clay-sm clay-press mt-6 flex w-full items-center justify-between rounded-[1.5rem] p-4 text-left"
                     >
                       <span>
                         <span className="block font-semibold text-ink-900 dark:text-white">
@@ -280,7 +280,7 @@ export function RestaurantDetail({
 
         {/* Sidebar */}
         <aside className="lg:sticky lg:top-24 lg:h-fit">
-          <div className="rounded-3xl border border-ink-100 bg-white p-5 shadow-soft dark:border-ink-800 dark:bg-ink-900">
+          <div className="clay rounded-[2rem] p-5">
             <div className="hidden gap-2 md:flex">
               <Button onClick={() => setMapOpen(true)} className="flex-1">
                 <Navigation size={16} /> Directions
@@ -382,7 +382,7 @@ export function RestaurantDetail({
       )}
 
       {/* Mobile action bar — kept above the tab bar's safe area. */}
-      <div className="fixed inset-x-0 bottom-[calc(3.25rem+env(safe-area-inset-bottom))] z-30 flex gap-2 border-t border-ink-100 bg-[var(--bg)] px-5 py-2.5 dark:border-ink-800 md:hidden">
+      <div className="clay fixed inset-x-3 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-30 flex gap-2 rounded-[1.75rem] px-3 py-2.5 md:hidden">
         <Button onClick={() => setMapOpen(true)} className="flex-1">
           <Navigation size={16} /> Directions
         </Button>

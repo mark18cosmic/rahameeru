@@ -41,10 +41,8 @@ function Chip({
   return (
     <button
       onClick={onClick}
-      className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition ${
-        active
-          ? "border-root-500 bg-root-500 text-white"
-          : "border-ink-200 bg-white text-ink-600 hover:border-ink-300 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200"
+      className={`rounded-full px-3.5 py-2 text-sm font-medium transition ${
+        active ? "clay-root" : "clay-sm clay-press text-ink-600 dark:text-ink-200"
       }`}
     >
       {children}
@@ -118,7 +116,7 @@ export function SearchExperience() {
         </div>
         <button
           onClick={() => setShowFilters((v) => !v)}
-          className="relative flex items-center gap-2 rounded-2xl border border-ink-200 px-4 text-sm font-medium text-ink-700 dark:border-ink-700 dark:text-ink-200"
+          className="clay-sm clay-press relative flex items-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-medium text-ink-700 dark:text-ink-200"
         >
           <SlidersHorizontal size={16} /> Filters
           {count > 0 && (
@@ -134,7 +132,7 @@ export function SearchExperience() {
         <aside
           className={`${
             showFilters ? "block" : "hidden"
-          } h-fit rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900 lg:block`}
+          } h-fit clay rounded-[2rem] p-5 lg:block`}
         >
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-ink-900 dark:text-white">Filters</h3>

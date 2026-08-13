@@ -143,7 +143,7 @@ export function VendorSignup() {
         ))}
       </div>
 
-      <div className="mt-6 rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900 md:p-6">
+      <div className="mt-6 clay rounded-[2rem] p-5 md:p-6">
         {step === 0 && (
           <div className="space-y-4">
             <div>
@@ -319,7 +319,7 @@ export function VendorSignup() {
           {step > 0 && (
             <button
               onClick={() => setStep((s) => (s - 1) as Step)}
-              className="min-h-[48px] rounded-full border border-ink-200 px-5 font-semibold text-ink-700 transition active:scale-95 dark:border-ink-700 dark:text-ink-100"
+              className="min-h-[48px] clay-sm clay-press rounded-full px-5 font-semibold text-ink-700 transition active:scale-95 dark:text-ink-100"
             >
               Back
             </button>

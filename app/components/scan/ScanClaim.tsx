@@ -165,7 +165,7 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
       >
         <Link
           href="/explore"
-          className="inline-flex min-h-[50px] items-center rounded-full border border-ink-200 px-6 font-semibold dark:border-ink-700"
+          className="inline-flex min-h-[50px] items-center clay-sm clay-press rounded-full px-6 font-semibold "
         >
           Back to the app
         </Link>
@@ -204,7 +204,7 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
         </Link>
         <Link
           href={`/restaurant/${state.slug}`}
-          className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-full border border-ink-200 px-6 font-semibold dark:border-ink-700"
+          className="inline-flex min-h-[50px] items-center justify-center gap-2 clay-sm clay-press rounded-full px-6 font-semibold "
         >
           <MapPin size={17} /> See the menu
         </Link>

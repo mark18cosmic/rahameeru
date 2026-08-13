@@ -124,10 +124,11 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
             }}
           />
           {/* Scrim. The headline sits over moving photos, so the plane is
-              washed toward the page colour — heaviest on the text side —
-              rather than relying on a text shadow to stay legible. */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--bg)] via-[var(--bg)]/85 to-[var(--bg)]/40 lg:from-[var(--bg)] lg:via-[var(--bg)]/80 lg:to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[var(--bg)] to-transparent" />
+              washed toward the page colour rather than relying on a text
+              shadow to stay legible. Flat rather than a fade — the tiles are
+              already dimmed, so an even wash is enough and keeps the hero
+              free of gradients like the rest of the page. */}
+          <div className="absolute inset-0 bg-[var(--bg)]/75" />
         </div>
       )}
 

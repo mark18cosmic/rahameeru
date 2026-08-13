@@ -43,7 +43,7 @@ export function Modal({
             onClick={onClose}
           />
           <motion.div
-            className={`relative w-full ${maxWidth} rounded-3xl bg-white dark:bg-ink-900 shadow-card p-6`}
+            className={`clay relative w-full ${maxWidth} rounded-[2rem] p-6`}
             initial={{ scale: 0.94, opacity: 0, y: 12 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.96, opacity: 0, y: 8 }}
@@ -51,7 +51,7 @@ export function Modal({
           >
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 rounded-full p-1.5 text-ink-400 hover:bg-ink-100 dark:hover:bg-ink-800"
+              className="clay-sm clay-press absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full text-ink-400"
               aria-label="Close"
             >
               <X size={20} />

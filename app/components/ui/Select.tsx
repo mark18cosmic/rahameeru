@@ -86,7 +86,7 @@ export function Select<T extends string>({
         aria-label={ariaLabel}
         onClick={() => setOpen((o) => !o)}
         onKeyDown={onKeyDown}
-        className="flex w-full items-center gap-2 rounded-xl border border-ink-200 bg-white px-3.5 py-2 text-sm font-medium text-ink-700 shadow-soft transition hover:border-ink-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-root-400 focus-visible:ring-offset-2 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200 dark:hover:border-ink-600 dark:focus-visible:ring-offset-ink-950"
+        className="clay-sm clay-press flex w-full items-center gap-2 rounded-2xl px-3.5 py-2.5 text-sm font-medium text-ink-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-root-400 focus-visible:ring-offset-2 dark:text-ink-200 dark:focus-visible:ring-offset-ink-950"
       >
         <span className="truncate">{selected?.label ?? "Select"}</span>
         <ChevronDown
@@ -107,7 +107,7 @@ export function Select<T extends string>({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute right-0 z-30 mt-2 min-w-full overflow-hidden rounded-xl border border-ink-100 bg-white p-1 shadow-card dark:border-ink-800 dark:bg-ink-900"
+            className="clay absolute right-0 z-30 mt-2 min-w-full overflow-hidden rounded-2xl p-1"
           >
             {options.map((o, i) => {
               const isSelected = o.value === value;

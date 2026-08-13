@@ -170,7 +170,7 @@ export function AdminConsole() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search claims"
-            className="min-h-[40px] w-full rounded-full border border-ink-200 bg-transparent pl-9 pr-3 text-sm outline-none focus:border-root-400 dark:border-ink-700"
+            className="min-h-[40px] w-full clay-sm clay-press rounded-full bg-transparent pl-9 pr-3 text-sm outline-none focus:border-root-400 "
           />
         </div>
       </div>
@@ -195,7 +195,7 @@ export function AdminConsole() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900"
+                  className="clay rounded-[2rem] p-5"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="min-w-0">
@@ -262,7 +262,7 @@ export function AdminConsole() {
                           setNote((n) => ({ ...n, [v.uid]: e.target.value }))
                         }
                         placeholder="Note back to the applicant (shown if you reject)"
-                        className="min-h-[44px] w-full rounded-2xl border border-ink-200 bg-transparent px-4 text-sm outline-none focus:border-root-400 dark:border-ink-700"
+                        className="min-h-[44px] w-full clay-inset rounded-2xl px-4 text-sm outline-none focus:border-root-400 "
                       />
                       <div className="flex gap-2">
                         <button
@@ -280,7 +280,7 @@ export function AdminConsole() {
                         <button
                           onClick={() => decide(v, "rejected")}
                           disabled={busy === v.uid}
-                          className="flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full border border-ink-200 font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.98] disabled:opacity-60 dark:border-ink-700 dark:text-ink-100 dark:hover:bg-ink-800"
+                          className="flex min-h-[44px] flex-1 items-center justify-center gap-2 clay-sm clay-press rounded-full font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.98] disabled:opacity-60 dark:text-ink-100 dark:hover:bg-ink-800"
                         >
                           <X size={16} /> Reject
                         </button>
@@ -293,7 +293,7 @@ export function AdminConsole() {
                       <button
                         onClick={() => decide(v, v.status === "approved" ? "suspended" : "approved")}
                         disabled={busy === v.uid}
-                        className="min-h-[40px] rounded-full border border-ink-200 px-4 text-sm font-medium transition hover:bg-ink-50 disabled:opacity-60 dark:border-ink-700 dark:hover:bg-ink-800"
+                        className="min-h-[40px] clay-sm clay-press rounded-full px-4 text-sm font-medium transition hover:bg-ink-50 disabled:opacity-60 dark:hover:bg-ink-800"
                       >
                         {v.status === "approved" ? "Suspend" : "Approve now"}
                       </button>

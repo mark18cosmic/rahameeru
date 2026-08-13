@@ -166,7 +166,7 @@ export function Reviews({
           reviews.map((r) => (
             <div
               key={r.id}
-              className="rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900"
+              className="clay rounded-[2rem] p-5"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

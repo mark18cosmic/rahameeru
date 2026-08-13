@@ -43,7 +43,7 @@ export default function VendorLandingPage() {
     <VendorShell>
       <div className="mx-auto max-w-6xl px-5 py-10 md:px-6 md:py-16">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-ink-200 px-3.5 py-1.5 text-sm font-medium text-ink-600 dark:border-ink-700 dark:text-ink-300">
+          <span className="inline-flex items-center gap-2 clay-sm clay-press rounded-full px-3.5 py-1.5 text-sm font-medium text-ink-600 dark:text-ink-300">
             <Store size={14} className="text-root-500" />
             For restaurants
           </span>
@@ -67,7 +67,7 @@ export default function VendorLandingPage() {
             </Link>
             <Link
               href="/vendor/dashboard"
-              className="inline-flex min-h-[52px] items-center rounded-full border border-ink-200 px-6 font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.98] dark:border-ink-700 dark:text-ink-100 dark:hover:bg-ink-800"
+              className="inline-flex min-h-[52px] items-center clay-sm clay-press rounded-full px-6 font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.98] dark:text-ink-100 dark:hover:bg-ink-800"
             >
               I already applied
             </Link>
@@ -78,7 +78,7 @@ export default function VendorLandingPage() {
           {VALUE.map((v) => (
             <div
               key={v.title}
-              className="rounded-3xl border border-ink-100 bg-white p-6 dark:border-ink-800 dark:bg-ink-900"
+              className="clay rounded-[2rem] p-6"
             >
               <span className="grid h-11 w-11 place-items-center rounded-2xl bg-root-100 text-root-600 dark:bg-root-500/15 dark:text-root-300">
                 <v.icon size={20} />
@@ -105,7 +105,7 @@ export default function VendorLandingPage() {
           </div>
         </div>
 
-        <div className="mt-16 rounded-3xl border border-ink-100 bg-white p-6 dark:border-ink-800 dark:bg-ink-900 md:p-8">
+        <div className="mt-16 clay rounded-[2rem] p-6 md:p-8">
           <h2 className="font-display text-xl font-extrabold text-ink-900 dark:text-white">
             How claiming works
           </h2>

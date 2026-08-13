@@ -13,8 +13,7 @@ export function Badge({
   const tones = {
     neutral: "clay-sm text-ink-700 dark:text-ink-200",
     brand: "clay-root",
-    success:
-      "bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-[0_10px_20px_-10px_rgba(16,185,129,0.6),inset_0_5px_9px_-4px_rgba(255,255,255,0.55),inset_-3px_-4px_9px_-4px_rgba(6,95,70,0.45)]",
+    success: "clay-on-color bg-emerald-500 text-white",
     outline: "clay-inset text-ink-600 dark:text-ink-300",
   };
   return (

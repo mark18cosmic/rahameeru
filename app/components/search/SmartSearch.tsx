@@ -88,12 +88,12 @@ export function SmartSearch({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="relative w-full max-w-xl overflow-hidden rounded-[1.75rem] bg-white shadow-card ring-1 ring-ink-100 dark:bg-ink-900 dark:ring-ink-800"
+            className="clay relative w-full max-w-xl overflow-hidden rounded-[1.75rem] ring-1 ring-ink-100 dark:bg-ink-900 dark:ring-ink-800"
           >
             {/* The field is a pill inside the panel rather than a squared-off
                 bar across it — everything else in the app is round. */}
             <div className="p-3 sm:p-4">
-              <div className="flex items-center gap-2.5 rounded-2xl bg-ink-50 px-4 py-3 ring-1 ring-ink-100 transition focus-within:bg-white focus-within:ring-2 focus-within:ring-root-300 dark:bg-ink-800/60 dark:ring-ink-700 dark:focus-within:bg-ink-800">
+              <div className="clay-inset flex items-center gap-2.5 rounded-2xl px-4 py-3 transition focus-within:ring-2 focus-within:ring-root-300">
                 <Search size={20} className="shrink-0 text-root-500" />
                 <input
                   ref={inputRef}

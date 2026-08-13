@@ -609,7 +609,7 @@ export function WheelSpinner({ restaurants }: Props) {
               onDragEnd={(_, info) => info.offset.y > 90 && setPanelOpen(false)}
               // The sheet lives outside the dark wheel card, so it takes the
               // page's theme rather than inheriting the card's dark surface.
-              className="relative flex max-h-[86svh] w-full flex-col rounded-t-3xl bg-white text-ink-900 ring-1 ring-black/5 dark:bg-ink-900 dark:text-white dark:ring-white/10"
+              className="clay relative flex max-h-[86svh] w-full flex-col rounded-t-[2rem] text-ink-900 dark:text-white"
             >
               {/* Header and footer are pinned; only the middle scrolls, which
                   is what stops the last group being cut in half. */}

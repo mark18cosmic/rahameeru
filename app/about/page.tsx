@@ -50,7 +50,7 @@ export default function AboutPage() {
         {VALUES.map((v) => (
           <div
             key={v.title}
-            className="rounded-3xl border border-ink-100 bg-white p-6 dark:border-ink-800 dark:bg-ink-900"
+            className="clay rounded-[2rem] p-6"
           >
             <span className="grid h-11 w-11 place-items-center rounded-2xl bg-root-100 text-root-600 dark:bg-root-900/30">
               <v.icon size={20} />

@@ -44,10 +44,8 @@ export function FavoriteButton({
         //
         // Opaque rather than translucent: a see-through circle over a bright
         // photo read as part of the photo.
-        "z-10 grid shrink-0 place-items-center rounded-full shadow-sm ring-1 transition active:scale-90",
-        active
-          ? "bg-root-500 text-white ring-root-600/30"
-          : "bg-white text-ink-600 ring-black/5 hover:bg-white dark:bg-ink-900 dark:text-ink-100 dark:ring-white/10",
+        "z-10 grid shrink-0 place-items-center rounded-full transition active:scale-90",
+        active ? "clay-root" : "clay-sm text-ink-600 dark:text-ink-100",
         className
       )}
     >

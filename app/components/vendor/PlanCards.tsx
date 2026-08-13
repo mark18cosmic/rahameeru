@@ -34,7 +34,7 @@ export function PlanCards({
             )}
           >
             {plan.highlight && !active && (
-              <span className="clay-on-color absolute -top-3 left-6 rounded-full bg-gradient-to-br from-ink-700 to-ink-900 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
+              <span className="clay-on-color absolute -top-3 left-6 rounded-full bg-ink-900 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
                 Most chosen
               </span>
             )}
@@ -59,7 +59,7 @@ export function PlanCards({
             <ul className="mt-5 flex-1 space-y-2.5">
               {plan.features.map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm text-ink-600 dark:text-ink-300">
-                  <span className="clay-on-color mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white">
+                  <span className="clay-on-color mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-emerald-500 text-white">
                     <Check size={11} strokeWidth={3} />
                   </span>
                   {f}

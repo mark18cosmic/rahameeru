@@ -97,7 +97,7 @@ export function DishSheet({
             dragConstraints={{ top: 0, bottom: 0 }}
             dragElastic={{ top: 0, bottom: 0.4 }}
             onDragEnd={(_, info) => info.offset.y > 90 && onClose()}
-            className="relative max-h-[88svh] w-full overflow-y-auto rounded-t-3xl bg-white pb-[env(safe-area-inset-bottom)] dark:bg-ink-900 sm:max-w-lg sm:rounded-3xl sm:pb-0"
+            className="clay relative max-h-[88svh] w-full overflow-y-auto rounded-t-[2rem] pb-[env(safe-area-inset-bottom)] sm:max-w-lg sm:rounded-[2rem] sm:pb-0"
           >
             <div className="relative h-48 overflow-hidden rounded-t-3xl bg-ink-100 dark:bg-ink-800 sm:h-56">
               <Image
@@ -112,7 +112,7 @@ export function DishSheet({
               <button
                 onClick={onClose}
                 aria-label="Close"
-                className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-white text-ink-700 shadow-sm ring-1 ring-black/5 active:scale-90 dark:bg-ink-900 dark:text-ink-100"
+                className="clay-sm absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full text-ink-700 active:scale-90 dark:text-ink-100"
               >
                 <X size={18} />
               </button>

@@ -73,10 +73,13 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const pw = useMemo(() => strength(password), [password]);
   const tooShort = !isLogin && password.length > 0 && password.length < 6;
 
-  // Typing the setup code into the username field turns the signup form into
-  // admin setup. See ADMIN_SETUP_CODE — it only works until the account exists.
+  // Typing the setup code into either the username or the email field turns
+  // the form into admin setup. Both are accepted because the login page has no
+  // username field, and there's no reason to make someone find the right box.
+  // See ADMIN_SETUP_CODE — it only works until the account exists.
   const adminSetup =
-    !isLogin && username.trim().toLowerCase() === ADMIN_SETUP_CODE;
+    username.trim().toLowerCase() === ADMIN_SETUP_CODE ||
+    email.trim().toLowerCase() === ADMIN_SETUP_CODE;
   const [confirm, setConfirm] = useState("");
 
   const createAdmin = async (e: React.FormEvent) => {
@@ -240,7 +243,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             onClick={google}
             disabled={busy}
             hidden={adminSetup}
-            className="mt-5 flex min-h-[52px] w-full items-center sm:mt-7 justify-center gap-2.5 rounded-full border border-ink-200 font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.99] disabled:opacity-60 dark:border-ink-700 dark:text-ink-100 dark:hover:bg-ink-800"
+            className="mt-5 flex min-h-[52px] w-full items-center sm:mt-7 justify-center gap-2.5 clay-sm clay-press rounded-full font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.99] disabled:opacity-60 dark:text-ink-100 dark:hover:bg-ink-800"
           >
             {pending === "google" ? (
               <Loader2 size={18} className="animate-spin" />
@@ -285,6 +288,20 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                     Choose a password for <strong>{OWNER_EMAIL}</strong>. This
                     works once — after the account exists, sign in normally.
                   </p>
+                  {/* The field carrying the code is hidden while this panel is
+                      up, so there has to be a way back out of it. */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUsername("");
+                      setEmail("");
+                      setConfirm("");
+                      setError(null);
+                    }}
+                    className="mt-2 text-sm font-semibold text-white/80 underline underline-offset-2"
+                  >
+                    Not this — go back
+                  </button>
                 </div>
               ) : (
                 <div>

@@ -75,7 +75,7 @@ export function ListingEditor({ restaurant }: { restaurant: Restaurant }) {
     );
 
   return (
-    <div className="rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900">
+    <div className="clay rounded-[2rem] p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="truncate font-display text-lg font-extrabold text-ink-900 dark:text-white">
@@ -88,7 +88,7 @@ export function ListingEditor({ restaurant }: { restaurant: Restaurant }) {
         </div>
         <button
           onClick={() => setEditing((v) => !v)}
-          className="flex min-h-[40px] shrink-0 items-center gap-1.5 rounded-full border border-ink-200 px-3.5 text-sm font-semibold transition active:scale-95 dark:border-ink-700"
+          className="flex min-h-[40px] shrink-0 items-center gap-1.5 clay-sm clay-press rounded-full px-3.5 text-sm font-semibold transition active:scale-95 "
         >
           {editing ? <X size={15} /> : <Pencil size={15} />}
           {editing ? "Cancel" : "Edit"}
@@ -175,14 +175,14 @@ export function ListingEditor({ restaurant }: { restaurant: Restaurant }) {
                               type="time"
                               value={h?.open ?? "10:00"}
                               onChange={(e) => setDay(day, "open", e.target.value)}
-                              className="min-h-[36px] rounded-xl border border-ink-200 bg-transparent px-2 text-sm dark:border-ink-700"
+                              className="min-h-[36px] clay-inset rounded-xl px-2 text-sm "
                             />
                             <span className="text-ink-400">–</span>
                             <input
                               type="time"
                               value={h?.close ?? "22:00"}
                               onChange={(e) => setDay(day, "close", e.target.value)}
-                              className="min-h-[36px] rounded-xl border border-ink-200 bg-transparent px-2 text-sm dark:border-ink-700"
+                              className="min-h-[36px] clay-inset rounded-xl px-2 text-sm "
                             />
                           </>
                         )}

@@ -55,7 +55,7 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
             animate={{ y: 0, opacity: 1 }}
             exit={reduceMotion ? undefined : { y: "5%", opacity: 0 }}
             transition={{ type: "spring", stiffness: 330, damping: 32 }}
-            className="relative flex max-h-[88svh] w-full flex-col rounded-t-3xl bg-white dark:bg-ink-900 sm:max-w-lg sm:rounded-3xl"
+            className="clay relative flex max-h-[88svh] w-full flex-col rounded-t-[2rem] sm:max-w-lg sm:rounded-[2rem]"
           >
             <div className="flex shrink-0 items-center justify-between gap-3 px-5 pb-3 pt-4">
               <div className="flex items-center gap-2.5">
@@ -172,7 +172,7 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
                       <button
                         onClick={() => setPeople(Math.max(1, people - 1))}
                         aria-label="Fewer people"
-                        className="grid h-8 w-8 place-items-center rounded-full bg-white active:scale-90 dark:bg-ink-900"
+                        className="clay-sm grid h-8 w-8 place-items-center rounded-full active:scale-90"
                       >
                         <Minus size={14} />
                       </button>
@@ -182,7 +182,7 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
                       <button
                         onClick={() => setPeople(people + 1)}
                         aria-label="More people"
-                        className="grid h-8 w-8 place-items-center rounded-full bg-white active:scale-90 dark:bg-ink-900"
+                        className="clay-sm grid h-8 w-8 place-items-center rounded-full active:scale-90"
                       >
                         <Plus size={14} />
                       </button>
@@ -203,7 +203,7 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
                   <div className="mt-3 flex gap-2">
                     <button
                       onClick={clear}
-                      className="min-h-[46px] rounded-full border border-ink-200 px-4 text-sm font-semibold text-ink-600 active:scale-95 dark:border-ink-700 dark:text-ink-300"
+                      className="clay-sm clay-press min-h-[46px] rounded-full px-4 text-sm font-semibold text-ink-600 dark:text-ink-300"
                     >
                       Clear
                     </button>

@@ -41,7 +41,7 @@ export function RestaurantCard({
             on a half-width phone card, which is where the overlap came from —
             price now lives in the body row instead. */}
         {open && (
-          <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-500 px-2.5 py-1 text-[11px] font-bold text-white shadow-[0_8px_16px_-8px_rgba(6,95,70,0.7),inset_0_4px_7px_-3px_rgba(255,255,255,0.6)] md:text-xs">
+          <span className="clay-on-color absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-1 text-[11px] font-bold text-white md:text-xs">
             <span className="h-1.5 w-1.5 rounded-full bg-white/90" />
             Open
           </span>

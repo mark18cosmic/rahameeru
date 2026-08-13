@@ -30,8 +30,8 @@ export function ProfileContent() {
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-6 md:px-6 md:py-10">
-      <div className="flex flex-col items-start gap-4 rounded-3xl border border-ink-100 bg-white p-5 dark:border-ink-800 dark:bg-ink-900 sm:flex-row sm:items-center sm:gap-5 sm:p-6">
-        <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-root-500 text-2xl font-extrabold text-white sm:h-20 sm:w-20 sm:rounded-3xl sm:text-3xl">
+      <div className="clay flex flex-col items-start gap-4 rounded-[2rem] p-5 sm:flex-row sm:items-center sm:gap-5 sm:p-6">
+        <span className="clay-root grid h-16 w-16 shrink-0 place-items-center rounded-2xl text-2xl font-extrabold sm:h-20 sm:w-20 sm:rounded-[1.75rem] sm:text-3xl">
           {initial}
         </span>
         <div className="flex-1">

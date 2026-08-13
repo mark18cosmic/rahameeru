@@ -33,7 +33,7 @@ export default function Footer() {
   return (
     // Phones have the tab bar for navigation; a six-link footer above it was
     // just more to scroll past.
-    <footer className="mt-20 hidden border-t border-ink-100 bg-white dark:border-ink-800 dark:bg-ink-900 md:block">
+    <footer className="clay mt-20 hidden rounded-t-[2.5rem] md:block">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-5">
         <div className="md:col-span-2">
           <div className="flex items-center gap-2 text-xl font-extrabold text-ink-900 dark:text-white">
