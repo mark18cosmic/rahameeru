@@ -13,7 +13,13 @@ import {
   CheckCircle2,
   ArrowLeft,
   Check,
+  ShieldCheck,
 } from "lucide-react";
+import {
+  ADMIN_SETUP_CODE,
+  OWNER_EMAIL,
+  createAdminAccount,
+} from "@/app/lib/admin";
 import {
   logIn,
   signUp,
@@ -66,6 +72,40 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
   const pw = useMemo(() => strength(password), [password]);
   const tooShort = !isLogin && password.length > 0 && password.length < 6;
+
+  // Typing the setup code into the username field turns the signup form into
+  // admin setup. See ADMIN_SETUP_CODE — it only works until the account exists.
+  const adminSetup =
+    !isLogin && username.trim().toLowerCase() === ADMIN_SETUP_CODE;
+  const [confirm, setConfirm] = useState("");
+
+  const createAdmin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setNotice(null);
+    if (password.length < 6) {
+      setError("Password should be at least 6 characters.");
+      return;
+    }
+    if (password !== confirm) {
+      setError("Those passwords don't match.");
+      return;
+    }
+    setPending("form");
+    try {
+      await createAdminAccount(password);
+      router.push("/admin");
+    } catch (err) {
+      const code = (err as { code?: string })?.code;
+      setError(
+        code === "auth/email-already-in-use"
+          ? "The admin account already exists. Sign in with it instead — this form can't change its password."
+          : authErrorMessage(err)
+      );
+    } finally {
+      setPending(null);
+    }
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -193,11 +233,13 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
               : "It takes about twenty seconds."}
           </p>
 
-          {/* Google first: it's the path most people finish. */}
+          {/* Google first: it's the path most people finish. Hidden during
+              admin setup, which is a specific account, not a choice of one. */}
           <button
             type="button"
             onClick={google}
             disabled={busy}
+            hidden={adminSetup}
             className="mt-5 flex min-h-[52px] w-full items-center sm:mt-7 justify-center gap-2.5 rounded-full border border-ink-200 font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.99] disabled:opacity-60 dark:border-ink-700 dark:text-ink-100 dark:hover:bg-ink-800"
           >
             {pending === "google" ? (
@@ -208,13 +250,15 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             Continue with Google
           </button>
 
-          <div className="my-5 flex items-center gap-3 text-sm text-ink-400 sm:my-6">
-            <div className="h-px flex-1 bg-ink-100 dark:bg-ink-800" />
-            or use email
-            <div className="h-px flex-1 bg-ink-100 dark:bg-ink-800" />
-          </div>
+          {!adminSetup && (
+            <div className="my-5 flex items-center gap-3 text-sm text-ink-400 sm:my-6">
+              <div className="h-px flex-1 bg-ink-100 dark:bg-ink-800" />
+              or use email
+              <div className="h-px flex-1 bg-ink-100 dark:bg-ink-800" />
+            </div>
+          )}
 
-          <form onSubmit={submit} noValidate>
+          <form onSubmit={adminSetup ? createAdmin : submit} noValidate>
             <div className="space-y-4">
               {!isLogin && (
                 <div>
@@ -232,19 +276,31 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                 </div>
               )}
 
-              <div>
-                <Label>Email</Label>
-                <Input
-                  type="email"
-                  inputMode="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  autoFocus={isLogin}
-                  required
-                />
-              </div>
+              {adminSetup ? (
+                <div className="clay-root rounded-[1.5rem] p-4">
+                  <p className="flex items-center gap-2 font-display text-lg font-extrabold">
+                    <ShieldCheck size={20} /> Admin setup
+                  </p>
+                  <p className="mt-1 text-sm text-white/90">
+                    Choose a password for <strong>{OWNER_EMAIL}</strong>. This
+                    works once — after the account exists, sign in normally.
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <Label>Email</Label>
+                  <Input
+                    type="email"
+                    inputMode="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                    autoFocus={isLogin}
+                    required
+                  />
+                </div>
+              )}
 
               <div>
                 <div className="flex items-center justify-between">
@@ -279,6 +335,20 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
+
+                {adminSetup && (
+                  <div className="mt-4">
+                    <Label>Confirm password</Label>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      value={confirm}
+                      onChange={(e) => setConfirm(e.target.value)}
+                      placeholder="Type it again"
+                      autoComplete="new-password"
+                      required
+                    />
+                  </div>
+                )}
 
                 {!isLogin && password.length > 0 && (
                   <div className="mt-2 flex items-center gap-2">
@@ -327,7 +397,11 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                 disabled={busy}
               >
                 {pending === "form" && <Loader2 size={18} className="animate-spin" />}
-                {isLogin ? "Sign in" : "Create account"}
+                {adminSetup
+                  ? "Create admin account"
+                  : isLogin
+                    ? "Sign in"
+                    : "Create account"}
               </Button>
             </div>
           </form>

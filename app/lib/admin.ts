@@ -7,7 +7,11 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import { db } from "@/app/firebase/firebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth, db } from "@/app/firebase/firebaseConfig";
 import type { MenuSection, Restaurant } from "./types";
 import { refreshRestaurants } from "./restaurants";
 import { slugify } from "./utils";
@@ -26,6 +30,44 @@ import { slugify } from "./utils";
  * enforcement — everything in this module only decides what the UI offers.
  */
 export const OWNER_EMAIL = "kaish018@gmail.com";
+
+/**
+ * Typed into the username field on the signup page to reach admin setup.
+ *
+ * This is a first-run bootstrap, not a secret. It is in the client bundle and
+ * anyone can read it — what makes it safe is that it can only ever create the
+ * owner account *once*: the moment that account exists, Firebase answers
+ * `auth/email-already-in-use` and this path can do nothing at all. Claim the
+ * account as soon as the app is deployed and the code is inert thereafter.
+ */
+export const ADMIN_SETUP_CODE = "admin12309";
+
+/**
+ * Creates the owner account from the browser and marks it as an admin.
+ *
+ * Refuses rather than overwrites when the account already exists — an existing
+ * admin's password is not something a signup form should be able to change.
+ * Mirrors `scripts/create-admin.ts`, which does the same job from a terminal.
+ */
+export async function createAdminAccount(password: string): Promise<void> {
+  const cred = await createUserWithEmailAndPassword(
+    auth,
+    OWNER_EMAIL,
+    password
+  );
+  await updateProfile(cred.user, { displayName: "Rahameeru Admin" });
+  await setDoc(
+    doc(db, "users", cred.user.uid),
+    {
+      email: OWNER_EMAIL,
+      role: "admin",
+      capabilities: ADMIN_CAPABILITIES,
+      unlimitedRewards: true,
+      createdAt: Date.now(),
+    },
+    { merge: true }
+  );
+}
 
 /** Everything an admin is allowed to do that a vendor is not. */
 export type AdminCapability =
