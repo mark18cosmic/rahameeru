@@ -52,17 +52,42 @@ export function Menu({
   restaurantName,
   restaurantSlug,
   cuisine = [],
+  initialDish,
 }: {
   sections: MenuSection[];
   restaurantId: string;
   restaurantName: string;
   restaurantSlug: string;
   cuisine?: string[];
+  /** Dish name to open on mount, from a ?dish= link on a dish card. */
+  initialDish?: string | null;
 }) {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<FilterKey[]>([]);
-  const [openSection, setOpenSection] = useState(sections[0]?.name ?? "");
-  const [dish, setDish] = useState<MenuItem | null>(null);
+  const [dish, setDish] = useState<MenuItem | null>(
+    // Resolved once, on mount: someone arriving from a dish card should land
+    // with that dish already open rather than having to find it again.
+    () =>
+      initialDish
+        ? sections
+            .flatMap((s) => s.items)
+            .find(
+              (i) => i.name.trim().toLowerCase() === initialDish.trim().toLowerCase()
+            ) ?? null
+        : null
+  );
+  const [openSection, setOpenSection] = useState(
+    () =>
+      (initialDish
+        ? sections.find((s) =>
+            s.items.some(
+              (i) => i.name.trim().toLowerCase() === initialDish.trim().toLowerCase()
+            )
+          )?.name
+        : undefined) ??
+      sections[0]?.name ??
+      ""
+  );
   const [onlySuitable, setOnlySuitable] = useState(false);
   const reduceMotion = useReducedMotion();
   const { diet } = usePreferences();

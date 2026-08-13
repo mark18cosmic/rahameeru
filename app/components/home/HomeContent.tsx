@@ -8,7 +8,18 @@ import {
   watchSiteSettings,
   type SiteSettings,
 } from "@/app/lib/admin";
-import { Flame, Clock3, HeartHandshake, Coffee, Zap, Sparkle } from "lucide-react";
+import {
+  Flame,
+  Clock3,
+  HeartHandshake,
+  Coffee,
+  Zap,
+  Sparkle,
+  UtensilsCrossed,
+  Wallet,
+} from "lucide-react";
+import { popularDishes, cheapDishes } from "@/app/lib/dishes";
+import { DishRail } from "./DishRail";
 import { Hero } from "./Hero";
 import { CategoryStrip } from "./CategoryStrip";
 import { WheelSpinner } from "./WheelSpinner";
@@ -63,6 +74,14 @@ export function HomeContent() {
     };
   }, [restaurants, settings.pinned]);
 
+  const dishes = useMemo(
+    () => ({
+      popular: popularDishes(restaurants, 20),
+      cheap: cheapDishes(restaurants, 20),
+    }),
+    [restaurants]
+  );
+
   const railOn = (key: string) => settings.rails.includes(key);
 
   return (
@@ -96,10 +115,33 @@ export function HomeContent() {
           />
         )}
 
+        {/* Dishes sit high on the page on purpose: plenty of people arrive
+            knowing what they want to eat before they know where. */}
+        {railOn("popularDishes") && (
+          <DishRail
+            title="Dishes worth ordering"
+            icon={UtensilsCrossed}
+            subtitle="What kitchens put their name to"
+            dishes={dishes.popular}
+            href="/explore?view=dishes"
+          />
+        )}
+
         {settings.showWheel && (
           <div className="mt-10 md:mt-14">
             <WheelSpinner restaurants={restaurants} />
           </div>
+        )}
+
+        {railOn("cheapDishes") && (
+          <DishRail
+            title="Eat well for less"
+            icon={Wallet}
+            accent="saffron"
+            subtitle="The cheapest plates on any menu right now"
+            dishes={dishes.cheap}
+            href="/explore?view=dishes&sort=price-asc"
+          />
         )}
 
         {railOn("openNow") && (

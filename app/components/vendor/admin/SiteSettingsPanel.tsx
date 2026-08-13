@@ -9,7 +9,9 @@ import { Input, Label } from "../../ui/Field";
 /** The home page rails an admin can turn on and off, in display order. */
 const RAILS: { key: string; label: string }[] = [
   { key: "featured", label: "Worth the walk" },
+  { key: "popularDishes", label: "Dishes worth ordering" },
   { key: "openNow", label: "Open right now" },
+  { key: "cheapDishes", label: "Eat well for less" },
   { key: "dateSpots", label: "Good for a date" },
   { key: "cafes", label: "Coffee and breakfast" },
   { key: "fastFood", label: "In and out in twenty minutes" },

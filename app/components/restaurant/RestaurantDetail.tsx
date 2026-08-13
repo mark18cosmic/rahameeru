@@ -62,6 +62,8 @@ export function RestaurantDetail({
       setTab("reviews");
       setAutoReview(true);
     }
+    // Arriving from a dish card: open the menu rather than the about tab.
+    if (params.get("dish")) setTab("menu");
   }, [params]);
   const open = isOpenNow(restaurant.hours);
   const reduceMotion = useReducedMotion();
@@ -260,6 +262,7 @@ export function RestaurantDetail({
                   restaurantName={restaurant.name}
                   restaurantSlug={restaurant.slug}
                   cuisine={restaurant.cuisine}
+                  initialDish={params.get("dish")}
                 />
               )}
 

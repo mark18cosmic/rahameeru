@@ -117,7 +117,16 @@ export type SiteSettings = {
 };
 
 export const DEFAULT_SETTINGS: SiteSettings = {
-  rails: ["featured", "openNow", "dateSpots", "cafes", "fastFood", "recent"],
+  rails: [
+    "featured",
+    "popularDishes",
+    "openNow",
+    "cheapDishes",
+    "dateSpots",
+    "cafes",
+    "fastFood",
+    "recent",
+  ],
   pinned: [],
   hidden: [],
   deleted: [],
