@@ -93,6 +93,20 @@ service cloud.firestore {
         || (signedIn() && resource.data.userId == request.auth.uid);
     }
 
+    // Feedback from the navbar panel. Anyone may send one without an account —
+    // that is the point of it — so this is the one collection open to an
+    // unauthenticated write. The shape and length are checked here rather than
+    // trusted from the client, and only an admin can read the inbox back.
+    match /feedback/{id} {
+      allow read: if isAdmin();
+      allow create: if request.resource.data.message is string
+        && request.resource.data.message.size() > 0
+        && request.resource.data.message.size() <= 2000
+        && request.resource.data.kind in ['idea', 'problem', 'listing', 'praise']
+        && request.resource.data.handled == false;
+      allow update, delete: if isAdmin();
+    }
+
     // One document per person per venue per day, written on a verified scan.
     match /scans/{id} {
       allow read: if signedIn();

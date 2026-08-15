@@ -26,6 +26,7 @@ import { cx } from "@/app/lib/utils";
 import { useCart } from "@/app/lib/useCart";
 import { useVendor } from "@/app/lib/useVendor";
 import { BillSheet } from "./cart/BillSheet";
+import { FeedbackButton } from "./FeedbackButton";
 import { ButtonLink } from "./ui/Button";
 
 const NAV = [
@@ -120,6 +121,8 @@ export default function Navbar() {
               </span>
             )}
           </button>
+
+          <FeedbackButton />
 
           <button
             onClick={toggle}

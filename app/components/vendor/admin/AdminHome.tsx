@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {
   LayoutDashboard,
+  MessageSquare,
   Settings,
   ShieldAlert,
   ShieldCheck,
@@ -24,11 +25,13 @@ import { RestaurantManager } from "./RestaurantManager";
 import { UserManager } from "./UserManager";
 import { SiteSettingsPanel } from "./SiteSettingsPanel";
 import { AddVendor } from "./AddVendor";
+import { FeedbackManager } from "./FeedbackManager";
 
 const TABS = [
   { key: "restaurants", label: "Restaurants", icon: Store },
   { key: "users", label: "Users", icon: Users },
   { key: "vendors", label: "Vendors", icon: LayoutDashboard },
+  { key: "feedback", label: "Feedback", icon: MessageSquare },
   { key: "settings", label: "Settings", icon: Settings },
 ] as const;
 
@@ -140,6 +143,7 @@ export function AdminHome() {
             <AdminConsole key={vendorsKey} embedded />
           </div>
         )}
+        {tab === "feedback" && <FeedbackManager />}
         {tab === "settings" && (
           <SiteSettingsPanel settings={settings} onSaved={loadSettings} />
         )}

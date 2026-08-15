@@ -19,6 +19,11 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
+    // Feedback sent from the navbar panel, no account required.
+    match /feedback/{id} {
+      allow read, write: if true;
+    }
+
     // One document per person per venue per day, written on a verified scan.
     match /scans/{id} {
       allow read, write: if true;
