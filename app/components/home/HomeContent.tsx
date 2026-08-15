@@ -88,7 +88,11 @@ export function HomeContent() {
     <>
       {settings.announcement && (
         <div className="mx-auto max-w-7xl px-5 pt-3 md:px-6">
-          <p className="clay-saffron rounded-2xl px-4 py-2.5 text-center text-sm font-semibold">
+          <p className="clay-announce flex items-center justify-center gap-2.5 rounded-2xl px-4 py-2.5 text-center text-sm font-semibold">
+            <span
+              aria-hidden
+              className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--announce-accent)]"
+            />
             {settings.announcement}
           </p>
         </div>

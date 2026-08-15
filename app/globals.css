@@ -17,6 +17,13 @@
   --clay-shade: rgba(160, 32, 20, 0.1);
   --clay-drop: 0 18px 38px -16px rgba(56, 32, 24, 0.32);
 
+  --announce-surface: #fffaf2;
+  --announce-fg: #4a3826;
+  --announce-accent: #f5a623;
+  --announce-lip: rgba(255, 255, 255, 0.9);
+  --announce-shade: rgba(150, 95, 10, 0.16);
+  --announce-drop: rgba(245, 166, 35, 0.3);
+
   /* Where the floating mobile tab bar sits and how tall it is. Anything that
      needs to stack directly on top of it — the restaurant page's action bar —
      positions itself from these, so the two stay joined if either changes. */
@@ -32,6 +39,13 @@
   --clay-lip: rgba(255, 255, 255, 0.07);
   --clay-shade: rgba(0, 0, 0, 0.5);
   --clay-drop: 0 18px 38px -16px rgba(0, 0, 0, 0.7);
+
+  --announce-surface: #262218;
+  --announce-fg: #f2e7d8;
+  --announce-accent: #f0a83a;
+  --announce-lip: rgba(255, 255, 255, 0.08);
+  --announce-shade: rgba(0, 0, 0, 0.5);
+  --announce-drop: rgba(0, 0, 0, 0.6);
 }
 
 html {
@@ -221,6 +235,19 @@ select:focus-visible {
       0 18px 34px -14px rgba(245, 166, 35, 0.5),
       inset 0 8px 14px -6px rgba(255, 255, 255, 0.6),
       inset -5px -7px 14px -6px rgba(150, 95, 10, 0.4);
+  }
+
+  /* The announcement bar. Deliberately the quietest tint: a warm off-white
+     surface that sits with the page rather than shouting over it, with the
+     orange carried only by the left rule, the dot and the shadow. */
+  .clay-announce {
+    background: var(--announce-surface);
+    color: var(--announce-fg);
+    border-left: 3px solid var(--announce-accent);
+    box-shadow:
+      0 18px 34px -16px var(--announce-drop),
+      inset 0 8px 14px -6px var(--announce-lip),
+      inset -5px -7px 14px -6px var(--announce-shade);
   }
 
   /* Moulds any coloured background into clay. The lip and shade are neutral
