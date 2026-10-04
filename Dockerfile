@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Alpine keeps the image small; Next bundles a musl build of sharp for it.
-ARG NODE_VERSION=20-alpine
+ARG NODE_VERSION=24-alpine
 
 # ---------------------------------------------------------------------------
 # deps — install node_modules once so code edits don't re-run npm ci
