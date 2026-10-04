@@ -425,7 +425,7 @@ export function WheelSpinner({ restaurants }: Props) {
       initial={{ opacity: 0, y: 12, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full rounded-2xl bg-white p-3 text-ink-900 shadow-glow"
+      className="w-full rounded-2xl bg-white p-3 text-ink-900"
     >
       <div className="flex items-center gap-3">
         <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-ink-100 sm:h-16 sm:w-16">
@@ -454,7 +454,7 @@ export function WheelSpinner({ restaurants }: Props) {
   return (
     <section
       id="wheel"
-      className="relative scroll-mt-24 overflow-hidden rounded-[1.75rem] bg-ink-900 p-4 text-white shadow-card sm:rounded-[2rem] sm:p-6 md:p-10"
+      className="relative scroll-mt-24 overflow-hidden rounded-3xl bg-ink-900 dark:border dark:border-[var(--line)] dark:bg-[var(--surface)] p-4 text-white sm:rounded-3xl sm:p-6 md:p-10"
     >
       {/* Phones get wheel, count, and two buttons — everything on one screen,
           with the preference list behind a sheet. Wide screens keep the
@@ -464,7 +464,7 @@ export function WheelSpinner({ restaurants }: Props) {
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-root-300">
             <Sparkles size={14} /> Can&apos;t decide?
           </span>
-          <h2 className="mt-2.5 font-display text-xl font-extrabold leading-tight sm:text-3xl md:mt-4 md:text-4xl">
+          <h2 className="mt-2.5 font-display text-xl font-bold leading-tight sm:text-3xl md:mt-4 md:text-4xl">
             Let the wheel decide.
           </h2>
           <p className="mt-2 hidden max-w-md text-sm text-ink-300 md:block md:text-base">
@@ -609,7 +609,7 @@ export function WheelSpinner({ restaurants }: Props) {
               onDragEnd={(_, info) => info.offset.y > 90 && setPanelOpen(false)}
               // The sheet lives outside the dark wheel card, so it takes the
               // page's theme rather than inheriting the card's dark surface.
-              className="clay relative flex max-h-[86svh] w-full flex-col rounded-t-[2rem] text-ink-900 dark:text-white"
+              className="float relative flex max-h-[86svh] w-full flex-col rounded-t-3xl text-ink-900 dark:text-white"
             >
               {/* Header and footer are pinned; only the middle scrolls, which
                   is what stops the last group being cut in half. */}
@@ -619,7 +619,7 @@ export function WheelSpinner({ restaurants }: Props) {
                   className="mx-auto mb-3 block h-1 w-10 rounded-full bg-ink-200 dark:bg-white/25"
                 />
                 <div className="flex items-center justify-between gap-3 pb-3">
-                  <h3 className="font-display text-lg font-extrabold">
+                  <h3 className="font-display text-lg font-bold">
                     What are you in the mood for?
                   </h3>
                   <div className="flex shrink-0 items-center gap-2">

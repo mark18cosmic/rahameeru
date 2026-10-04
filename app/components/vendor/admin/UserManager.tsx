@@ -85,7 +85,7 @@ export function UserManager() {
       {/* Said plainly rather than letting the admin assume the list is
           everyone — the client SDK cannot enumerate Firebase Auth. */}
       {!complete && (
-        <p className="clay-inset flex items-start gap-2 rounded-2xl p-3 text-sm text-ink-500 dark:text-ink-300">
+        <p className="well flex items-start gap-2 rounded-2xl p-3 text-sm text-ink-500 dark:text-ink-300">
           <Info size={16} className="mt-0.5 shrink-0" />
           Showing accounts that have signed in since this build, or that have
           app state. To list <strong>every</strong> account, set{" "}
@@ -107,7 +107,7 @@ export function UserManager() {
 
       <div className="mt-3 space-y-3">
         {shown.map((u) => (
-          <div key={u.uid} className="clay rounded-[1.75rem] p-4">
+          <div key={u.uid} className="surface rounded-3xl p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0">
                 <p className="truncate font-bold text-ink-900 dark:text-white">
@@ -117,7 +117,7 @@ export function UserManager() {
                   {u.email ?? u.uid}
                 </p>
               </div>
-              <span className="clay-saffron inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold">
+              <span className="fill-saffron inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold">
                 <Trophy size={14} /> {u.points.toLocaleString()}
               </span>
             </div>
@@ -131,8 +131,8 @@ export function UserManager() {
                   className={cx(
                     "min-h-[38px] rounded-full px-3.5 text-xs font-semibold capitalize transition disabled:opacity-60",
                     (u.role ?? "user") === role
-                      ? "clay-root"
-                      : "clay-sm clay-press text-ink-600 dark:text-ink-300"
+                      ? "fill-root"
+                      : "surface press text-ink-600 dark:text-ink-300"
                   )}
                 >
                   {role === "admin" && <ShieldCheck size={12} className="mr-1 inline" />}
@@ -145,7 +145,7 @@ export function UserManager() {
                 disabled={busy === u.uid}
                 className={cx(
                   "inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold transition disabled:opacity-60",
-                  u.suspended ? "clay-root" : "clay-sm clay-press text-ink-600 dark:text-ink-300"
+                  u.suspended ? "fill-root" : "surface press text-ink-600 dark:text-ink-300"
                 )}
               >
                 {u.suspended ? <UserCheck size={13} /> : <Ban size={13} />}
@@ -166,7 +166,7 @@ export function UserManager() {
                 <button
                   onClick={() => applyPoints(u)}
                   disabled={busy === u.uid || !grant[u.uid]}
-                  className="clay-sm clay-press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold disabled:opacity-50"
+                  className="surface press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold disabled:opacity-50"
                 >
                   {busy === u.uid && <Loader2 size={13} className="animate-spin" />}
                   Apply

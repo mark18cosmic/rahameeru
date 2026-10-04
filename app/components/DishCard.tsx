@@ -30,11 +30,11 @@ export function DishCard({ entry, className = "" }: { entry: DishEntry; classNam
     <Link
       href={`/restaurant/${r.slug}?dish=${encodeURIComponent(item.name)}`}
       className={cx(
-        "clay clay-press group flex flex-col rounded-[1.75rem] p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-root-400 md:rounded-[2rem]",
+        "group flex flex-col rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-root-400 focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--bg)]",
         className
       )}
     >
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[1.35rem] bg-ink-100 dark:bg-ink-800 md:rounded-[1.6rem]">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800">
         <Image
           src={src}
           alt={item.name}
@@ -51,39 +51,39 @@ export function DishCard({ entry, className = "" }: { entry: DishEntry; classNam
             else setLoaded(true);
           }}
           className={cx(
-            "object-cover transition-all duration-500 md:group-hover:scale-105",
+            "object-cover transition-all duration-700 md:group-hover:scale-[1.03]",
             loaded ? "opacity-100" : "opacity-0"
           )}
         />
         {item.popular && (
-          <span className="clay-on-color absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-root-500 px-2.5 py-1 text-[11px] font-bold text-white">
+          <span className="fill-root absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold">
             <Flame size={11} /> Popular
-          </span>
-        )}
-        {item.price > 0 && (
-          <span className="clay-sm absolute bottom-3 left-3 rounded-full px-2.5 py-1 text-[11px] font-bold text-ink-900 dark:text-white md:text-xs">
-            {mvr(item.price)}
           </span>
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-1 px-2 pb-1.5 pt-3 md:px-3 md:pb-2">
-        <h3 className="line-clamp-1 font-bold leading-tight text-ink-900 dark:text-white md:group-hover:text-root-600">
-          {item.name}
-        </h3>
+      <div className="flex flex-1 flex-col gap-0.5 px-0.5 pt-2.5">
+        <div className="flex items-baseline justify-between gap-2">
+          <h3 className="line-clamp-1 font-semibold leading-snug text-ink-900 dark:text-white">
+            {item.name}
+          </h3>
+          {item.price > 0 && (
+            <span className="shrink-0 text-[13px] font-semibold tabular-nums text-ink-800 dark:text-ink-100">
+              {mvr(item.price)}
+            </span>
+          )}
+        </div>
         {item.description && (
           <p className="line-clamp-1 text-[13px] text-ink-500">{item.description}</p>
         )}
-        <div className="mt-auto flex items-center gap-2 pt-1 text-[13px] text-ink-500">
-          <span className="flex min-w-0 items-center gap-1">
-            <MapPin size={13} className="shrink-0" />
-            <span className="truncate">{r.name}</span>
-          </span>
-          <span className="ml-auto flex shrink-0 items-center gap-1 font-semibold text-ink-700 dark:text-ink-200">
+        <p className="flex items-center gap-1 text-[13px] text-ink-400">
+          <MapPin size={12} className="shrink-0" />
+          <span className="truncate">{r.name}</span>
+          <span className="ml-auto flex shrink-0 items-center gap-1">
             <Star size={11} className="fill-saffron-500 text-saffron-500" />
             {r.rating.toFixed(1)}
           </span>
-        </div>
+        </p>
       </div>
     </Link>
   );

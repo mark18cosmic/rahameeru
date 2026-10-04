@@ -115,7 +115,7 @@ export function InstallPrompt() {
           transition={{ type: "spring", stiffness: 260, damping: 28 }}
           className="fixed inset-x-0 z-[60] px-3 pb-[env(safe-area-inset-bottom)] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] md:bottom-4 md:left-auto md:right-4 md:w-[380px] md:px-0"
         >
-          <div className="clay relative overflow-hidden rounded-[2rem] p-4">
+          <div className="float relative overflow-hidden rounded-3xl p-4">
             <button
               onClick={dismiss}
               aria-label="Dismiss"
@@ -146,7 +146,7 @@ export function InstallPrompt() {
             {ios ? (
               <ol className="mt-4 space-y-2 rounded-2xl bg-ink-50 p-3 text-sm text-ink-700 dark:bg-ink-800 dark:text-ink-200">
                 <li className="flex items-center gap-2">
-                  <span className="clay-sm grid h-6 w-6 shrink-0 place-items-center rounded-full text-ink-700 dark:text-ink-200">
+                  <span className="surface grid h-6 w-6 shrink-0 place-items-center rounded-full text-ink-700 dark:text-ink-200">
                     1
                   </span>
                   Tap
@@ -166,7 +166,7 @@ export function InstallPrompt() {
               <div className="mt-4 flex gap-2">
                 <button
                   onClick={install}
-                  className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full bg-root-500 px-5 text-sm font-semibold text-white shadow-glow transition hover:bg-root-600 active:scale-[0.97]"
+                  className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full bg-root-500 px-5 text-sm font-semibold text-white transition hover:bg-root-600 active:scale-[0.97]"
                 >
                   <Download size={16} /> Install
                 </button>

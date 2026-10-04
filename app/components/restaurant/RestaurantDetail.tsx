@@ -146,7 +146,7 @@ export function RestaurantDetail({
               <Clock size={12} /> Closed
             </Badge>
           )}
-          <Badge tone="brand">{priceString(restaurant.priceLevel)}</Badge>
+          <Badge>{priceString(restaurant.priceLevel)}</Badge>
           {restaurant.cuisine.map((c) => (
             <Badge key={c} tone="outline">
               {c}
@@ -154,7 +154,7 @@ export function RestaurantDetail({
           ))}
         </div>
 
-        <h1 className="mt-3 font-display text-2xl font-extrabold text-ink-900 dark:text-white sm:text-3xl md:mt-4 md:text-4xl">
+        <h1 className="mt-3 font-display text-2xl font-bold text-ink-900 dark:text-white sm:text-3xl md:mt-4 md:text-4xl">
           {restaurant.name}
         </h1>
 
@@ -238,7 +238,7 @@ export function RestaurantDetail({
                   {hasMenu && (
                     <button
                       onClick={() => setTab("menu")}
-                      className="clay-sm clay-press mt-6 flex w-full items-center justify-between rounded-[1.5rem] p-4 text-left"
+                      className="surface press mt-6 flex w-full items-center justify-between rounded-2xl p-4 text-left"
                     >
                       <span>
                         <span className="block font-semibold text-ink-900 dark:text-white">
@@ -283,7 +283,7 @@ export function RestaurantDetail({
 
         {/* Sidebar */}
         <aside className="lg:sticky lg:top-24 lg:h-fit">
-          <div className="clay rounded-[2rem] p-5">
+          <div className="surface rounded-3xl p-5">
             <div className="hidden gap-2 md:flex">
               <Button onClick={() => setMapOpen(true)} className="flex-1">
                 <Navigation size={16} /> Directions
@@ -373,7 +373,7 @@ export function RestaurantDetail({
 
       {similar.length > 0 && (
         <section className="mt-16">
-          <h2 className="mb-4 font-display text-2xl font-extrabold text-ink-900 dark:text-white">
+          <h2 className="mb-4 font-display text-2xl font-bold text-ink-900 dark:text-white">
             Similar places nearby
           </h2>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
@@ -388,7 +388,7 @@ export function RestaurantDetail({
           stack rather than two floating slabs. It sits exactly one tab-bar
           height up, shares its horizontal inset, and squares off the bottom
           corners where they meet — the radius only rounds the top. */}
-      <div className="clay fixed inset-x-3 bottom-[calc(var(--tabbar-inset)+var(--tabbar-h))] z-30 flex gap-2 rounded-t-[1.75rem] px-3 pb-4 pt-2.5 md:hidden">
+      <div className="float fixed inset-x-3 bottom-[calc(var(--tabbar-inset)+var(--tabbar-h))] z-30 flex gap-2 rounded-t-3xl px-3 pb-4 pt-2.5 md:hidden">
         <Button onClick={() => setMapOpen(true)} className="flex-1">
           <Navigation size={16} /> Directions
         </Button>

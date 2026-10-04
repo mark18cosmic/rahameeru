@@ -55,7 +55,7 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
             animate={{ y: 0, opacity: 1 }}
             exit={reduceMotion ? undefined : { y: "5%", opacity: 0 }}
             transition={{ type: "spring", stiffness: 330, damping: 32 }}
-            className="clay relative flex max-h-[88svh] w-full flex-col rounded-t-[2rem] sm:max-w-lg sm:rounded-[2rem]"
+            className="float relative flex max-h-[88svh] w-full flex-col rounded-t-3xl sm:max-w-lg sm:rounded-3xl"
           >
             <div className="flex shrink-0 items-center justify-between gap-3 px-5 pb-3 pt-4">
               <div className="flex items-center gap-2.5">
@@ -63,7 +63,7 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
                   <ShoppingBag size={18} strokeWidth={1.9} />
                 </span>
                 <div>
-                  <h3 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
+                  <h3 className="font-display text-lg font-bold text-ink-900 dark:text-white">
                     Your bill
                   </h3>
                   <p className="text-xs text-ink-500">Estimated before you go</p>
@@ -172,7 +172,7 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
                       <button
                         onClick={() => setPeople(Math.max(1, people - 1))}
                         aria-label="Fewer people"
-                        className="clay-sm grid h-8 w-8 place-items-center rounded-full active:scale-90"
+                        className="surface grid h-8 w-8 place-items-center rounded-full active:scale-90"
                       >
                         <Minus size={14} />
                       </button>
@@ -182,13 +182,13 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
                       <button
                         onClick={() => setPeople(people + 1)}
                         aria-label="More people"
-                        className="clay-sm grid h-8 w-8 place-items-center rounded-full active:scale-90"
+                        className="surface grid h-8 w-8 place-items-center rounded-full active:scale-90"
                       >
                         <Plus size={14} />
                       </button>
                     </span>
                     <span className="ml-auto text-right">
-                      <span className="block text-base font-extrabold tabular-nums text-ink-900 dark:text-white">
+                      <span className="block text-base font-bold tabular-nums text-ink-900 dark:text-white">
                         {mvr(totals.perHead)}
                       </span>
                       <span className="text-xs text-ink-500">each</span>
@@ -203,7 +203,7 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
                   <div className="mt-3 flex gap-2">
                     <button
                       onClick={clear}
-                      className="clay-sm clay-press min-h-[46px] rounded-full px-4 text-sm font-semibold text-ink-600 dark:text-ink-300"
+                      className="surface press min-h-[46px] rounded-full px-4 text-sm font-semibold text-ink-600 dark:text-ink-300"
                     >
                       Clear
                     </button>
@@ -244,7 +244,7 @@ function Row({
         className={cx(
           "tabular-nums",
           strong
-            ? "text-lg font-extrabold text-ink-900 dark:text-white"
+            ? "text-lg font-bold text-ink-900 dark:text-white"
             : muted
               ? "text-ink-500"
               : "font-semibold text-ink-800 dark:text-ink-100"

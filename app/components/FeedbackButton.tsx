@@ -32,7 +32,7 @@ export function FeedbackButton() {
         onClick={() => setOpen(true)}
         aria-label="Send feedback"
         title="Send feedback"
-        className="clay-sm clay-press grid h-10 w-10 place-items-center rounded-full text-ink-600 dark:text-ink-200"
+        className="grid h-10 w-10 place-items-center rounded-full text-ink-600 transition hover:bg-[var(--well)] active:scale-95 dark:text-ink-200"
       >
         <MessageSquarePlus size={19} strokeWidth={1.9} />
       </button>
@@ -97,10 +97,10 @@ function FeedbackPanel({
     <Modal open={open} onClose={close} title={sent ? undefined : "Tell us what you think"}>
       {sent ? (
         <div className="py-4 text-center">
-          <span className="clay-root mx-auto grid h-14 w-14 place-items-center rounded-2xl">
+          <span className="fill-root mx-auto grid h-14 w-14 place-items-center rounded-2xl">
             <Check size={26} />
           </span>
-          <h3 className="mt-4 font-display text-xl font-extrabold text-ink-900 dark:text-white">
+          <h3 className="mt-4 font-display text-xl font-bold text-ink-900 dark:text-white">
             Thank you
           </h3>
           <p className="mt-1.5 text-sm text-ink-500">
@@ -126,8 +126,8 @@ function FeedbackPanel({
                   className={cx(
                     "min-h-[38px] rounded-full px-3.5 text-xs font-semibold transition",
                     kind === k.key
-                      ? "clay-root"
-                      : "clay-sm clay-press text-ink-600 dark:text-ink-300"
+                      ? "fill-root"
+                      : "surface press text-ink-600 dark:text-ink-300"
                   )}
                 >
                   {k.label}

@@ -34,10 +34,10 @@ const KIND_LABEL: Record<FeedbackKind, string> = Object.fromEntries(
 
 /** Anything that isn't a compliment gets the loud tint. */
 const KIND_TINT: Record<FeedbackKind, string> = {
-  idea: "clay-sm text-ink-600 dark:text-ink-300",
-  problem: "clay-root",
-  listing: "clay-saffron",
-  praise: "clay-sm text-ink-600 dark:text-ink-300",
+  idea: "surface text-ink-600 dark:text-ink-300",
+  problem: "fill-root",
+  listing: "fill-saffron",
+  praise: "surface text-ink-600 dark:text-ink-300",
 };
 
 function when(ts: number): string {
@@ -111,8 +111,8 @@ export function FeedbackManager() {
             className={cx(
               "min-h-[38px] rounded-full px-3.5 text-xs font-semibold transition",
               filter === f.key
-                ? "clay-root"
-                : "clay-sm clay-press text-ink-600 dark:text-ink-300"
+                ? "fill-root"
+                : "surface press text-ink-600 dark:text-ink-300"
             )}
           >
             {f.label}
@@ -122,7 +122,7 @@ export function FeedbackManager() {
       </div>
 
       {failed && (
-        <p className="clay-inset mt-4 rounded-2xl p-3 text-sm text-ink-500 dark:text-ink-300">
+        <p className="well mt-4 rounded-2xl p-3 text-sm text-ink-500 dark:text-ink-300">
           Couldn&apos;t read the feedback collection. If the production rules are
           deployed, make sure the <code className="font-mono text-xs">feedback</code>{" "}
           block is in them.
@@ -134,8 +134,8 @@ export function FeedbackManager() {
       </p>
 
       {!loading && shown.length === 0 && (
-        <div className="clay mt-3 rounded-[1.75rem] p-8 text-center">
-          <span className="clay-sm mx-auto grid h-12 w-12 place-items-center rounded-2xl text-ink-400">
+        <div className="surface mt-3 rounded-3xl p-8 text-center">
+          <span className="surface mx-auto grid h-12 w-12 place-items-center rounded-2xl text-ink-400">
             <Inbox size={22} />
           </span>
           <p className="mt-3 text-sm text-ink-500">
@@ -151,7 +151,7 @@ export function FeedbackManager() {
           <div
             key={f.id}
             className={cx(
-              "clay rounded-[1.75rem] p-4 transition",
+              "surface rounded-3xl p-4 transition",
               f.handled && "opacity-70"
             )}
           >
@@ -168,7 +168,7 @@ export function FeedbackManager() {
               {f.page && (
                 <Link
                   href={f.page}
-                  className="clay-sm clay-press rounded-full px-2.5 py-1 text-[11px] font-medium text-ink-500 dark:text-ink-300"
+                  className="surface press rounded-full px-2.5 py-1 text-[11px] font-medium text-ink-500 dark:text-ink-300"
                 >
                   {f.page}
                 </Link>
@@ -209,8 +209,8 @@ export function FeedbackManager() {
                 className={cx(
                   "inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold transition disabled:opacity-60",
                   f.handled
-                    ? "clay-sm clay-press text-ink-600 dark:text-ink-300"
-                    : "clay-root clay-press"
+                    ? "surface press text-ink-600 dark:text-ink-300"
+                    : "fill-root press"
                 )}
               >
                 {f.handled ? <Undo2 size={13} /> : <Check size={13} />}
@@ -223,7 +223,7 @@ export function FeedbackManager() {
                   }
                 }}
                 disabled={busy === f.id}
-                className="clay-sm clay-press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-root-600 disabled:opacity-60"
+                className="surface press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-root-600 disabled:opacity-60"
               >
                 <Trash2 size={13} /> Delete
               </button>

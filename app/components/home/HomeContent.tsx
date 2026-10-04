@@ -8,16 +8,6 @@ import {
   watchSiteSettings,
   type SiteSettings,
 } from "@/app/lib/admin";
-import {
-  Flame,
-  Clock3,
-  HeartHandshake,
-  Coffee,
-  Zap,
-  Sparkle,
-  UtensilsCrossed,
-  Wallet,
-} from "lucide-react";
 import { popularDishes, cheapDishes } from "@/app/lib/dishes";
 import { DishRail } from "./DishRail";
 import { Hero } from "./Hero";
@@ -88,7 +78,7 @@ export function HomeContent() {
     <>
       {settings.announcement && (
         <div className="mx-auto max-w-7xl px-5 pt-3 md:px-6">
-          <p className="clay-announce flex items-center justify-center gap-2.5 rounded-2xl px-4 py-2.5 text-center text-sm font-semibold">
+          <p className="announce flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-medium">
             <span
               aria-hidden
               className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--announce-accent)]"
@@ -101,7 +91,7 @@ export function HomeContent() {
       <Hero restaurants={restaurants} />
 
       {settings.showCategories && (
-        <div className="mt-2 md:mt-4">
+        <div>
           <CategoryStrip />
         </div>
       )}
@@ -110,8 +100,6 @@ export function HomeContent() {
         {railOn("featured") && (
           <RestaurantRail
             title="Worth the walk"
-            icon={Flame}
-            accent="root"
             subtitle="The ones we send people to first"
             restaurants={rails.featured.length ? rails.featured : rails.byRating}
             loading={loading}
@@ -124,7 +112,6 @@ export function HomeContent() {
         {railOn("popularDishes") && (
           <DishRail
             title="Dishes worth ordering"
-            icon={UtensilsCrossed}
             subtitle="What kitchens put their name to"
             dishes={dishes.popular}
             href="/explore?view=dishes"
@@ -132,7 +119,7 @@ export function HomeContent() {
         )}
 
         {settings.showWheel && (
-          <div className="mt-10 md:mt-14">
+          <div className="mt-12 md:mt-20">
             <WheelSpinner restaurants={restaurants} />
           </div>
         )}
@@ -140,8 +127,6 @@ export function HomeContent() {
         {railOn("cheapDishes") && (
           <DishRail
             title="Eat well for less"
-            icon={Wallet}
-            accent="saffron"
             subtitle="The cheapest plates on any menu right now"
             dishes={dishes.cheap}
             href="/explore?view=dishes&sort=price-asc"
@@ -151,8 +136,6 @@ export function HomeContent() {
         {railOn("openNow") && (
           <RestaurantRail
             title="Open right now"
-            icon={Clock3}
-            accent="emerald"
             subtitle="Kitchens still running as of this minute"
             restaurants={rails.openNow}
             loading={loading}
@@ -165,8 +148,6 @@ export function HomeContent() {
         {railOn("dateSpots") && (
           <RestaurantRail
             title="Good for a date"
-            icon={HeartHandshake}
-            accent="rose"
             subtitle="Quiet enough to hear each other"
             restaurants={rails.dateSpots}
             loading={loading}
@@ -177,8 +158,6 @@ export function HomeContent() {
         {railOn("cafes") && (
           <RestaurantRail
             title="Coffee and breakfast"
-            icon={Coffee}
-            accent="amber"
             subtitle="For mornings, and for working through them"
             restaurants={rails.cafes}
             loading={loading}
@@ -189,8 +168,6 @@ export function HomeContent() {
         {railOn("fastFood") && (
           <RestaurantRail
             title="In and out in twenty minutes"
-            icon={Zap}
-            accent="sky"
             subtitle="When you just need feeding"
             restaurants={rails.fastFood}
             loading={loading}
@@ -201,8 +178,6 @@ export function HomeContent() {
         {railOn("recent") && (
           <RestaurantRail
             title="Recently added"
-            icon={Sparkle}
-            accent="violet"
             restaurants={rails.recent}
             loading={loading}
             href="/explore"

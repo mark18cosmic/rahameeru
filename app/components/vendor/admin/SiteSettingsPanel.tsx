@@ -70,8 +70,8 @@ export function SiteSettingsPanel({
 
   return (
     <div className="space-y-6">
-      <div className="clay rounded-[2rem] p-5">
-        <h3 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
+      <div className="surface rounded-3xl p-5">
+        <h3 className="font-display text-lg font-bold text-ink-900 dark:text-white">
           Announcement
         </h3>
         <p className="mt-1 text-sm text-ink-500">
@@ -85,8 +85,8 @@ export function SiteSettingsPanel({
         />
       </div>
 
-      <div className="clay rounded-[2rem] p-5">
-        <h3 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
+      <div className="surface rounded-3xl p-5">
+        <h3 className="font-display text-lg font-bold text-ink-900 dark:text-white">
           Sections
         </h3>
         <div className="mt-3 space-y-2">
@@ -96,7 +96,7 @@ export function SiteSettingsPanel({
               <button
                 key={t.key}
                 onClick={() => setDraft((d) => ({ ...d, [t.key]: !on }))}
-                className="clay-inset flex w-full items-center justify-between gap-3 rounded-2xl p-3 text-left"
+                className="well flex w-full items-center justify-between gap-3 rounded-2xl p-3 text-left"
               >
                 <span>
                   <span className="block font-semibold text-ink-800 dark:text-ink-100">
@@ -107,7 +107,7 @@ export function SiteSettingsPanel({
                 <span
                   className={cx(
                     "grid h-7 w-12 shrink-0 items-center rounded-full px-1 transition",
-                    on ? "clay-root" : "clay-sm"
+                    on ? "fill-root" : "surface"
                   )}
                 >
                   <span
@@ -123,7 +123,7 @@ export function SiteSettingsPanel({
         </div>
       </div>
 
-      <div className="clay rounded-[2rem] p-5">
+      <div className="surface rounded-3xl p-5">
         <Label>Home page rails</Label>
         <div className="mt-2 flex flex-wrap gap-2">
           {RAILS.map((r) => {
@@ -134,7 +134,7 @@ export function SiteSettingsPanel({
                 onClick={() => toggleRail(r.key)}
                 className={cx(
                   "min-h-[42px] rounded-full px-4 text-sm font-semibold transition",
-                  on ? "clay-root" : "clay-sm clay-press text-ink-500"
+                  on ? "fill-root" : "surface press text-ink-500"
                 )}
               >
                 {r.label}
@@ -148,7 +148,7 @@ export function SiteSettingsPanel({
         <button
           onClick={save}
           disabled={saving}
-          className="clay-root clay-press inline-flex min-h-[48px] items-center gap-2 rounded-full px-6 font-semibold disabled:opacity-60"
+          className="fill-root press inline-flex min-h-[48px] items-center gap-2 rounded-full px-6 font-semibold disabled:opacity-60"
         >
           {saving && <Loader2 size={16} className="animate-spin" />}
           Save settings

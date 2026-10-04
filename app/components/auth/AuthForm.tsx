@@ -184,7 +184,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         <div className="absolute inset-0 bg-ink-900/70" />
         <div className="absolute bottom-12 left-12 right-12 text-white">
           <UtensilsCrossed className="mb-4 text-root-400" size={32} />
-          <h2 className="font-display text-3xl font-extrabold leading-tight">
+          <h2 className="font-display text-3xl font-bold leading-tight">
             The Maldives&apos; best tables, all in one place.
           </h2>
           <ul className="mt-6 space-y-2.5">
@@ -214,7 +214,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
               otherwise the page is a form floating in white space. */}
           <div className="mb-6 rounded-3xl bg-root-500 p-5 text-white lg:hidden">
             <UtensilsCrossed size={26} className="mb-2.5" />
-            <h2 className="font-display text-xl font-extrabold leading-snug">
+            <h2 className="font-display text-xl font-bold leading-snug">
               The Maldives&apos; best tables, all in one place.
             </h2>
             <ul className="mt-3 space-y-1.5 text-sm text-white/90">
@@ -227,7 +227,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             </ul>
           </div>
 
-          <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white sm:text-3xl">
+          <h1 className="font-display text-2xl font-bold text-ink-900 dark:text-white sm:text-3xl">
             {isLogin ? "Welcome back" : "Create your account"}
           </h1>
           <p className="mt-1.5 text-sm text-ink-500 sm:text-base">
@@ -243,7 +243,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
             onClick={google}
             disabled={busy}
             hidden={adminSetup}
-            className="mt-5 flex min-h-[52px] w-full items-center sm:mt-7 justify-center gap-2.5 clay-sm clay-press rounded-full font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.99] disabled:opacity-60 dark:text-ink-100 dark:hover:bg-ink-800"
+            className="mt-5 flex min-h-[52px] w-full items-center sm:mt-7 justify-center gap-2.5 surface press rounded-full font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.99] disabled:opacity-60 dark:text-ink-100 dark:hover:bg-ink-800"
           >
             {pending === "google" ? (
               <Loader2 size={18} className="animate-spin" />
@@ -280,8 +280,8 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
               )}
 
               {adminSetup ? (
-                <div className="clay-root rounded-[1.5rem] p-4">
-                  <p className="flex items-center gap-2 font-display text-lg font-extrabold">
+                <div className="fill-root rounded-2xl p-4">
+                  <p className="flex items-center gap-2 font-display text-lg font-bold">
                     <ShieldCheck size={20} /> Admin setup
                   </p>
                   <p className="mt-1 text-sm text-white/90">

@@ -110,7 +110,7 @@ export function VendorSignup() {
           <Store size={20} />
         </span>
         <div>
-          <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white sm:text-3xl">
+          <h1 className="font-display text-2xl font-bold text-ink-900 dark:text-white sm:text-3xl">
             Claim your restaurant
           </h1>
           <p className="text-sm text-ink-500">Takes two minutes. Reviewed by hand.</p>
@@ -143,7 +143,7 @@ export function VendorSignup() {
         ))}
       </div>
 
-      <div className="mt-6 clay rounded-[2rem] p-5 md:p-6">
+      <div className="mt-6 surface rounded-3xl p-5 md:p-6">
         {step === 0 && (
           <div className="space-y-4">
             <div>
@@ -319,7 +319,7 @@ export function VendorSignup() {
           {step > 0 && (
             <button
               onClick={() => setStep((s) => (s - 1) as Step)}
-              className="min-h-[48px] clay-sm clay-press rounded-full px-5 font-semibold text-ink-700 transition active:scale-95 dark:text-ink-100"
+              className="min-h-[48px] surface press rounded-full px-5 font-semibold text-ink-700 transition active:scale-95 dark:text-ink-100"
             >
               Back
             </button>

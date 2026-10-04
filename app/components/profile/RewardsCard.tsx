@@ -38,27 +38,27 @@ export function RewardsCard() {
     .sort((a, b) => b.amount - a.amount);
 
   return (
-    <section className="clay rounded-[2rem] p-5">
+    <section className="surface rounded-3xl p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="clay-saffron grid h-11 w-11 place-items-center rounded-2xl">
+          <span className="fill-saffron grid h-11 w-11 place-items-center rounded-2xl">
             <Trophy size={20} />
           </span>
           <div>
-            <h2 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
+            <h2 className="font-display text-lg font-bold text-ink-900 dark:text-white">
               Points
             </h2>
             <p className="text-sm text-ink-500">Earned for reviewing</p>
           </div>
         </div>
         <div className="text-right">
-          <p className="font-display text-2xl font-extrabold text-ink-900 dark:text-white">
+          <p className="font-display text-2xl font-bold text-ink-900 dark:text-white">
             {loading ? "—" : unlimited ? "∞" : points.total.toLocaleString()}
           </p>
           <span
             className={cx(
               "inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold",
-              unlimited ? "clay-root" : current.chip
+              unlimited ? "fill-root" : current.chip
             )}
           >
             {unlimited ? "Admin" : current.name}

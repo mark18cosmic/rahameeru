@@ -36,7 +36,7 @@ export default function AboutPage() {
         <span className="inline-flex items-center gap-2 rounded-full bg-root-50 px-3.5 py-1.5 text-sm font-medium text-root-700 dark:bg-root-900/20 dark:text-root-300">
           <Sparkles size={14} /> About
         </span>
-        <h1 className="mt-5 font-display text-4xl font-extrabold text-ink-900 dark:text-white md:text-5xl">
+        <h1 className="mt-5 font-display text-4xl font-bold text-ink-900 dark:text-white md:text-5xl">
           Nobody should have to ask the group chat.
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-lg text-ink-500">
@@ -50,7 +50,7 @@ export default function AboutPage() {
         {VALUES.map((v) => (
           <div
             key={v.title}
-            className="clay rounded-[2rem] p-6"
+            className="surface rounded-3xl p-6"
           >
             <span className="grid h-11 w-11 place-items-center rounded-2xl bg-root-100 text-root-600 dark:bg-root-900/30">
               <v.icon size={20} />
@@ -64,7 +64,7 @@ export default function AboutPage() {
       </div>
 
       <div className="mt-14 rounded-3xl bg-root-600 p-10 text-center text-white">
-        <h2 className="font-display text-3xl font-extrabold">
+        <h2 className="font-display text-3xl font-bold">
           Been somewhere good?
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-root-100">

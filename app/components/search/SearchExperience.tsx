@@ -42,7 +42,7 @@ function Chip({
     <button
       onClick={onClick}
       className={`rounded-full px-3.5 py-2 text-sm font-medium transition ${
-        active ? "clay-root" : "clay-sm clay-press text-ink-600 dark:text-ink-200"
+        active ? "fill-root" : "surface press text-ink-600 dark:text-ink-200"
       }`}
     >
       {children}
@@ -89,7 +89,7 @@ export function SearchExperience() {
 
   return (
     <div className="mx-auto max-w-7xl px-5 py-6 md:px-6 md:py-8">
-      <h1 className="font-display text-3xl font-extrabold text-ink-900 dark:text-white md:text-4xl">
+      <h1 className="font-display text-3xl font-bold text-ink-900 dark:text-white md:text-4xl">
         Search restaurants
       </h1>
       <p className="mt-1 text-ink-500">
@@ -116,7 +116,7 @@ export function SearchExperience() {
         </div>
         <button
           onClick={() => setShowFilters((v) => !v)}
-          className="clay-sm clay-press relative flex items-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-medium text-ink-700 dark:text-ink-200"
+          className="surface press relative flex items-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-medium text-ink-700 dark:text-ink-200"
         >
           <SlidersHorizontal size={16} /> Filters
           {count > 0 && (
@@ -132,7 +132,7 @@ export function SearchExperience() {
         <aside
           className={`${
             showFilters ? "block" : "hidden"
-          } h-fit clay rounded-[2rem] p-5 lg:block`}
+          } h-fit surface rounded-3xl p-5 lg:block`}
         >
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-ink-900 dark:text-white">Filters</h3>

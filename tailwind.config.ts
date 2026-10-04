@@ -36,41 +36,17 @@ const config: Config = {
           400: "#FFC24B",
           500: "#F5A623",
         },
-        // The lightswind components reference `bg-background` / `text-foreground`.
-        // Point them at this app's surface vars rather than pulling in the
-        // library's Tailwind plugin, which redefines the whole palette.
-        background: "var(--bg)",
-        foreground: "var(--fg)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         display: ["var(--font-display)", "var(--font-inter)", "serif"],
       },
+      // Three radii, used consistently: xl for controls and inner photos,
+      // 2xl for cards and panels, 3xl for sheets and the big feature blocks.
       borderRadius: {
-        xl: "1rem",
-        "2xl": "1.5rem",
-        "3xl": "2rem",
-      },
-      boxShadow: {
-        soft: "0 2px 20px -8px rgba(23,21,18,0.15)",
-        card: "0 8px 30px -12px rgba(23,21,18,0.18)",
-        glow: "0 10px 40px -10px rgba(248,75,59,0.45)",
-      },
-      keyframes: {
-        fadeInUp: {
-          "0%": { opacity: "0", transform: "translateY(12px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        float: {
-          "0%,100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-8px)" },
-        },
-
-      },
-      animation: {
-        fadeInUp: "fadeInUp 0.5s ease-out both",
-        float: "float 6s ease-in-out infinite",
-
+        xl: "0.875rem",
+        "2xl": "1.25rem",
+        "3xl": "1.75rem",
       },
     },
   },

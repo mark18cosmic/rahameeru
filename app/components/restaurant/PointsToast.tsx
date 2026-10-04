@@ -34,7 +34,7 @@ export function PointsToast({
           exit={reduceMotion ? undefined : { opacity: 0, y: 16, scale: 0.96 }}
           transition={{ type: "spring", stiffness: 320, damping: 26 }}
           onClick={onDone}
-          className="fixed inset-x-4 bottom-[calc(7rem+env(safe-area-inset-bottom))] z-[90] mx-auto max-w-sm cursor-pointer clay-on-color rounded-[1.75rem] bg-ink-900 p-4 text-white dark:bg-white dark:text-ink-900 md:bottom-6 md:right-6 md:left-auto md:mx-0"
+          className="fixed inset-x-4 bottom-[calc(7rem+env(safe-area-inset-bottom))] z-[90] mx-auto max-w-sm cursor-pointer rounded-3xl bg-ink-900 shadow-[var(--float-shadow)] p-4 text-white dark:bg-white dark:text-ink-900 md:bottom-6 md:right-6 md:left-auto md:mx-0"
         >
           <div className="flex items-center gap-3">
             <motion.span
@@ -46,7 +46,7 @@ export function PointsToast({
               <Trophy size={20} />
             </motion.span>
             <div className="min-w-0">
-              <p className="font-display text-lg font-extrabold leading-tight">
+              <p className="font-display text-lg font-bold leading-tight">
                 +{earned.amount} points
               </p>
               <p className="text-sm opacity-70">Thanks for the review</p>

@@ -99,7 +99,7 @@ function MenuEditor({
   return (
     <div className="mt-4 space-y-4">
       {menu.map((section, si) => (
-        <div key={si} className="clay-inset rounded-[1.5rem] p-4">
+        <div key={si} className="well rounded-2xl p-4">
           <div className="flex items-center gap-2">
             <Input
               value={section.name}
@@ -110,7 +110,7 @@ function MenuEditor({
             <button
               onClick={() => setMenu((m) => m.filter((_, x) => x !== si))}
               aria-label={`Remove section ${section.name || si + 1}`}
-              className="clay-sm clay-press grid h-11 w-11 shrink-0 place-items-center rounded-full text-root-600"
+              className="surface press grid h-11 w-11 shrink-0 place-items-center rounded-full text-root-600"
             >
               <Trash2 size={16} />
             </button>
@@ -140,7 +140,7 @@ function MenuEditor({
                     })
                   }
                   aria-label={`Remove ${item.name || "dish"}`}
-                  className="clay-sm clay-press grid h-11 w-full place-items-center rounded-2xl text-root-600 sm:w-11"
+                  className="surface press grid h-11 w-full place-items-center rounded-2xl text-root-600 sm:w-11"
                 >
                   <X size={16} />
                 </button>
@@ -152,7 +152,7 @@ function MenuEditor({
                   items: [...section.items, { name: "", price: 0 }],
                 })
               }
-              className="clay-sm clay-press inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-4 text-sm font-semibold"
+              className="surface press inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-4 text-sm font-semibold"
             >
               <Plus size={14} /> Dish
             </button>
@@ -163,14 +163,14 @@ function MenuEditor({
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setMenu((m) => [...m, { name: "", items: [] }])}
-          className="clay-sm clay-press inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 text-sm font-semibold"
+          className="surface press inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 text-sm font-semibold"
         >
           <Plus size={15} /> Section
         </button>
         <button
           onClick={save}
           disabled={saving}
-          className="clay-root clay-press inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 text-sm font-semibold disabled:opacity-60"
+          className="fill-root press inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 text-sm font-semibold disabled:opacity-60"
         >
           {saving && <Loader2 size={15} className="animate-spin" />}
           Save menu
@@ -224,7 +224,7 @@ function PhotoManager({
         </p>
       </div>
 
-      <div className="relative aspect-[4/3] max-w-xs overflow-hidden rounded-[1.35rem] bg-ink-100 dark:bg-ink-800">
+      <div className="relative aspect-[4/3] max-w-xs overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800">
         <Photo r={{ ...restaurant, image: image || undefined }} sizes="320px" />
       </div>
 
@@ -245,7 +245,7 @@ function PhotoManager({
               <button
                 onClick={() => setGallery((xs) => xs.filter((_, y) => y !== i))}
                 aria-label={`Remove gallery photo ${i + 1}`}
-                className="clay-sm clay-press grid h-11 w-11 shrink-0 place-items-center rounded-full text-root-600"
+                className="surface press grid h-11 w-11 shrink-0 place-items-center rounded-full text-root-600"
               >
                 <X size={16} />
               </button>
@@ -254,7 +254,7 @@ function PhotoManager({
         </div>
         <button
           onClick={() => setGallery((xs) => [...xs, ""])}
-          className="clay-sm clay-press mt-2 inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-4 text-sm font-semibold"
+          className="surface press mt-2 inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-4 text-sm font-semibold"
         >
           <ImagePlus size={14} /> Add photo
         </button>
@@ -263,7 +263,7 @@ function PhotoManager({
       <button
         onClick={save}
         disabled={saving}
-        className="clay-root clay-press inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 text-sm font-semibold disabled:opacity-60"
+        className="fill-root press inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 text-sm font-semibold disabled:opacity-60"
       >
         {saving && <Loader2 size={15} className="animate-spin" />}
         Save photos
@@ -386,8 +386,8 @@ function DetailsEditor({
                 className={cx(
                   "min-h-[44px] flex-1 rounded-2xl text-sm font-bold transition",
                   draft.priceLevel === n
-                    ? "clay-root"
-                    : "clay-sm clay-press text-ink-500"
+                    ? "fill-root"
+                    : "surface press text-ink-500"
                 )}
               >
                 {"$".repeat(n)}
@@ -408,7 +408,7 @@ function DetailsEditor({
       <button
         onClick={save}
         disabled={saving || !draft.name.trim()}
-        className="clay-root clay-press inline-flex min-h-[48px] items-center gap-2 rounded-full px-6 font-semibold disabled:opacity-60"
+        className="fill-root press inline-flex min-h-[48px] items-center gap-2 rounded-full px-6 font-semibold disabled:opacity-60"
       >
         {saving && <Loader2 size={16} className="animate-spin" />}
         {restaurant ? "Save changes" : "Create listing"}
@@ -504,7 +504,7 @@ export function RestaurantManager({
             setCreating((v) => !v);
             setOpenId(null);
           }}
-          className="clay-root clay-press inline-flex min-h-[48px] items-center gap-2 rounded-full px-5 font-semibold"
+          className="fill-root press inline-flex min-h-[48px] items-center gap-2 rounded-full px-5 font-semibold"
         >
           {creating ? <X size={16} /> : <Plus size={16} />}
           {creating ? "Cancel" : "New listing"}
@@ -512,8 +512,8 @@ export function RestaurantManager({
       </div>
 
       {creating && (
-        <div className="clay mt-4 rounded-[2rem] p-5">
-          <h3 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
+        <div className="surface mt-4 rounded-3xl p-5">
+          <h3 className="font-display text-lg font-bold text-ink-900 dark:text-white">
             New listing
           </h3>
           <DetailsEditor onDone={() => setCreating(false)} />
@@ -532,7 +532,7 @@ export function RestaurantManager({
                 : new Set(shown.map((r) => r.id))
             )
           }
-          className="clay-sm clay-press ml-auto min-h-[38px] rounded-full px-3.5 text-xs font-semibold"
+          className="surface press ml-auto min-h-[38px] rounded-full px-3.5 text-xs font-semibold"
         >
           {selected.size === shown.length && shown.length > 0
             ? "Clear selection"
@@ -543,35 +543,35 @@ export function RestaurantManager({
       {/* Bulk bar. Sticks to the bottom on a phone so the actions stay in
           reach no matter how far down the list the selection happened. */}
       {selected.size > 0 && (
-        <div className="clay sticky bottom-[calc(6rem+env(safe-area-inset-bottom))] z-20 mt-3 flex flex-wrap items-center gap-2 rounded-[1.5rem] p-3 md:bottom-4">
+        <div className="surface sticky bottom-[calc(6rem+env(safe-area-inset-bottom))] z-20 mt-3 flex flex-wrap items-center gap-2 rounded-2xl p-3 md:bottom-4">
           <span className="text-sm font-bold text-ink-900 dark:text-white">
             {selected.size} selected
           </span>
           <button
             onClick={() => runBulk(() => bulkSetFeatured([...selected], true))}
             disabled={bulkBusy}
-            className="clay-sm clay-press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
+            className="surface press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
           >
             Feature
           </button>
           <button
             onClick={() => runBulk(() => bulkSetFeatured([...selected], false))}
             disabled={bulkBusy}
-            className="clay-sm clay-press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
+            className="surface press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
           >
             Unfeature
           </button>
           <button
             onClick={() => runBulk(() => bulkSetHidden([...selected], true))}
             disabled={bulkBusy}
-            className="clay-sm clay-press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
+            className="surface press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
           >
             Hide
           </button>
           <button
             onClick={() => runBulk(() => bulkSetHidden([...selected], false))}
             disabled={bulkBusy}
-            className="clay-sm clay-press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
+            className="surface press min-h-[40px] rounded-full px-3.5 text-xs font-semibold disabled:opacity-60"
           >
             Show
           </button>
@@ -589,14 +589,14 @@ export function RestaurantManager({
                   )
                 }
                 disabled={bulkBusy}
-                className="clay-root clay-press inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-3.5 text-xs font-bold disabled:opacity-60"
+                className="fill-root press inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-3.5 text-xs font-bold disabled:opacity-60"
               >
                 {bulkBusy && <Loader2 size={13} className="animate-spin" />}
                 Delete {selected.size} for good
               </button>
               <button
                 onClick={() => setConfirmBulkDelete(false)}
-                className="clay-sm clay-press min-h-[40px] rounded-full px-3.5 text-xs font-semibold"
+                className="surface press min-h-[40px] rounded-full px-3.5 text-xs font-semibold"
               >
                 Keep
               </button>
@@ -605,7 +605,7 @@ export function RestaurantManager({
             <button
               onClick={() => setConfirmBulkDelete(true)}
               disabled={bulkBusy}
-              className="clay-sm clay-press ml-auto inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-root-600 disabled:opacity-60"
+              className="surface press ml-auto inline-flex min-h-[40px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-root-600 disabled:opacity-60"
             >
               <Trash2 size={13} /> Delete
             </button>
@@ -618,7 +618,7 @@ export function RestaurantManager({
           const open = openId === r.id;
           const hidden = settings.hidden.includes(r.id);
           return (
-            <div key={r.id} className="clay rounded-[1.75rem] p-4">
+            <div key={r.id} className="surface rounded-3xl p-4">
               <div className="flex items-start gap-3">
                 <button
                   onClick={() => toggleSelected(r.id)}
@@ -627,7 +627,7 @@ export function RestaurantManager({
                   aria-label={`Select ${r.name}`}
                   className={cx(
                     "mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-xl transition",
-                    selected.has(r.id) ? "clay-root" : "clay-inset"
+                    selected.has(r.id) ? "fill-root" : "well"
                   )}
                 >
                   {selected.has(r.id) && <Check size={15} strokeWidth={3} />}
@@ -645,12 +645,12 @@ export function RestaurantManager({
                   </p>
                   <div className="mt-1 flex flex-wrap gap-1.5">
                     {r.featured && (
-                      <span className="clay-saffron rounded-full px-2 py-0.5 text-[11px] font-bold">
+                      <span className="fill-saffron rounded-full px-2 py-0.5 text-[11px] font-bold">
                         Featured
                       </span>
                     )}
                     {hidden && (
-                      <span className="clay-inset rounded-full px-2 py-0.5 text-[11px] font-bold text-ink-500">
+                      <span className="well rounded-full px-2 py-0.5 text-[11px] font-bold text-ink-500">
                         Hidden
                       </span>
                     )}
@@ -675,8 +675,8 @@ export function RestaurantManager({
                     className={cx(
                       "min-h-[38px] rounded-full px-3.5 text-xs font-semibold transition",
                       open && panel === key
-                        ? "clay-root"
-                        : "clay-sm clay-press text-ink-600 dark:text-ink-300"
+                        ? "fill-root"
+                        : "surface press text-ink-600 dark:text-ink-300"
                     )}
                   >
                     {label}
@@ -686,7 +686,7 @@ export function RestaurantManager({
                 <button
                   onClick={() => toggleFeatured(r)}
                   disabled={busy === r.id}
-                  className="clay-sm clay-press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-ink-600 disabled:opacity-60 dark:text-ink-300"
+                  className="surface press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-ink-600 disabled:opacity-60 dark:text-ink-300"
                 >
                   <Star
                     size={13}
@@ -698,7 +698,7 @@ export function RestaurantManager({
                 <button
                   onClick={() => toggleHidden(r)}
                   disabled={busy === r.id}
-                  className="clay-sm clay-press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-ink-600 disabled:opacity-60 dark:text-ink-300"
+                  className="surface press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-ink-600 disabled:opacity-60 dark:text-ink-300"
                 >
                   {hidden ? <Eye size={13} /> : <EyeOff size={13} />}
                   {hidden ? "Show" : "Hide"}
@@ -719,13 +719,13 @@ export function RestaurantManager({
                           setConfirmDelete(null);
                         }
                       }}
-                      className="clay-root clay-press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-bold"
+                      className="fill-root press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-bold"
                     >
                       <Check size={13} /> Really delete
                     </button>
                     <button
                       onClick={() => setConfirmDelete(null)}
-                      className="clay-sm clay-press min-h-[38px] rounded-full px-3.5 text-xs font-semibold"
+                      className="surface press min-h-[38px] rounded-full px-3.5 text-xs font-semibold"
                     >
                       Keep
                     </button>
@@ -733,7 +733,7 @@ export function RestaurantManager({
                 ) : (
                   <button
                     onClick={() => setConfirmDelete(r.id)}
-                    className="clay-sm clay-press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-root-600"
+                    className="surface press inline-flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-root-600"
                   >
                     <Trash2 size={13} /> Delete
                   </button>

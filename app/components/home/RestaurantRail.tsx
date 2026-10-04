@@ -3,44 +3,53 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useReducedMotion } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Restaurant } from "@/app/lib/types";
 import { cx } from "@/app/lib/utils";
 import { RestaurantCard, CardSkeleton } from "../RestaurantCard";
 
 /**
- * Each rail carries its own accent. Six identical coral headings down the home
- * page read as one wall of text; a colour per rail gives the scroll some rhythm
- * and makes a section recognisable before you've read its title.
+ * The heading every home rail shares. Type does the work: no icon tile, no
+ * per-rail colour, one coral link. Six differently tinted headings read as six
+ * different apps stacked on top of each other.
  */
-export type Accent = "root" | "sky" | "emerald" | "violet" | "amber" | "rose";
-
-const ACCENTS: Record<Accent, { chip: string; link: string }> = {
-  root: {
-    chip: "clay-on-color bg-root-500 text-white",
-    link: "text-root-600 hover:text-root-700",
-  },
-  sky: {
-    chip: "clay-on-color bg-sky-500 text-white",
-    link: "text-sky-600 hover:text-sky-700",
-  },
-  emerald: {
-    chip: "clay-on-color bg-emerald-500 text-white",
-    link: "text-emerald-600 hover:text-emerald-700",
-  },
-  violet: {
-    chip: "clay-on-color bg-violet-500 text-white",
-    link: "text-violet-600 hover:text-violet-700",
-  },
-  amber: {
-    chip: "clay-on-color bg-amber-500 text-white",
-    link: "text-amber-600 hover:text-amber-700",
-  },
-  rose: {
-    chip: "clay-on-color bg-rose-500 text-white",
-    link: "text-rose-600 hover:text-rose-700",
-  },
-};
+export function RailHeader({
+  title,
+  subtitle,
+  href,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  href?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="mb-3 flex items-end justify-between gap-3 md:mb-5 md:gap-4">
+      <div className="min-w-0">
+        <h2 className="truncate font-display text-[1.375rem] font-bold leading-tight tracking-tight text-ink-900 dark:text-white md:text-3xl">
+          {title}
+        </h2>
+        {subtitle && (
+          <p className="mt-0.5 line-clamp-1 text-sm text-ink-500 md:mt-1 md:text-base dark:text-ink-400">
+            {subtitle}
+          </p>
+        )}
+      </div>
+      <div className="flex shrink-0 items-center gap-3">
+        {children}
+        {href && (
+          <Link
+            href={href}
+            className="flex min-h-[44px] items-center gap-1 text-sm font-semibold text-root-600 transition-all hover:gap-1.5 hover:text-root-700 dark:text-root-400"
+          >
+            See all <ArrowRight size={15} />
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function RestaurantRail({
   title,
@@ -48,18 +57,13 @@ export function RestaurantRail({
   restaurants,
   loading,
   href,
-  icon: Icon,
-  accent = "root",
 }: {
   title: string;
   subtitle?: string;
   restaurants: Restaurant[];
   loading?: boolean;
   href?: string;
-  icon?: LucideIcon;
-  accent?: Accent;
 }) {
-  const tone = ACCENTS[accent];
   const scroller = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
@@ -98,68 +102,34 @@ export function RestaurantRail({
   if (!loading && restaurants.length === 0) return null;
 
   return (
-    <section className="mt-8 md:mt-12">
-      <div className="mb-3 flex items-end justify-between gap-3 md:mb-4 md:gap-4">
-        <div className="min-w-0">
-          <h2 className="flex items-center gap-2 font-display text-xl font-extrabold text-ink-900 dark:text-white md:text-3xl">
-            {Icon && (
-              <span
+    <section className="mt-10 md:mt-16">
+      <RailHeader title={title} subtitle={subtitle} href={href}>
+        {/* Arrows are a desktop affordance; phones just swipe. */}
+        <div className="hidden gap-1.5 md:flex">
+          {([-1, 1] as const).map((dir) => {
+            const disabled = dir === -1 ? atStart : atEnd;
+            const Icon = dir === -1 ? ChevronLeft : ChevronRight;
+            return (
+              <button
+                key={dir}
+                onClick={() => nudge(dir)}
+                disabled={disabled}
+                aria-label={
+                  dir === -1 ? `Scroll ${title} left` : `Scroll ${title} right`
+                }
                 className={cx(
-                  "grid h-8 w-8 shrink-0 place-items-center rounded-xl md:h-9 md:w-9",
-                  tone.chip
+                  "surface grid h-9 w-9 place-items-center rounded-full",
+                  disabled
+                    ? "cursor-not-allowed text-ink-300 dark:text-ink-600"
+                    : "press text-ink-700 dark:text-ink-200"
                 )}
               >
                 <Icon size={17} />
-              </span>
-            )}
-            <span className="truncate">{title}</span>
-          </h2>
-          {subtitle && (
-            <p className="mt-0.5 line-clamp-1 text-sm text-ink-500 md:mt-1 md:text-base">
-              {subtitle}
-            </p>
-          )}
+              </button>
+            );
+          })}
         </div>
-
-        <div className="flex shrink-0 items-center gap-2">
-          {/* Arrows are a desktop affordance; phones just swipe. */}
-          <div className="hidden gap-1 md:flex">
-            {([-1, 1] as const).map((dir) => {
-              const disabled = dir === -1 ? atStart : atEnd;
-              const Icon = dir === -1 ? ChevronLeft : ChevronRight;
-              return (
-                <button
-                  key={dir}
-                  onClick={() => nudge(dir)}
-                  disabled={disabled}
-                  aria-label={
-                    dir === -1 ? `Scroll ${title} left` : `Scroll ${title} right`
-                  }
-                  className={cx(
-                    "grid h-10 w-10 place-items-center rounded-full transition",
-                    disabled
-                      ? "clay-inset cursor-not-allowed text-ink-300 dark:text-ink-700"
-                      : "clay-sm clay-press text-ink-700 dark:text-ink-200"
-                  )}
-                >
-                  <Icon size={18} />
-                </button>
-              );
-            })}
-          </div>
-          {href && (
-            <Link
-              href={href}
-              className={cx(
-                "flex shrink-0 items-center gap-1 text-sm font-semibold transition-all hover:gap-2",
-                tone.link
-              )}
-            >
-              See all <ArrowRight size={16} />
-            </Link>
-          )}
-        </div>
-      </div>
+      </RailHeader>
 
       {/* Cards are plain divs on purpose. Animating each one into view fires
           mid-swipe on a horizontal scroller — every card that crosses the edge
@@ -168,7 +138,7 @@ export function RestaurantRail({
           instead of flush against it. */}
       <div
         ref={scroller}
-        // pt/pb are generous because clay cards throw a deep drop shadow and
+        // pt/pb are generous because surface cards throw a deep drop shadow and
         // lift on hover — `overflow-x-auto` clips both axes, so a tight
         // padding sliced the shadow off along the top and bottom edges.
         className="scrollbar-hide -mx-5 flex snap-x snap-proximity gap-3 overflow-x-auto overscroll-x-contain scroll-pl-5 px-5 pb-7 pt-2 md:mx-0 md:scroll-pl-0 md:gap-4 md:px-0"

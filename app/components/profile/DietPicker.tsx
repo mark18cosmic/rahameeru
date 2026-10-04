@@ -51,10 +51,10 @@ export function DietPicker() {
   );
 
   return (
-    <section className="clay rounded-[2rem] p-5">
+    <section className="surface rounded-3xl p-5">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h2 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
+          <h2 className="font-display text-lg font-bold text-ink-900 dark:text-white">
             Allergies &amp; diet
           </h2>
           <p className="mt-1 text-sm text-ink-500">

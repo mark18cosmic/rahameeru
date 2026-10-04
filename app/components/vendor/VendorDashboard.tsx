@@ -60,11 +60,11 @@ function Stat({
   tint: string;
 }) {
   return (
-    <div className="clay rounded-[2rem] p-5">
+    <div className="surface rounded-3xl p-5">
       <span className={cx("grid h-10 w-10 place-items-center rounded-2xl", tint)}>
         <Icon size={18} />
       </span>
-      <p className="mt-3 font-display text-2xl font-extrabold text-ink-900 dark:text-white">
+      <p className="mt-3 font-display text-2xl font-bold text-ink-900 dark:text-white">
         {value}
       </p>
       <p className="text-sm text-ink-500">{label}</p>
@@ -187,7 +187,7 @@ export function VendorDashboard() {
     <div className="mx-auto max-w-6xl px-5 py-8 md:px-6 md:py-12">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white sm:text-3xl">
+          <h1 className="font-display text-2xl font-bold text-ink-900 dark:text-white sm:text-3xl">
             {vendor.businessName}
           </h1>
           <p className="mt-1 text-sm text-ink-500">
@@ -261,9 +261,9 @@ export function VendorDashboard() {
                 />
               </div>
 
-              <div className="mt-4 clay rounded-[2rem] p-5">
+              <div className="mt-4 surface rounded-3xl p-5">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
+                  <h2 className="font-display text-lg font-bold text-ink-900 dark:text-white">
                     Visits, last 14 days
                   </h2>
                   <span className="text-sm text-ink-400">{last7} this week</span>
@@ -288,7 +288,7 @@ export function VendorDashboard() {
 
               <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_1fr]">
                 <section>
-                  <h2 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
+                  <h2 className="font-display text-lg font-bold text-ink-900 dark:text-white">
                     Your listings
                   </h2>
                   {owned.length === 0 ? (
@@ -314,7 +314,7 @@ export function VendorDashboard() {
                 </section>
 
                 <section>
-                  <h2 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
+                  <h2 className="font-display text-lg font-bold text-ink-900 dark:text-white">
                     Latest reviews
                   </h2>
                   {reviews.length === 0 ? (
@@ -326,7 +326,7 @@ export function VendorDashboard() {
                       {reviews.slice(0, 5).map((r) => (
                         <li
                           key={r.id}
-                          className="clay rounded-[1.5rem] p-4"
+                          className="surface rounded-2xl p-4"
                         >
                           <div className="flex items-center justify-between gap-2">
                             <p className="truncate font-semibold text-ink-900 dark:text-white">
@@ -354,7 +354,7 @@ export function VendorDashboard() {
                                 rows={2}
                                 autoFocus
                                 placeholder="Answer publicly, under their review."
-                                className="w-full clay-inset rounded-xl p-2.5 text-sm outline-none focus:border-root-400 "
+                                className="w-full well rounded-xl p-2.5 text-sm outline-none focus:border-root-400 "
                               />
                               <div className="flex gap-2">
                                 <button
@@ -369,7 +369,7 @@ export function VendorDashboard() {
                                 </button>
                                 <button
                                   onClick={() => setReplyTo(null)}
-                                  className="min-h-[36px] clay-sm clay-press rounded-full px-4 text-sm "
+                                  className="min-h-[36px] surface press rounded-full px-4 text-sm "
                                 >
                                   Cancel
                                 </button>
@@ -398,7 +398,7 @@ export function VendorDashboard() {
       )}
 
       <div className="mt-12">
-        <h2 className="font-display text-xl font-extrabold text-ink-900 dark:text-white">
+        <h2 className="font-display text-xl font-bold text-ink-900 dark:text-white">
           Your plan
         </h2>
         <p className="mt-1 text-sm text-ink-500">
@@ -472,7 +472,7 @@ function Empty({
 }) {
   return (
     <div className="mx-auto max-w-lg px-5 py-20 text-center">
-      <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white">
+      <h1 className="font-display text-2xl font-bold text-ink-900 dark:text-white">
         {title}
       </h1>
       <p className="mt-2 text-ink-500">{body}</p>

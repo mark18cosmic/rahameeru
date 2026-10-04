@@ -11,7 +11,7 @@ export default function NotFound() {
         <p className="mt-6 text-sm font-semibold uppercase tracking-wide text-root-600">
           404
         </p>
-        <h1 className="mt-2 font-display text-4xl font-extrabold text-ink-900 dark:text-white">
+        <h1 className="mt-2 font-display text-4xl font-bold text-ink-900 dark:text-white">
           This table&apos;s not set
         </h1>
         <p className="mx-auto mt-4 max-w-md text-ink-500">

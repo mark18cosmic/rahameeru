@@ -43,11 +43,11 @@ export default function VendorLandingPage() {
     <VendorShell>
       <div className="mx-auto max-w-6xl px-5 py-10 md:px-6 md:py-16">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 clay-sm clay-press rounded-full px-3.5 py-1.5 text-sm font-medium text-ink-600 dark:text-ink-300">
+          <span className="inline-flex items-center gap-2 surface press rounded-full px-3.5 py-1.5 text-sm font-medium text-ink-600 dark:text-ink-300">
             <Store size={14} className="text-root-500" />
             For restaurants
           </span>
-          <h1 className="mt-5 font-display text-3xl font-extrabold leading-[1.1] tracking-tight text-ink-900 dark:text-white md:text-5xl">
+          <h1 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-ink-900 dark:text-white md:text-5xl">
             People are already looking you up.
             <br />
             <span className="text-root-500">Decide what they find.</span>
@@ -67,7 +67,7 @@ export default function VendorLandingPage() {
             </Link>
             <Link
               href="/vendor/dashboard"
-              className="inline-flex min-h-[52px] items-center clay-sm clay-press rounded-full px-6 font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.98] dark:text-ink-100 dark:hover:bg-ink-800"
+              className="inline-flex min-h-[52px] items-center surface press rounded-full px-6 font-semibold text-ink-700 transition hover:bg-ink-50 active:scale-[0.98] dark:text-ink-100 dark:hover:bg-ink-800"
             >
               I already applied
             </Link>
@@ -78,12 +78,12 @@ export default function VendorLandingPage() {
           {VALUE.map((v) => (
             <div
               key={v.title}
-              className="clay rounded-[2rem] p-6"
+              className="surface rounded-3xl p-6"
             >
               <span className="grid h-11 w-11 place-items-center rounded-2xl bg-root-100 text-root-600 dark:bg-root-500/15 dark:text-root-300">
                 <v.icon size={20} />
               </span>
-              <h2 className="mt-4 font-display text-lg font-extrabold text-ink-900 dark:text-white">
+              <h2 className="mt-4 font-display text-lg font-bold text-ink-900 dark:text-white">
                 {v.title}
               </h2>
               <p className="mt-1.5 text-sm leading-relaxed text-ink-500">{v.body}</p>
@@ -92,7 +92,7 @@ export default function VendorLandingPage() {
         </div>
 
         <div className="mt-16">
-          <h2 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white md:text-3xl">
+          <h2 className="font-display text-2xl font-bold text-ink-900 dark:text-white md:text-3xl">
             Plans
           </h2>
           <p className="mt-1.5 text-ink-500">
@@ -105,8 +105,8 @@ export default function VendorLandingPage() {
           </div>
         </div>
 
-        <div className="mt-16 clay rounded-[2rem] p-6 md:p-8">
-          <h2 className="font-display text-xl font-extrabold text-ink-900 dark:text-white">
+        <div className="mt-16 surface rounded-3xl p-6 md:p-8">
+          <h2 className="font-display text-xl font-bold text-ink-900 dark:text-white">
             How claiming works
           </h2>
           <ol className="mt-4 space-y-4">

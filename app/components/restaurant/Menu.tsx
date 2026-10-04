@@ -142,7 +142,7 @@ export function Menu({
   return (
     <section id="menu" className="scroll-mt-24">
       <div>
-        <h2 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white md:text-3xl">
+        <h2 className="font-display text-2xl font-bold text-ink-900 dark:text-white md:text-3xl">
           Menu
         </h2>
         <p className="mt-1 text-sm text-ink-500">
@@ -163,7 +163,7 @@ export function Menu({
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search the menu…"
             aria-label="Search the menu"
-            className="clay-inset min-h-[48px] w-full rounded-2xl py-3 pl-11 pr-11 text-base text-ink-900 outline-none transition placeholder:text-ink-400 focus:ring-2 focus:ring-root-200 dark:text-white dark:focus:ring-root-900/50"
+            className="well min-h-[48px] w-full rounded-2xl py-3 pl-11 pr-11 text-base text-ink-900 outline-none transition placeholder:text-ink-400 focus:ring-2 focus:ring-root-200 dark:text-white dark:focus:ring-root-900/50"
           />
           {query && (
             <button
@@ -187,8 +187,8 @@ export function Menu({
                 className={cx(
                   "inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full px-4 text-sm font-medium transition",
                   on
-                    ? "clay-root"
-                    : "clay-sm clay-press text-ink-600 dark:text-ink-300"
+                    ? "fill-root"
+                    : "surface press text-ink-600 dark:text-ink-300"
                 )}
               >
                 <f.icon size={15} className={on ? "fill-white/30" : ""} />
@@ -404,7 +404,7 @@ export function Menu({
           <p className="mt-1 text-sm text-ink-500">Try a different word or clear the filters.</p>
           <button
             onClick={clear}
-            className="clay-sm clay-press mt-4 min-h-[44px] rounded-full px-5 text-sm font-medium"
+            className="surface press mt-4 min-h-[44px] rounded-full px-5 text-sm font-medium"
           >
             Clear filters
           </button>

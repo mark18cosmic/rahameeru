@@ -30,12 +30,12 @@ export function ProfileContent() {
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-6 md:px-6 md:py-10">
-      <div className="clay flex flex-col items-start gap-4 rounded-[2rem] p-5 sm:flex-row sm:items-center sm:gap-5 sm:p-6">
-        <span className="clay-root grid h-16 w-16 shrink-0 place-items-center rounded-2xl text-2xl font-extrabold sm:h-20 sm:w-20 sm:rounded-[1.75rem] sm:text-3xl">
+      <div className="surface flex flex-col items-start gap-4 rounded-3xl p-5 sm:flex-row sm:items-center sm:gap-5 sm:p-6">
+        <span className="fill-root grid h-16 w-16 shrink-0 place-items-center rounded-2xl text-2xl font-bold sm:h-20 sm:w-20 sm:rounded-3xl sm:text-3xl">
           {initial}
         </span>
         <div className="flex-1">
-          <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white sm:text-3xl">
+          <h1 className="font-display text-2xl font-bold text-ink-900 dark:text-white sm:text-3xl">
             {user.displayName ?? "Foodie"}
           </h1>
           <p className="truncate text-sm text-ink-500 sm:text-base">{user.email}</p>
@@ -64,7 +64,7 @@ export function ProfileContent() {
         <DietPicker />
       </div>
 
-      <h2 className="mt-8 font-display text-xl font-extrabold text-ink-900 dark:text-white md:mt-10 md:text-2xl">
+      <h2 className="mt-8 font-display text-xl font-bold text-ink-900 dark:text-white md:mt-10 md:text-2xl">
         Your favorites
       </h2>
       {saved.length === 0 ? (

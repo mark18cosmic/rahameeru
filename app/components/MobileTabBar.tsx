@@ -38,15 +38,14 @@ export default function MobileTabBar() {
   if (pathname.startsWith("/vendor") || pathname.startsWith("/admin")) return null;
 
   return (
-    // A floating clay slab rather than a bar welded to the bottom edge — the
-    // material only reads as moulded when the page shows around it. Solid, not
-    // translucent: content scrolling under a blurred bar was the muddiest part
-    // of the phone layout.
+    // Floats clear of the bottom edge, and is the one thing on a phone screen
+    // that carries a shadow. Solid, not translucent: content scrolling under a
+    // blurred bar was the muddiest part of the phone layout.
     <nav
       aria-label="Primary"
       className="fixed inset-x-3 bottom-[var(--tabbar-inset)] z-40 md:hidden"
     >
-      <ul className="clay flex h-[var(--tabbar-h)] items-stretch rounded-[1.75rem] px-1.5 py-1">
+      <ul className="float flex h-[var(--tabbar-h)] items-stretch rounded-3xl px-1.5 py-1">
         {tabs.map((t) => {
           const activeTab =
             t.href === "/" ? pathname === "/" : pathname.startsWith(t.href);
@@ -57,7 +56,7 @@ export default function MobileTabBar() {
               {activeTab && (
                 <motion.span
                   layoutId="tabbar-pill"
-                  className="clay-inset absolute inset-x-1 inset-y-0.5 rounded-[1.25rem]"
+                  className="absolute inset-x-1 inset-y-0.5 rounded-2xl bg-root-50 dark:bg-root-500/10"
                   transition={{ type: "spring", stiffness: 400, damping: 32 }}
                 />
               )}
@@ -81,7 +80,7 @@ export default function MobileTabBar() {
           );
 
           const classes =
-            "relative flex min-h-[52px] w-full flex-col items-center justify-center gap-0.5 rounded-[1.25rem] transition-transform active:scale-95";
+            "relative flex min-h-[52px] w-full flex-col items-center justify-center gap-0.5 rounded-2xl transition-transform active:scale-95";
 
           return (
             <li key={t.href} className="flex-1">

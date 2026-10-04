@@ -28,7 +28,7 @@ export function VendorShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-[70vh]">
-      <div className="clay rounded-b-[2rem]">
+      <div className="surface rounded-b-[2rem]">
         <div className="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-5 md:px-6 scrollbar-hide">
           {tabs.map((t) => {
             const active = t.exact ? pathname === t.href : pathname.startsWith(t.href);

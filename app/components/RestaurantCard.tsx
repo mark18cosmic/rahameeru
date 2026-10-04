@@ -21,66 +21,58 @@ export function RestaurantCard({
     <Link
       href={`/restaurant/${r.slug}`}
       className={cx(
-        // Padded rather than full-bleed: the photo is inset inside the clay
-        // body so the moulded lip stays visible around it. An edge-to-edge
-        // image would sit on top of the inset highlight and flatten the card.
-        "clay clay-press group relative flex flex-col rounded-[1.75rem] p-2 md:rounded-[2rem]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-root-400",
+        // No frame: the photo is the card, and the words sit on the page under
+        // it, the way a printed guide lays out a listing. A box around every
+        // card only added edges for the eye to step over.
+        "group relative flex flex-col rounded-2xl",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-root-400 focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--bg)]",
         className
       )}
     >
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[1.35rem] bg-ink-100 dark:bg-ink-800 md:rounded-[1.6rem]">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800">
         {/* Lazy by default — a rail can hold dozens of cards, and only the ones
             actually scrolled to should cost a request. */}
         <Photo
           r={r}
           sizes="(max-width: 768px) 70vw, 320px"
-          className="duration-500 md:group-hover:scale-105"
+          className="duration-700 md:group-hover:scale-[1.03]"
         />
-        {/* One badge per corner. Two stacked chips plus a heart used to collide
-            on a half-width phone card, which is where the overlap came from —
-            price now lives in the body row instead. */}
         {open && (
-          <span className="clay-on-color absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-1 text-[11px] font-bold text-white md:text-xs">
-            <span className="h-1.5 w-1.5 rounded-full bg-white/90" />
+          <span className="surface absolute left-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold text-ink-800 dark:text-ink-100 md:text-xs">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
             Open
           </span>
         )}
         <FavoriteButton
           id={r.id}
           size={16}
-          className="absolute right-3 top-3 h-9 w-9 md:h-10 md:w-10"
+          className="absolute right-2.5 top-2.5 h-9 w-9"
         />
-        {/* Rating sits on the photo where it reads at a glance; the body below
-            is then just words, with nothing competing for the same corner. */}
-        <span className="clay-sm absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold text-ink-900 dark:text-white md:text-xs">
-          <Star size={11} className="fill-saffron-500 text-saffron-500" />
-          {r.rating.toFixed(1)}
-          <span className="font-medium text-ink-400">({r.reviewCount})</span>
-        </span>
       </div>
 
-      <div className="flex flex-1 flex-col gap-1 px-2 pb-1.5 pt-3 md:gap-1.5 md:px-3 md:pb-2">
-        <h3 className="line-clamp-1 font-bold leading-tight text-ink-900 transition-colors dark:text-white md:group-hover:text-root-600">
-          {r.name}
-        </h3>
+      <div className="flex flex-1 flex-col gap-0.5 px-0.5 pt-2.5">
+        <div className="flex items-baseline justify-between gap-2">
+          <h3 className="line-clamp-1 font-semibold leading-snug text-ink-900 dark:text-white">
+            {r.name}
+          </h3>
+          <span className="flex shrink-0 items-center gap-1 text-[13px] font-semibold text-ink-800 dark:text-ink-100">
+            <Star size={12} className="fill-saffron-500 text-saffron-500" />
+            {r.rating.toFixed(1)}
+            <span className="hidden font-normal text-ink-400 sm:inline">({r.reviewCount})</span>
+          </span>
+        </div>
         <p className="line-clamp-1 text-[13px] text-ink-500">
-          <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-            {priceString(r.priceLevel)}
-          </span>
-          {r.cuisine.length > 0 && <> · {r.cuisine.join(" · ")}</>}
+          {[priceString(r.priceLevel), ...r.cuisine].join(" · ")}
         </p>
-        <div className="mt-auto flex items-center gap-2 pt-1 text-[13px] text-ink-500">
-          <span className="flex min-w-0 items-center gap-1">
-            <MapPin size={13} className="shrink-0" />
-            <span className="truncate">{r.location}</span>
-          </span>
+        <p className="flex items-center gap-1 text-[13px] text-ink-400">
+          <MapPin size={12} className="shrink-0" />
+          <span className="truncate">{r.location}</span>
           {dishes > 0 && (
-            <span className="ml-auto hidden shrink-0 items-center gap-1 text-ink-400 sm:flex">
+            <span className="ml-auto hidden shrink-0 items-center gap-1 sm:flex">
               <UtensilsCrossed size={12} /> {dishes}
             </span>
           )}
-        </div>
+        </p>
       </div>
     </Link>
   );
@@ -88,9 +80,9 @@ export function RestaurantCard({
 
 export function CardSkeleton() {
   return (
-    <div className="clay flex flex-col rounded-[1.75rem] p-2 md:rounded-[2rem]">
-      <div className="skeleton aspect-[4/3] rounded-[1.35rem] md:rounded-[1.6rem]" />
-      <div className="flex flex-col gap-2 px-2 pb-1.5 pt-3 md:px-3 md:pb-2">
+    <div className="flex flex-col">
+      <div className="skeleton aspect-[4/3] rounded-2xl" />
+      <div className="flex flex-col gap-2 px-0.5 pt-3">
         <div className="skeleton h-4 w-3/4 rounded" />
         <div className="skeleton h-3 w-1/2 rounded" />
         <div className="skeleton h-3 w-1/3 rounded" />

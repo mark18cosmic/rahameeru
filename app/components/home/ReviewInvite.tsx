@@ -56,13 +56,13 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
 
   return (
     <section className="mt-8 md:mt-12">
-      <div className="clay grid items-center gap-6 overflow-hidden rounded-[1.75rem] p-5 sm:rounded-[2rem] md:grid-cols-2 md:gap-10 md:p-10">
+      <div className="surface grid items-center gap-6 overflow-hidden rounded-3xl p-5 sm:rounded-3xl md:grid-cols-2 md:gap-10 md:p-10">
         <div className="min-w-0">
-          <span className="clay-sm inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-root-600 dark:text-root-300">
+          <span className="surface inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-root-600 dark:text-root-300">
             <Star size={13} className="fill-root-500 text-root-500" /> Worth writing
           </span>
 
-          <h2 className="mt-3 font-display text-xl font-extrabold leading-tight text-ink-900 dark:text-white sm:text-2xl md:text-3xl">
+          <h2 className="mt-3 font-display text-xl font-bold leading-tight text-ink-900 dark:text-white sm:text-2xl md:text-3xl">
             The next person deciding is you, last week.
           </h2>
           <p className="mt-2 max-w-md text-sm text-ink-500 md:text-base">
@@ -74,11 +74,11 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               href={suggestion ? `/restaurant/${suggestion.slug}?review=1` : "/explore"}
-              className="clay-root clay-press inline-flex min-h-[48px] items-center gap-2 rounded-full px-5 font-semibold"
+              className="fill-root press inline-flex min-h-[48px] items-center gap-2 rounded-full px-5 font-semibold"
             >
               Write one now <ArrowRight size={16} />
             </Link>
-            <span className="clay-sm inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-sm text-ink-600 dark:text-ink-300">
+            <span className="surface inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-sm text-ink-600 dark:text-ink-300">
               <QrCode size={15} className="text-root-500" />
               +{SCAN_POINTS} more if you scan at the table
             </span>
@@ -87,7 +87,7 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
 
         {/* The review assembling itself */}
         <div className="relative">
-          <div className="clay-inset rounded-[1.75rem] p-4">
+          <div className="well rounded-3xl p-4">
             <div className="flex items-center gap-3">
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-root-100 font-bold text-root-600 dark:bg-root-900/40 dark:text-root-300">
                 A
@@ -152,7 +152,7 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
                     shown >= 2 ? { opacity: 1, y: 0 } : { opacity: 0.2, y: 0 }
                   }
                   transition={{ delay: 0.1 + i * 0.09 }}
-                  className="clay-sm rounded-full px-2.5 py-1 text-[11px] text-ink-700 dark:text-ink-200"
+                  className="surface rounded-full px-2.5 py-1 text-[11px] text-ink-700 dark:text-ink-200"
                 >
                   {d} <b className="text-saffron-500">{5 - i}/5</b>
                 </motion.span>
@@ -197,7 +197,7 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
               key={total}
               initial={reduceMotion ? false : { scale: 1.25 }}
               animate={{ scale: 1 }}
-              className="shrink-0 font-display text-xl font-extrabold tabular-nums"
+              className="shrink-0 font-display text-xl font-bold tabular-nums"
             >
               +{total}
             </motion.span>

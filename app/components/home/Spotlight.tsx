@@ -80,7 +80,7 @@ export function Spotlight({
                     </span>
                   )}
                 </div>
-                <h3 className="mt-2 truncate font-display text-xl font-extrabold text-white">
+                <h3 className="mt-2 truncate font-display text-xl font-bold text-white">
                   {r.name}
                 </h3>
                 <div className="mt-0.5 flex items-center gap-2 text-[13px] text-white/85">

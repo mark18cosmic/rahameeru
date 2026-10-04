@@ -11,10 +11,10 @@ export function Badge({
   tone?: "neutral" | "brand" | "success" | "outline";
 }) {
   const tones = {
-    neutral: "clay-sm text-ink-700 dark:text-ink-200",
-    brand: "clay-root",
-    success: "clay-on-color bg-emerald-500 text-white",
-    outline: "clay-inset text-ink-600 dark:text-ink-300",
+    neutral: "surface text-ink-700 dark:text-ink-200",
+    brand: "fill-root",
+    success: "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300",
+    outline: "well text-ink-600 dark:text-ink-300",
   };
   return (
     <span

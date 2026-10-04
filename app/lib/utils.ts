@@ -16,7 +16,7 @@ export function cx(...classes: (string | false | null | undefined)[]): string {
 }
 
 /** Like `cx`, but later Tailwind utilities win over earlier conflicting ones.
-    The lightswind components expect this; use `cx` for plain concatenation. */
+    Use `cx` for plain concatenation. */
 export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }

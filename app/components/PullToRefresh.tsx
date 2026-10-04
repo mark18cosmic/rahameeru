@@ -117,7 +117,7 @@ export function PullToRefresh() {
       <motion.span
         animate={{ scale: ready || busy ? 1 : 0.85 + progress * 0.15 }}
         transition={{ duration: 0.15 }}
-        className="clay grid h-10 w-10 place-items-center rounded-full"
+        className="float grid h-10 w-10 place-items-center rounded-full"
       >
         {/* The same chili as every other loading state: it fills as you pull,
             then spins while the data reloads. */}

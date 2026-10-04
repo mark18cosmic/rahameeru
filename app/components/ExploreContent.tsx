@@ -88,7 +88,7 @@ export function ExploreContent() {
     <div className="mx-auto max-w-7xl px-5 py-6 md:px-6 md:py-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white md:text-4xl">
+          <h1 className="font-display text-2xl font-bold text-ink-900 dark:text-white md:text-4xl">
             Explore
           </h1>
           <p className="mt-1 text-sm text-ink-500 md:text-base">
@@ -128,7 +128,7 @@ export function ExploreContent() {
             aria-pressed={view === key}
             className={cx(
               "inline-flex min-h-[46px] flex-1 items-center justify-center gap-2 rounded-full text-sm font-semibold transition sm:flex-none sm:px-6",
-              view === key ? "clay-root" : "clay-sm clay-press text-ink-600 dark:text-ink-300"
+              view === key ? "fill-root" : "surface press text-ink-600 dark:text-ink-300"
             )}
           >
             <Icon size={16} />
@@ -163,7 +163,7 @@ export function ExploreContent() {
                   onClick={() => setTag(tag === t ? null : t)}
                   className={cx(
                     "min-h-[38px] shrink-0 rounded-full px-3.5 text-xs font-semibold transition",
-                    tag === t ? "clay-root" : "clay-sm clay-press text-ink-600 dark:text-ink-300"
+                    tag === t ? "fill-root" : "surface press text-ink-600 dark:text-ink-300"
                   )}
                 >
                   {t}
@@ -183,7 +183,7 @@ export function ExploreContent() {
             : sorted.map((r) => <RestaurantCard key={r.id} r={r} />)}
         </div>
       ) : dishes.length === 0 ? (
-        <p className="clay-inset mt-6 rounded-[1.5rem] p-10 text-center text-ink-500">
+        <p className="well mt-6 rounded-2xl p-10 text-center text-ink-500">
           No dish matches that. Try a shorter word.
         </p>
       ) : (

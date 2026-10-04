@@ -260,7 +260,7 @@ export function ReviewForm({
                   key={name}
                   type="button"
                   onClick={() => addDish(name)}
-                  className="clay-sm clay-press inline-flex min-h-[36px] items-center gap-1.5 rounded-full px-3 text-[13px] text-ink-600 dark:text-ink-300"
+                  className="surface press inline-flex min-h-[36px] items-center gap-1.5 rounded-full px-3 text-[13px] text-ink-600 dark:text-ink-300"
                 >
                   <Utensils size={12} /> {name}
                 </button>
@@ -381,7 +381,7 @@ export function ReviewForm({
         <button
           type="button"
           onClick={onCancel}
-          className="clay-sm clay-press min-h-[48px] rounded-full px-5 font-semibold text-ink-700 dark:text-ink-100"
+          className="surface press min-h-[48px] rounded-full px-5 font-semibold text-ink-700 dark:text-ink-100"
         >
           Cancel
         </button>

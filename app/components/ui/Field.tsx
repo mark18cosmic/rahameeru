@@ -2,9 +2,9 @@ import React from "react";
 import { cx } from "@/app/lib/utils";
 
 // Inputs are wells pressed into the page rather than raised cards — the one
-// place in a clay system where the shadow points inward.
+// place in a surface system where the shadow points inward.
 const inputBase =
-  "clay-inset w-full rounded-2xl px-4 py-3 text-ink-900 placeholder-ink-400 outline-none transition focus:ring-4 focus:ring-root-200 dark:text-white dark:placeholder-ink-400 dark:focus:ring-root-900/40";
+  "well w-full rounded-2xl px-4 py-3 text-ink-900 placeholder-ink-400 outline-none transition focus:ring-4 focus:ring-root-200 dark:text-white dark:placeholder-ink-400 dark:focus:ring-root-900/40";
 
 export const Input = React.forwardRef<
   HTMLInputElement,

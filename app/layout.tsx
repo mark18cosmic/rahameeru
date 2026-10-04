@@ -14,7 +14,7 @@ import { SearchProvider } from "./providers/SearchProvider";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: ["600", "700"],
   variable: "--font-display",
 });
 

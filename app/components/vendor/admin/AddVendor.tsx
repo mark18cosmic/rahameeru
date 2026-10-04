@@ -76,20 +76,20 @@ export function AddVendor({ onCreated }: { onCreated: () => void }) {
     <div>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="clay-root clay-press inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full px-5 font-semibold sm:w-auto"
+        className="fill-root press inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full px-5 font-semibold sm:w-auto"
       >
         {open ? <X size={17} /> : <Plus size={17} />}
         {open ? "Cancel" : "Add a vendor"}
       </button>
 
       {done && (
-        <p className="clay-inset mt-3 flex items-center gap-2 rounded-2xl p-3 text-sm font-semibold text-emerald-600">
+        <p className="well mt-3 flex items-center gap-2 rounded-2xl p-3 text-sm font-semibold text-emerald-600">
           <Check size={16} /> Vendor added and approved.
         </p>
       )}
 
       {open && (
-        <div className="clay mt-3 space-y-4 rounded-[2rem] p-5">
+        <div className="surface mt-3 space-y-4 rounded-3xl p-5">
           <div>
             <Label>Business name</Label>
             <Input
@@ -154,7 +154,7 @@ export function AddVendor({ onCreated }: { onCreated: () => void }) {
                     }
                     className={cx(
                       "inline-flex min-h-[42px] items-center gap-1.5 rounded-full px-3.5 text-sm font-semibold transition",
-                      on ? "clay-root" : "clay-sm clay-press text-ink-600 dark:text-ink-300"
+                      on ? "fill-root" : "surface press text-ink-600 dark:text-ink-300"
                     )}
                   >
                     <Store size={14} />
@@ -174,7 +174,7 @@ export function AddVendor({ onCreated }: { onCreated: () => void }) {
           <button
             onClick={save}
             disabled={saving}
-            className="clay-root clay-press inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full px-6 font-semibold disabled:opacity-60"
+            className="fill-root press inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full px-6 font-semibold disabled:opacity-60"
           >
             {saving && <Loader2 size={16} className="animate-spin" />}
             Add and approve

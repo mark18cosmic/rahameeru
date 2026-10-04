@@ -165,7 +165,7 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
       >
         <Link
           href="/explore"
-          className="inline-flex min-h-[50px] items-center clay-sm clay-press rounded-full px-6 font-semibold "
+          className="inline-flex min-h-[50px] items-center surface press rounded-full px-6 font-semibold "
         >
           Back to the app
         </Link>
@@ -189,7 +189,7 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 300, damping: 18 }}
-          className="mb-5 inline-flex items-center gap-2 rounded-full bg-saffron-400/20 px-4 py-2 font-display text-lg font-extrabold text-saffron-500"
+          className="mb-5 inline-flex items-center gap-2 rounded-full bg-saffron-400/20 px-4 py-2 font-display text-lg font-bold text-saffron-500"
         >
           <Trophy size={18} /> +{state.earned} points
         </motion.div>
@@ -204,7 +204,7 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
         </Link>
         <Link
           href={`/restaurant/${state.slug}`}
-          className="inline-flex min-h-[50px] items-center justify-center gap-2 clay-sm clay-press rounded-full px-6 font-semibold "
+          className="inline-flex min-h-[50px] items-center justify-center gap-2 surface press rounded-full px-6 font-semibold "
         >
           <MapPin size={17} /> See the menu
         </Link>
@@ -236,7 +236,7 @@ function Shell({
       <span className={`mx-auto grid h-14 w-14 place-items-center rounded-2xl ${tones[tone]}`}>
         {icon}
       </span>
-      <h1 className="mt-5 font-display text-2xl font-extrabold text-ink-900 dark:text-white">
+      <h1 className="mt-5 font-display text-2xl font-bold text-ink-900 dark:text-white">
         {title}
       </h1>
       <p className="mx-auto mt-2 max-w-sm text-ink-500">{body}</p>

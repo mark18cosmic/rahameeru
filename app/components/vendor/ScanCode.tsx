@@ -175,13 +175,13 @@ export function ScanCode({
   if (restaurants.length === 0) return null;
 
   return (
-    <section className="clay rounded-[2rem] p-5">
+    <section className="surface rounded-3xl p-5">
       <div className="flex items-start gap-3">
         <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-ink-900 text-white dark:bg-white dark:text-ink-900">
           <QrCode size={19} />
         </span>
         <div className="min-w-0">
-          <h2 className="font-display text-lg font-extrabold text-ink-900 dark:text-white">
+          <h2 className="font-display text-lg font-bold text-ink-900 dark:text-white">
             Table code
           </h2>
           <p className="text-sm text-ink-500">
@@ -254,7 +254,7 @@ export function ScanCode({
             <button
               onClick={download}
               disabled={!qr}
-              className="flex min-h-[48px] items-center justify-center gap-2 clay-sm clay-press rounded-full font-semibold transition active:scale-[0.98] disabled:opacity-50 "
+              className="flex min-h-[48px] items-center justify-center gap-2 surface press rounded-full font-semibold transition active:scale-[0.98] disabled:opacity-50 "
             >
               <Download size={17} /> Download PNG
             </button>

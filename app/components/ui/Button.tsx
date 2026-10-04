@@ -7,16 +7,15 @@ import { cx } from "@/app/lib/utils";
 type Variant = "primary" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
-// Clay presses rather than scales — `clay-press` handles the transform, so the
-// old `active:scale` would fight it.
+// `press` owns the hover and tap feedback, so no `active:scale` here to fight it.
 const base =
   "inline-flex items-center justify-center gap-2 font-semibold rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-root-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
 
 const variants: Record<Variant, string> = {
-  primary: "clay-root clay-press",
+  primary: "fill-root press",
   secondary:
-    "clay-on-color clay-press bg-ink-900 text-white dark:bg-white dark:text-ink-900",
-  outline: "clay-sm clay-press text-ink-800 dark:text-ink-100",
+    "press bg-ink-900 text-white hover:bg-ink-800 dark:bg-white dark:text-ink-900 dark:hover:bg-ink-100",
+  outline: "surface press text-ink-800 dark:text-ink-100",
   ghost:
     "text-ink-700 hover:bg-ink-100 dark:text-ink-200 dark:hover:bg-ink-800",
 };

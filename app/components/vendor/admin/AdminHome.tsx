@@ -72,10 +72,10 @@ export function AdminHome() {
   if (!user || !isAdmin) {
     return (
       <div className="mx-auto max-w-lg px-5 py-24 text-center">
-        <span className="clay-sm mx-auto grid h-14 w-14 place-items-center rounded-2xl text-ink-500">
+        <span className="surface mx-auto grid h-14 w-14 place-items-center rounded-2xl text-ink-500">
           <ShieldAlert size={24} />
         </span>
-        <h1 className="mt-5 font-display text-2xl font-extrabold text-ink-900 dark:text-white">
+        <h1 className="mt-5 font-display text-2xl font-bold text-ink-900 dark:text-white">
           Admins only
         </h1>
         <p className="mt-2 text-ink-500">
@@ -86,7 +86,7 @@ export function AdminHome() {
         {!user && (
           <Link
             href="/login?next=/admin"
-            className="clay-root clay-press mt-6 inline-flex min-h-[48px] items-center rounded-full px-6 font-semibold"
+            className="fill-root press mt-6 inline-flex min-h-[48px] items-center rounded-full px-6 font-semibold"
           >
             Sign in
           </Link>
@@ -98,11 +98,11 @@ export function AdminHome() {
   return (
     <div className="mx-auto max-w-5xl px-5 py-8 md:px-6 md:py-12">
       <div className="flex items-center gap-3">
-        <span className="clay-root grid h-12 w-12 place-items-center rounded-2xl">
+        <span className="fill-root grid h-12 w-12 place-items-center rounded-2xl">
           <ShieldCheck size={22} />
         </span>
         <div className="min-w-0">
-          <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white sm:text-3xl">
+          <h1 className="font-display text-2xl font-bold text-ink-900 dark:text-white sm:text-3xl">
             Admin
           </h1>
           <p className="truncate text-sm text-ink-500">
@@ -119,8 +119,8 @@ export function AdminHome() {
             className={cx(
               "inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full px-4 text-sm font-semibold transition",
               tab === t.key
-                ? "clay-root"
-                : "clay-sm clay-press text-ink-600 dark:text-ink-300"
+                ? "fill-root"
+                : "surface press text-ink-600 dark:text-ink-300"
             )}
           >
             <t.icon size={15} />

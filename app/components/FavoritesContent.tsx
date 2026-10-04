@@ -20,7 +20,7 @@ export function FavoritesContent() {
           <Heart size={20} className="fill-white" />
         </span>
         <div>
-          <h1 className="font-display text-2xl font-extrabold text-ink-900 dark:text-white md:text-3xl">
+          <h1 className="font-display text-2xl font-bold text-ink-900 dark:text-white md:text-3xl">
             Your favorites
           </h1>
           <p className="text-sm text-ink-500 md:text-base">
