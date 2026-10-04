@@ -15,7 +15,7 @@ export async function generateMetadata({
   return {
     title: r.name,
     description:
-      r.description || `${r.name} — menu, hours and reviews on Rahameeru.`,
+      r.description || `${r.name}: menu, hours and reviews on Rahameeru.`,
     openGraph: {
       images: [photoUrl(r)],
       title: r.name,

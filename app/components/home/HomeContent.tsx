@@ -15,6 +15,7 @@ import { CategoryStrip } from "./CategoryStrip";
 import { WheelSpinner } from "./WheelSpinner";
 import { RestaurantRail } from "./RestaurantRail";
 import { ReviewInvite } from "./ReviewInvite";
+import { CompactList, FeaturedGrid, MenuList, OccasionRail } from "./HomeSections";
 
 export function HomeContent() {
   const { restaurants: all, loading } = useRestaurants();
@@ -78,11 +79,7 @@ export function HomeContent() {
     <>
       {settings.announcement && (
         <div className="mx-auto max-w-7xl px-5 pt-3 md:px-6">
-          <p className="announce flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-medium">
-            <span
-              aria-hidden
-              className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--announce-accent)]"
-            />
+          <p className="announce rounded-xl px-4 py-2.5 text-sm font-medium">
             {settings.announcement}
           </p>
         </div>
@@ -98,10 +95,15 @@ export function HomeContent() {
 
       <main className="mx-auto max-w-7xl px-5 md:px-6">
         {railOn("featured") && (
-          <RestaurantRail
+          <FeaturedGrid
             title="Worth the walk"
             subtitle="The ones we send people to first"
-            restaurants={rails.featured.length ? rails.featured : rails.byRating}
+            // The lead grid has exactly five cells, so top up the picks with
+            // the best-rated places rather than leave a hole in it.
+            restaurants={[
+              ...rails.featured,
+              ...rails.byRating.filter((r) => !rails.featured.includes(r)),
+            ]}
             loading={loading}
             href="/explore?sort=rating"
           />
@@ -125,7 +127,7 @@ export function HomeContent() {
         )}
 
         {railOn("cheapDishes") && (
-          <DishRail
+          <MenuList
             title="Eat well for less"
             subtitle="The cheapest plates on any menu right now"
             dishes={dishes.cheap}
@@ -145,41 +147,40 @@ export function HomeContent() {
 
         {settings.showReviewInvite && <ReviewInvite restaurants={rails.byRating} />}
 
-        {railOn("dateSpots") && (
-          <RestaurantRail
-            title="Good for a date"
-            subtitle="Quiet enough to hear each other"
-            restaurants={rails.dateSpots}
-            loading={loading}
-            href="/search?q=Date%20Spots"
-          />
-        )}
-
-        {railOn("cafes") && (
-          <RestaurantRail
-            title="Coffee and breakfast"
-            subtitle="For mornings, and for working through them"
-            restaurants={rails.cafes}
-            loading={loading}
-            href="/search?q=Caf%C3%A9s"
-          />
-        )}
-
-        {railOn("fastFood") && (
-          <RestaurantRail
-            title="In and out in twenty minutes"
-            subtitle="When you just need feeding"
-            restaurants={rails.fastFood}
-            loading={loading}
-            href="/search?q=Fast%20food"
-          />
-        )}
+        {/* Three occasion rails share one row with tabs; each tab still
+            follows its own admin toggle. */}
+        <OccasionRail
+          loading={loading}
+          occasions={[
+            {
+              key: "dateSpots",
+              label: "Date night",
+              subtitle: "Quiet enough to hear each other",
+              restaurants: rails.dateSpots,
+              href: "/search?q=Date%20Spots",
+            },
+            {
+              key: "cafes",
+              label: "Coffee and breakfast",
+              subtitle: "For mornings, and for working through them",
+              restaurants: rails.cafes,
+              href: "/search?q=Caf%C3%A9s",
+            },
+            {
+              key: "fastFood",
+              label: "In and out fast",
+              subtitle: "When you just need feeding",
+              restaurants: rails.fastFood,
+              href: "/search?q=Fast%20food",
+            },
+          ].filter((o) => railOn(o.key))}
+        />
 
         {railOn("recent") && (
-          <RestaurantRail
+          <CompactList
             title="Recently added"
+            subtitle="New on the list, not many reviews yet"
             restaurants={rails.recent}
-            loading={loading}
             href="/explore"
           />
         )}

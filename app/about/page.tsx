@@ -25,7 +25,7 @@ const VALUES = [
   {
     icon: Users,
     title: "Kept current",
-    body: "Hours and menus drift. Tell us when something's wrong and we'll fix it — that's most of the work.",
+    body: "Hours and menus drift. Tell us when something's wrong and we'll fix it. That's most of the work.",
   },
 ];
 
@@ -41,8 +41,8 @@ export default function AboutPage() {
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-lg text-ink-500">
           Rahameeru started as a shared note of places worth eating at in Malé.
-          It&apos;s now a proper list — with menus, opening hours and what people
-          thought — covering Malé and Hulhumalé.
+          It&apos;s now a proper list of menus, opening hours and what people
+          thought, covering Malé and Hulhumalé.
         </p>
       </div>
 

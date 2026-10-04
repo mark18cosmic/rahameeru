@@ -130,7 +130,7 @@ export function AddVendor({ onCreated }: { onCreated: () => void }) {
             />
             <p className="mt-1.5 text-xs text-ink-400">
               They get vendor access the first time they sign in with this
-              address — no invite to send.
+              address. No invite to send.
             </p>
           </div>
 

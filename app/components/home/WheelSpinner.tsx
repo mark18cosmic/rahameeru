@@ -229,7 +229,8 @@ export function WheelSpinner({ restaurants }: Props) {
       ctx.textAlign = "right";
       ctx.textBaseline = "middle";
       ctx.fillStyle = "#fff";
-      ctx.font = `600 ${fontSize}px Inter, system-ui, sans-serif`;
+      // next/font hashes family names, so read the real one off the page.
+      ctx.font = `600 ${fontSize}px ${getComputedStyle(document.body).fontFamily}`;
       const label =
         r.name.length > maxChars ? r.name.slice(0, maxChars - 1) + "…" : r.name;
       ctx.fillText(label, radius - (dense ? 8 : 12), 0);
@@ -238,7 +239,7 @@ export function WheelSpinner({ restaurants }: Props) {
 
     ctx.beginPath();
     ctx.arc(cx, cy, hub, 0, 2 * Math.PI);
-    ctx.fillStyle = "#171512";
+    ctx.fillStyle = "#151515";
     ctx.fill();
     ctx.strokeStyle = "#fff";
     ctx.lineWidth = 3;
@@ -296,13 +297,12 @@ export function WheelSpinner({ restaurants }: Props) {
       disabled={disabled}
       aria-pressed={on}
       className={cx(
-        // Two surfaces to sit on: the dark wheel card and the themed sheet.
-        // Explicit light/dark values rather than translucent white, which
-        // disappeared against the light sheet background.
-        "inline-flex min-h-[38px] shrink-0 items-center gap-1.5 rounded-full px-3.5 text-[13px] font-medium transition active:scale-95 disabled:opacity-50",
+        // The same chip on the wheel panel and in the phone sheet: both are
+        // page-themed surfaces now, so one set of colours serves both.
+        "inline-flex min-h-[38px] shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-[13px] font-medium transition active:scale-95 disabled:opacity-50",
         on
-          ? "bg-root-500 text-white md:bg-white md:text-ink-900"
-          : "bg-ink-100 text-ink-600 dark:bg-white/10 dark:text-ink-200 md:bg-white/10 md:text-ink-200 md:hover:bg-white/20"
+          ? "border-root-500 bg-root-500 text-white"
+          : "border-[var(--line)] bg-[var(--well)] text-ink-700 hover:border-[var(--line-strong)] dark:text-ink-200"
       )}
     >
       {children}
@@ -406,7 +406,7 @@ export function WheelSpinner({ restaurants }: Props) {
       {activeCount > 0 && (
         <button
           onClick={() => setPrefs({ ...EMPTY, skipSeen: prefs.skipSeen })}
-          className="flex items-center gap-1.5 text-[13px] font-semibold text-root-300"
+          className="flex items-center gap-1.5 text-[13px] font-semibold text-root-600 dark:text-root-400"
         >
           <X size={14} /> Clear preferences
         </button>
@@ -416,16 +416,16 @@ export function WheelSpinner({ restaurants }: Props) {
 
   const countLine =
     matches.length === 0
-      ? "Nothing matches — loosen something"
+      ? "Nothing matches. Loosen a filter"
       : `${matches.length} ${matches.length === 1 ? "place" : "places"} on the wheel` +
-        (matches.length > LABEL_LIMIT ? " — too many to label, spin to see" : "");
+        (matches.length > LABEL_LIMIT ? ", too many to label. Spin to see" : "");
 
   const winnerCard = winner && (
     <motion.div
       initial={{ opacity: 0, y: 12, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full rounded-2xl bg-white p-3 text-ink-900"
+      className="well w-full rounded-2xl p-3"
     >
       <div className="flex items-center gap-3">
         <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-ink-100 sm:h-16 sm:w-16">
@@ -435,7 +435,7 @@ export function WheelSpinner({ restaurants }: Props) {
           <p className="text-[11px] font-semibold uppercase tracking-wide text-root-500">
             Tonight you&apos;re eating at
           </p>
-          <h4 className="truncate font-bold">{winner.name}</h4>
+          <h4 className="truncate font-bold text-ink-900 dark:text-white">{winner.name}</h4>
           <div className="flex flex-wrap items-center gap-x-2 text-xs text-ink-500">
             <Stars value={winner.rating} size={12} />
             <span className="flex items-center gap-0.5">
@@ -454,20 +454,20 @@ export function WheelSpinner({ restaurants }: Props) {
   return (
     <section
       id="wheel"
-      className="relative scroll-mt-24 overflow-hidden rounded-3xl bg-ink-900 dark:border dark:border-[var(--line)] dark:bg-[var(--surface)] p-4 text-white sm:rounded-3xl sm:p-6 md:p-10"
+      className="surface relative scroll-mt-24 overflow-hidden rounded-3xl p-4 text-ink-900 dark:text-white sm:p-6 md:p-10"
     >
       {/* Phones get wheel, count, and two buttons — everything on one screen,
           with the preference list behind a sheet. Wide screens keep the
           two-column layout where the controls can live in the open. */}
       <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:items-center md:gap-8">
         <div className="order-1 min-w-0 md:order-none">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-root-300">
-            <Sparkles size={14} /> Can&apos;t decide?
-          </span>
-          <h2 className="mt-2.5 font-display text-xl font-bold leading-tight sm:text-3xl md:mt-4 md:text-4xl">
+          <p className="flex items-center gap-1.5 text-sm font-semibold text-root-600 dark:text-root-400">
+            <Sparkles size={15} /> Can&apos;t decide?
+          </p>
+          <h2 className="mt-2 font-display text-xl font-bold leading-tight sm:text-3xl md:mt-4 md:text-4xl">
             Let the wheel decide.
           </h2>
-          <p className="mt-2 hidden max-w-md text-sm text-ink-300 md:block md:text-base">
+          <p className="mt-2 hidden max-w-md text-sm text-ink-500 dark:text-ink-300 md:block md:text-base">
             Tell it what you&apos;re in the mood for and it only spins places you
             would actually say yes to.
           </p>
@@ -476,13 +476,13 @@ export function WheelSpinner({ restaurants }: Props) {
           <div className="mt-5 hidden md:block">{prefControls}</div>
 
           <div className="mt-4 hidden items-center gap-3 md:flex">
-            <p className="text-sm text-ink-400" aria-live="polite">
+            <p className="text-sm text-ink-500 dark:text-ink-300" aria-live="polite">
               {countLine}
             </p>
             {activeCount > 0 && (
               <button
                 onClick={() => setPrefs({ ...EMPTY, skipSeen: prefs.skipSeen })}
-                className="text-sm font-semibold text-root-300 transition hover:text-root-200"
+                className="text-sm font-semibold text-root-600 transition hover:text-root-700 dark:text-root-400"
               >
                 Clear filters
               </button>
@@ -507,7 +507,7 @@ export function WheelSpinner({ restaurants }: Props) {
             style={{ height: size }}
           >
             <div className="absolute left-1/2 top-[-6px] z-10 -translate-x-1/2">
-              <div className="h-0 w-0 border-x-[12px] border-t-[20px] border-x-transparent border-t-white drop-shadow" />
+              <div className="h-0 w-0 border-x-[12px] border-t-[20px] border-x-transparent border-t-ink-900 dark:border-t-white" />
             </div>
             <motion.div
               animate={{ rotate: rotation }}
@@ -531,8 +531,8 @@ export function WheelSpinner({ restaurants }: Props) {
             </motion.div>
 
             {pool.length === 0 && (
-              <div className="absolute inset-0 grid place-items-center text-center text-sm text-ink-300">
-                <span className="rounded-2xl bg-white/10 px-5 py-3">
+              <div className="absolute inset-0 grid place-items-center text-center text-sm text-ink-500 dark:text-ink-300">
+                <span className="well rounded-2xl px-5 py-3">
                   Nothing fits.
                   <br />
                   Loosen a preference.
@@ -542,12 +542,12 @@ export function WheelSpinner({ restaurants }: Props) {
           </div>
 
           {/* Mobile controls, directly under the wheel */}
-          <p className="flex items-center gap-3 text-sm text-ink-400 md:hidden" aria-live="polite">
+          <p className="flex items-center gap-3 text-sm text-ink-500 dark:text-ink-300 md:hidden" aria-live="polite">
             {countLine}
             {activeCount > 0 && (
               <button
                 onClick={() => setPrefs({ ...EMPTY, skipSeen: prefs.skipSeen })}
-                className="font-semibold text-root-300"
+                className="font-semibold text-root-600 dark:text-root-400"
               >
                 Clear
               </button>
@@ -558,12 +558,12 @@ export function WheelSpinner({ restaurants }: Props) {
             <button
               onClick={() => setPanelOpen(true)}
               disabled={spinning}
-              className="flex min-h-[52px] items-center gap-2 rounded-full bg-white/10 px-4 text-sm font-semibold text-white transition active:scale-95 disabled:opacity-50"
+              className="well flex min-h-[52px] items-center gap-2 rounded-full px-4 text-sm font-semibold text-ink-800 transition active:scale-95 disabled:opacity-50 dark:text-ink-100"
             >
               <SlidersHorizontal size={17} />
               Filters
               {activeCount > 0 && (
-                <span className="rounded-full bg-root-500 px-1.5 text-[11px] font-bold">
+                <span className="rounded-full bg-root-500 px-1.5 text-[11px] font-bold text-white">
                   {activeCount}
                 </span>
               )}
@@ -616,7 +616,7 @@ export function WheelSpinner({ restaurants }: Props) {
               <div className="shrink-0 px-5 pt-3">
                 <span
                   aria-hidden
-                  className="mx-auto mb-3 block h-1 w-10 rounded-full bg-ink-200 dark:bg-white/25"
+                  className="mx-auto mb-3 block h-1 w-10 rounded-full bg-ink-200 dark:bg-ink-700"
                 />
                 <div className="flex items-center justify-between gap-3 pb-3">
                   <h3 className="font-display text-lg font-bold">
@@ -634,7 +634,7 @@ export function WheelSpinner({ restaurants }: Props) {
                     <button
                       onClick={() => setPanelOpen(false)}
                       aria-label="Close"
-                      className="grid h-9 w-9 place-items-center rounded-full bg-ink-100 active:scale-90 dark:bg-white/10"
+                      className="well grid h-9 w-9 place-items-center rounded-full active:scale-90"
                     >
                       <X size={18} />
                     </button>
@@ -646,7 +646,7 @@ export function WheelSpinner({ restaurants }: Props) {
                 {prefControls}
               </div>
 
-              <div className="shrink-0 border-t border-ink-100 px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 dark:border-ink-800">
+              <div className="shrink-0 border-t border-[var(--line)] px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3">
                 <button
                   onClick={() => setPanelOpen(false)}
                   disabled={matches.length === 0}

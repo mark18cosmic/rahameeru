@@ -169,7 +169,7 @@ export function VendorDashboard() {
     return (
       <Empty
         title="No application yet"
-        body="Claim your restaurant and we'll review it by hand — usually within a couple of days."
+        body="Claim your restaurant and we'll review it by hand, usually within a couple of days."
         action={{ href: "/vendor/signup", label: "Claim your restaurant" }}
       />
     );
@@ -203,7 +203,7 @@ export function VendorDashboard() {
           tone="pending"
           icon={Clock}
           title="Application under review"
-          body="A person checks every claim before a listing changes hands — a page carries other people's reviews, so we don't hand one over automatically. We'll email you at the address you applied with."
+          body="A person checks every claim before a listing changes hands. A page carries other people's reviews, so we don't hand one over automatically. We'll email you at the address you applied with."
         />
       )}
 
@@ -250,7 +250,7 @@ export function VendorDashboard() {
                 <Stat
                   icon={Star}
                   label="Average from app reviews"
-                  value={rated ? rated.toFixed(1) : "—"}
+                  value={rated ? rated.toFixed(1) : "-"}
                   tint="bg-saffron-400/25 text-saffron-500"
                 />
                 <Stat
@@ -402,7 +402,7 @@ export function VendorDashboard() {
           Your plan
         </h2>
         <p className="mt-1 text-sm text-ink-500">
-          Switching is instant and free — billing isn&apos;t connected yet, so
+          Switching is instant and free. Billing isn&apos;t connected yet, so
           nothing is charged and no card is stored.
         </p>
         <div className="mt-5">

@@ -397,7 +397,7 @@ export function ScanSheet({
 
                 <p className="mt-3 flex items-start gap-2 text-xs text-ink-400">
                   <Info size={13} className="mt-0.5 shrink-0" />
-                  Your phone&apos;s own camera app works too — it opens the same
+                  Your phone&apos;s own camera app works too. It opens the same
                   link.
                 </p>
               </div>

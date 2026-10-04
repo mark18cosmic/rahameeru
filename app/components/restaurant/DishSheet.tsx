@@ -206,7 +206,7 @@ export function DishSheet({
                 ) : (
                   <p className="mt-2 flex items-center gap-2 text-sm text-ink-400">
                     <UtensilsCrossed size={14} />
-                    The restaurant hasn&apos;t listed any — ask when you order.
+                    The restaurant hasn&apos;t listed any. Ask when you order.
                   </p>
                 )}
                 {!listed.length && spotted.length > 0 && (

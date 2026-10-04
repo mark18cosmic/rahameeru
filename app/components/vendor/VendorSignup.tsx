@@ -272,7 +272,7 @@ export function VendorSignup() {
         {step === 2 && (
           <div className="space-y-3">
             <p className="text-sm text-ink-500">
-              Pick where you want to start. Nothing is charged now — billing
+              Pick where you want to start. Nothing is charged now. Billing
               isn&apos;t connected yet, and we&apos;ll talk to you before it is.
             </p>
             {PLANS.map((p) => (

@@ -146,7 +146,7 @@ export function Menu({
           Menu
         </h2>
         <p className="mt-1 text-sm text-ink-500">
-          Prices are a guide and change often — check with the restaurant.
+          Prices are a guide and change often. Check with the restaurant.
         </p>
       </div>
 

@@ -96,7 +96,7 @@ export default function VendorLandingPage() {
             Plans
           </h2>
           <p className="mt-1.5 text-ink-500">
-            Start free. Nothing is charged today — billing isn&apos;t connected
+            Start free. Nothing is charged today. Billing isn&apos;t connected
             yet, so choosing a paid plan records what you want and we&apos;ll be
             in touch before anything is ever billed.
           </p>

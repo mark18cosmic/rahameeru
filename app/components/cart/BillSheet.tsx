@@ -25,7 +25,7 @@ export function BillSheet({ open, onClose }: { open: boolean; onClose: () => voi
   }, {});
 
   const share = async () => {
-    const lines = items.map((i) => `${i.qty}× ${i.dish} — ${mvr(i.price * i.qty)}`);
+    const lines = items.map((i) => `${i.qty}× ${i.dish}: ${mvr(i.price * i.qty)}`);
     const text = `${lines.join("\n")}\n\nTotal ${mvr(totals.total)} · ${mvr(
       totals.perHead
     )} each for ${people}`;

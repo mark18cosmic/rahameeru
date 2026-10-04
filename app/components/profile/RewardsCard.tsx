@@ -53,7 +53,7 @@ export function RewardsCard() {
         </div>
         <div className="text-right">
           <p className="font-display text-2xl font-bold text-ink-900 dark:text-white">
-            {loading ? "—" : unlimited ? "∞" : points.total.toLocaleString()}
+            {loading ? "-" : unlimited ? "∞" : points.total.toLocaleString()}
           </p>
           <span
             className={cx(
@@ -155,7 +155,7 @@ export function RewardsCard() {
       <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-ink-400">
         <Info size={13} className="mt-0.5 shrink-0" />
         Points are held in each restaurant&apos;s name. What they&apos;re worth
-        is up to that restaurant — none are redeemable until a venue opts in, so
+        is up to that restaurant. None are redeemable until a venue opts in, so
         treat this as a record of what you&apos;ve contributed.
       </p>
     </section>

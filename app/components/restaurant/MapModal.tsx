@@ -133,7 +133,7 @@ export function MapModal({
       (pos) => setMe({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
       () => {
         setStatus("error");
-        setMessage("Location permission denied — you can still open the map.");
+        setMessage("Location permission denied. You can still open the map.");
       },
       { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }
     );

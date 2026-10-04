@@ -10,9 +10,12 @@ import { FavoriteButton } from "./FavoriteButton";
 export function RestaurantCard({
   r,
   className = "",
+  lead = false,
 }: {
   r: Restaurant;
   className?: string;
+  /** The large first card of a lead grid: the photo fills the spare height. */
+  lead?: boolean;
 }) {
   const open = isOpenNow(r.hours);
   const dishes = r.menu?.reduce((n, s) => n + s.items.length, 0) ?? 0;
@@ -29,12 +32,17 @@ export function RestaurantCard({
         className
       )}
     >
-      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800">
-        {/* Lazy by default — a rail can hold dozens of cards, and only the ones
+      <div
+        className={cx(
+          "relative overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800",
+          lead ? "aspect-[4/3] md:aspect-auto md:min-h-[320px] md:flex-1" : "aspect-[4/3]"
+        )}
+      >
+        {/* Lazy by default. A rail can hold dozens of cards, and only the ones
             actually scrolled to should cost a request. */}
         <Photo
           r={r}
-          sizes="(max-width: 768px) 70vw, 320px"
+          sizes={lead ? "(max-width: 768px) 70vw, 640px" : "(max-width: 768px) 70vw, 320px"}
           className="duration-700 md:group-hover:scale-[1.03]"
         />
         {open && (
@@ -50,9 +58,14 @@ export function RestaurantCard({
         />
       </div>
 
-      <div className="flex flex-1 flex-col gap-0.5 px-0.5 pt-2.5">
+      <div className={cx("flex flex-col gap-0.5 px-0.5 pt-2.5", !lead && "flex-1")}>
         <div className="flex items-baseline justify-between gap-2">
-          <h3 className="line-clamp-1 font-semibold leading-snug text-ink-900 dark:text-white">
+          <h3
+            className={cx(
+              "line-clamp-1 font-semibold leading-snug text-ink-900 dark:text-white",
+              lead && "md:font-display md:text-2xl md:font-bold md:tracking-tight"
+            )}
+          >
             {r.name}
           </h3>
           <span className="flex shrink-0 items-center gap-1 text-[13px] font-semibold text-ink-800 dark:text-ink-100">
@@ -61,10 +74,11 @@ export function RestaurantCard({
             <span className="hidden font-normal text-ink-400 sm:inline">({r.reviewCount})</span>
           </span>
         </div>
-        <p className="line-clamp-1 text-[13px] text-ink-500">
-          {[priceString(r.priceLevel), ...r.cuisine].join(" · ")}
+        <p className="line-clamp-1 text-[13px] text-ink-500 dark:text-ink-400">
+          {priceString(r.priceLevel)}
+          {r.cuisine.length > 0 && <> · {r.cuisine.join(", ")}</>}
         </p>
-        <p className="flex items-center gap-1 text-[13px] text-ink-400">
+        <p className="flex items-center gap-1 text-[13px] text-ink-500 dark:text-ink-400">
           <MapPin size={12} className="shrink-0" />
           <span className="truncate">{r.location}</span>
           {dishes > 0 && (

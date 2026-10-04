@@ -141,7 +141,7 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
         icon={<LogIn size={26} />}
         tone="neutral"
         title="Sign in to collect"
-        body="Points are held against your account, so we need to know who you are. Sign in and scan again — it takes a moment."
+        body="Points are held against your account, so we need to know who you are. Sign in and scan again. It takes a moment."
       >
         <Link
           href={`/login?next=${encodeURIComponent(
@@ -180,7 +180,7 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
       title={state.already ? "Already claimed this code" : `You're at ${state.name}`}
       body={
         state.already
-          ? "Each code can be claimed once — the next goes up on Monday. Your review still counts, and it'll show as a verified visit."
+          ? "Each code can be claimed once. The next goes up on Monday. Your review still counts, and it'll show as a verified visit."
           : "Verified from the code on your table. Write a review while it's in front of you and it'll carry a verified visit mark."
       }
     >

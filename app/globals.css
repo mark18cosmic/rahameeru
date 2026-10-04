@@ -5,23 +5,23 @@
 @tailwind utilities;
 
 :root {
-  --bg: #faf8f5;
-  --fg: #26221d;
+  --bg: #f8f8f7;
+  --fg: #232322;
 
-  /* One material: warm paper. Surfaces are flat and separated by hairlines,
+  /* One material: flat paper. Surfaces are flat and separated by hairlines,
      so the food photography is the only thing on the page with depth. A
      shadow is reserved for what genuinely floats above the page — the tab
      bar, sheets, menus, toasts — and nothing else. */
-  --surface: #fffdfa;
-  --well: #f3efe8;
-  --line: #ebe5dc;
-  --line-strong: #d9d1c4;
-  --float-shadow: 0 16px 40px -16px rgba(38, 34, 29, 0.28),
-    0 2px 6px -2px rgba(38, 34, 29, 0.08);
+  --surface: #fdfdfc;
+  --well: #f1f1ef;
+  --line: #e6e6e3;
+  --line-strong: #d0d0cc;
+  --float-shadow: 0 16px 40px -16px rgba(21, 21, 21, 0.28),
+    0 2px 6px -2px rgba(21, 21, 21, 0.08);
 
-  --announce-surface: #fff6ea;
-  --announce-fg: #4a3826;
-  --announce-accent: #f5a623;
+  --announce-surface: #fff1ef;
+  --announce-fg: #232322;
+  --announce-accent: #f84b3b;
 
   /* Where the floating mobile tab bar sits and how tall it is. Anything that
      needs to stack directly on top of it — the restaurant page's action bar —
@@ -31,19 +31,19 @@
 }
 
 .dark {
-  --bg: #171512;
-  --fg: #f7f6f4;
+  --bg: #151515;
+  --fg: #f7f7f6;
 
-  --surface: #1f1c18;
-  --well: #1b1915;
-  --line: #2f2a24;
-  --line-strong: #453f36;
+  --surface: #1d1d1c;
+  --well: #191918;
+  --line: #2b2b2a;
+  --line-strong: #40403e;
   --float-shadow: 0 16px 40px -16px rgba(0, 0, 0, 0.7),
     0 2px 6px -2px rgba(0, 0, 0, 0.4);
 
-  --announce-surface: #262218;
-  --announce-fg: #f2e7d8;
-  --announce-accent: #f0a83a;
+  --announce-surface: #2a1a17;
+  --announce-fg: #f7f7f6;
+  --announce-accent: #ff7d71;
 }
 
 html {
@@ -146,11 +146,11 @@ select:focus-visible {
   }
   @media (min-width: 768px) {
     .nav-solid {
-      background: rgba(250, 248, 245, 0.72);
+      background: rgba(248, 248, 247, 0.72);
       backdrop-filter: saturate(160%) blur(14px);
     }
     .dark .nav-solid {
-      background: rgba(23, 21, 18, 0.72);
+      background: rgba(21, 21, 21, 0.72);
     }
   }
   /* --- Surfaces -------------------------------------------------------- */
@@ -204,7 +204,7 @@ select:focus-visible {
     color: #3a352e;
   }
 
-  /* The announcement bar: a warm off-white strip with an orange rule. */
+  /* The announcement bar: a faint coral tint with a coral rule. */
   .announce {
     background: var(--announce-surface);
     color: var(--announce-fg);
@@ -216,10 +216,10 @@ select:focus-visible {
 .skeleton {
   position: relative;
   overflow: hidden;
-  background: #edebe7;
+  background: #ededeb;
 }
 .dark .skeleton {
-  background: #26221d;
+  background: #232322;
 }
 .skeleton::after {
   content: "";

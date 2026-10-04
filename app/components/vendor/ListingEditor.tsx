@@ -177,7 +177,7 @@ export function ListingEditor({ restaurant }: { restaurant: Restaurant }) {
                               onChange={(e) => setDay(day, "open", e.target.value)}
                               className="min-h-[36px] well rounded-xl px-2 text-sm "
                             />
-                            <span className="text-ink-400">–</span>
+                            <span className="text-ink-400">-</span>
                             <input
                               type="time"
                               value={h?.close ?? "22:00"}

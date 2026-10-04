@@ -55,11 +55,6 @@ export function DishCard({ entry, className = "" }: { entry: DishEntry; classNam
             loaded ? "opacity-100" : "opacity-0"
           )}
         />
-        {item.popular && (
-          <span className="fill-root absolute left-2.5 top-2.5 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold">
-            <Flame size={11} /> Popular
-          </span>
-        )}
       </div>
 
       <div className="flex flex-1 flex-col gap-0.5 px-0.5 pt-2.5">
@@ -74,11 +69,17 @@ export function DishCard({ entry, className = "" }: { entry: DishEntry; classNam
           )}
         </div>
         {item.description && (
-          <p className="line-clamp-1 text-[13px] text-ink-500">{item.description}</p>
+          <p className="line-clamp-1 text-[13px] text-ink-500 dark:text-ink-400">{item.description}</p>
         )}
-        <p className="flex items-center gap-1 text-[13px] text-ink-400">
+        <p className="flex items-center gap-1 text-[13px] text-ink-500 dark:text-ink-400">
           <MapPin size={12} className="shrink-0" />
           <span className="truncate">{r.name}</span>
+          {/* Said in words under the photo rather than stamped on it. */}
+          {item.popular && (
+            <span className="flex shrink-0 items-center gap-0.5 font-medium text-root-600 dark:text-root-400">
+              <Flame size={11} /> Popular
+            </span>
+          )}
           <span className="ml-auto flex shrink-0 items-center gap-1">
             <Star size={11} className="fill-saffron-500 text-saffron-500" />
             {r.rating.toFixed(1)}

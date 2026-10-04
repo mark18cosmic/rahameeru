@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Search, Star, Clock3, Sparkles, Coffee } from "lucide-react";
+import { Search, Star } from "lucide-react";
 import type { Restaurant } from "@/app/lib/types";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { useSearch } from "@/app/providers/SearchProvider";
@@ -11,12 +11,6 @@ import { Photo } from "../ui/Photo";
 
 /** Cycled through the search placeholder so the field doesn't read as dead. */
 const HINTS = ["biryani", "open now", "rooftop", "cheap and quick", "coffee"];
-
-const QUICK_LINKS = [
-  { label: "Open now", href: "/search", icon: Clock3 },
-  { label: "Coffee", href: "/search?q=Caf%C3%A9s", icon: Coffee },
-  { label: "Spin the wheel", href: "/#wheel", icon: Sparkles },
-];
 
 /**
  * The home page's opening. Sized to its content rather than the viewport: on a
@@ -46,19 +40,6 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
     [restaurants]
   );
 
-  // One quiet line of proof instead of a row of stat cards.
-  const facts = useMemo(() => {
-    if (!restaurants.length) return null;
-    const reviews = restaurants.reduce((n, r) => n + r.reviewCount, 0);
-    const islands = new Set(restaurants.map((r) => r.location).filter(Boolean));
-    const fmt = (n: number) => (n > 999 ? `${(n / 1000).toFixed(1)}k` : String(n));
-    return [
-      `${restaurants.length} places`,
-      `${fmt(reviews)} reviews`,
-      `${islands.size} ${islands.size === 1 ? "island" : "islands"}`,
-    ];
-  }, [restaurants]);
-
   const firstName = user?.displayName?.split(" ")[0];
 
   const rise = (delay: number) =>
@@ -75,9 +56,8 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
       <div>
         <motion.p
           {...rise(0)}
-          className="flex items-center gap-2 text-sm font-semibold text-root-600 dark:text-root-400"
+          className="text-sm font-semibold text-root-600 dark:text-root-400"
         >
-          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-root-500" />
           Malé &amp; Hulhumalé
         </motion.p>
 
@@ -135,31 +115,6 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
           </button>
         </motion.div>
 
-        {/* Straight into the three things people actually open the app for. */}
-        <motion.div
-          {...rise(0.16)}
-          className="scrollbar-hide -mx-5 mt-3 flex gap-2 overflow-x-auto px-5 md:mx-0 md:px-0"
-        >
-          {QUICK_LINKS.map((q) => (
-            <Link
-              key={q.label}
-              href={q.href}
-              className="surface press inline-flex min-h-[40px] shrink-0 items-center gap-1.5 rounded-full px-3.5 text-[13px] font-medium text-ink-700 dark:text-ink-200"
-            >
-              <q.icon size={14} className="text-root-500" />
-              {q.label}
-            </Link>
-          ))}
-        </motion.div>
-
-        {facts && (
-          <motion.p
-            {...rise(0.2)}
-            className="mt-5 text-[13px] text-ink-400 md:mt-8 md:text-sm"
-          >
-            {facts.join("  ·  ")}
-          </motion.p>
-        )}
       </div>
 
       {/* Desktop only: the three best-rated places, one large and two small. */}

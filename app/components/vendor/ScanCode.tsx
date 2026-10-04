@@ -81,7 +81,7 @@ export function ScanCode({
       const dataUrl = await QRCode.toDataURL(url, {
         width: 640,
         margin: 1,
-        color: { dark: "#171512", light: "#ffffff" },
+        color: { dark: "#151515", light: "#ffffff" },
         errorCorrectionLevel: "M",
       });
       if (alive) setQr(dataUrl);
@@ -144,10 +144,10 @@ export function ScanCode({
     if (!qr || !restaurant) return;
     const w = window.open("", "_blank", "width=720,height=900");
     if (!w) return;
-    w.document.write(`<!doctype html><title>${restaurant.name} — scan code</title>
+    w.document.write(`<!doctype html><title>${restaurant.name}: scan code</title>
       <style>
         @page{margin:16mm}
-        body{font-family:system-ui,sans-serif;text-align:center;padding:40px 32px;color:#171512}
+        body{font-family:system-ui,sans-serif;text-align:center;padding:40px 32px;color:#151515}
         h1{font-size:32px;margin:0 0 8px;letter-spacing:-.02em}
         .sub{color:#6b6459;margin:0 0 26px;font-size:17px}
         img{width:330px;height:330px}
@@ -164,7 +164,7 @@ export function ScanCode({
       <ol>
         <li><b>1</b><span>Open your camera and point it at the code.</span></li>
         <li><b>2</b><span>Tap the link that pops up.</span></li>
-        <li><b>3</b><span>Your points land straight away — and your review will show as a verified visit.</span></li>
+        <li><b>3</b><span>Your points land straight away, and your review will show as a verified visit.</span></li>
       </ol>
       <div class="note">Rahameeru · this code expires ${expiryLabel}</div>`);
     w.document.close();
@@ -280,7 +280,7 @@ export function ScanCode({
 
           <p className="mt-2 flex items-start gap-2 text-xs leading-relaxed text-ink-400">
             <Info size={13} className="mt-0.5 shrink-0" />
-            Reprint every Monday — the code changes with the week. Each person
+            Reprint every Monday. The code changes with the week. Each person
             can claim one code once, and a scan also checks their phone is near
             you, so sharing a photo of it earns nobody anything.
           </p>

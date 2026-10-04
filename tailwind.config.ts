@@ -19,18 +19,19 @@ const config: Config = {
           800: "#A02014",
           900: "#7F1C13",
         },
-        // Warm ink / surface neutrals
+        // Neutral ink. Deliberately not warm: the coral carries the warmth,
+        // and a cream-and-espresso base was the most generic choice available.
         ink: {
-          50: "#F7F6F4",
-          100: "#EDEBE7",
-          200: "#DCD8D1",
-          300: "#BFB9AE",
-          400: "#8E877B",
-          500: "#6B6459",
-          600: "#4E483F",
-          700: "#3A352E",
-          800: "#26221D",
-          900: "#171512",
+          50: "#F7F7F6",
+          100: "#EDEDEB",
+          200: "#DADAD7",
+          300: "#ABABA7",
+          400: "#73736F",
+          500: "#62625E",
+          600: "#474745",
+          700: "#353533",
+          800: "#232322",
+          900: "#151515",
         },
         saffron: {
           400: "#FFC24B",
@@ -38,8 +39,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "var(--font-inter)", "serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "sans-serif"],
       },
       // Three radii, used consistently: xl for controls and inner photos,
       // 2xl for cards and panels, 3xl for sheets and the big feature blocks.

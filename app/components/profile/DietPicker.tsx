@@ -102,7 +102,7 @@ export function DietPicker() {
       <p className="mt-5 flex items-start gap-2 rounded-2xl bg-saffron-400/15 px-3 py-2.5 text-xs leading-relaxed text-ink-600 dark:text-ink-300">
         <ShieldAlert size={15} className="mt-0.5 shrink-0 text-saffron-500" />
         Flags are worked out from the menu wording, not from the restaurant.
-        Treat them as a prompt to ask, never as confirmation — always check with
+        Treat them as a prompt to ask, never as confirmation. Always check with
         the kitchen if an allergy is serious.
       </p>
 

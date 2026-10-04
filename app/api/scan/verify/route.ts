@@ -86,7 +86,7 @@ export async function GET(req: NextRequest): Promise<Response> {
   if (Number.isFinite(lat) && Number.isFinite(lng) && restaurant.coords) {
     const distance = metresBetween({ lat, lng }, restaurant.coords);
     if (distance > SCAN_RADIUS_M) {
-      return fail("You look too far away — scan the code at the restaurant.");
+      return fail("You look too far away. Scan the code at the restaurant.");
     }
   }
 

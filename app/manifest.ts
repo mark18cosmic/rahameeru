@@ -7,7 +7,7 @@ import type { MetadataRoute } from "next";
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Rahameeru — Maldives food guide",
+    name: "Rahameeru: Maldives food guide",
     short_name: "Rahameeru",
     description:
       "Find somewhere to eat in Malé and Hulhumalé. Menus, reviews, and a wheel to spin when nobody can decide.",
@@ -15,7 +15,7 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: "/",
     display: "standalone",
     orientation: "portrait",
-    background_color: "#faf8f5",
+    background_color: "#f8f8f7",
     theme_color: "#F84B3B",
     categories: ["food", "travel", "lifestyle"],
     icons: [

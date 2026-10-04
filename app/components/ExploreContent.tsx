@@ -150,7 +150,7 @@ export function ExploreContent() {
             <Input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search every menu — biryani, kottu, flat white…"
+              placeholder="Search every menu: biryani, kottu, flat white…"
               className="pl-11"
             />
           </div>

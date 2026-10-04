@@ -360,7 +360,7 @@ export function RestaurantDetail({
                       <span>
                         {h.open === "00:00" && h.close === "23:59"
                           ? "24 hours"
-                          : `${h.open} – ${h.close}`}
+                          : `${h.open} - ${h.close}`}
                       </span>
                     </li>
                   ))}

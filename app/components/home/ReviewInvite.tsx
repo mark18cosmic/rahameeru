@@ -40,7 +40,13 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
   const [step, setStep] = useState(reduceMotion ? STEPS.length : 0);
 
   // Somewhere real to send people, rather than a dead "learn more".
-  const suggestion = restaurants[Math.floor(Math.random() * Math.max(1, restaurants.length))];
+  // Random, but only after mount: picking during render gave the server and
+  // the browser different restaurants and broke hydration.
+  const [pick, setPick] = useState(0);
+  useEffect(() => {
+    setPick(Math.floor(Math.random() * Math.max(1, restaurants.length)));
+  }, [restaurants.length]);
+  const suggestion = restaurants[pick];
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -55,17 +61,17 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
   const total = STEPS.slice(0, shown).reduce((n, s) => n + s.points, 0);
 
   return (
-    <section className="mt-8 md:mt-12">
+    <section className="mt-12 md:mt-20">
       <div className="surface grid items-center gap-6 overflow-hidden rounded-3xl p-5 sm:rounded-3xl md:grid-cols-2 md:gap-10 md:p-10">
         <div className="min-w-0">
-          <span className="surface inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-root-600 dark:text-root-300">
-            <Star size={13} className="fill-root-500 text-root-500" /> Worth writing
-          </span>
+          <p className="flex items-center gap-1.5 text-sm font-semibold text-root-600 dark:text-root-400">
+            <Star size={14} className="fill-root-500 text-root-500" /> Worth writing
+          </p>
 
-          <h2 className="mt-3 font-display text-xl font-bold leading-tight text-ink-900 dark:text-white sm:text-2xl md:text-3xl">
+          <h2 className="mt-2 font-display text-xl font-bold leading-tight text-ink-900 dark:text-white sm:text-2xl md:text-3xl">
             The next person deciding is you, last week.
           </h2>
-          <p className="mt-2 max-w-md text-sm text-ink-500 md:text-base">
+          <p className="mt-2 max-w-md text-sm text-ink-500 dark:text-ink-300 md:text-base">
             Rate the dishes you actually ordered, add a photo, say what it came
             to. It takes a minute, it earns points at that restaurant, and
             it&apos;s the difference between a listing and a recommendation.
@@ -168,7 +174,7 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
                     shown >= 3 ? { opacity: 1, scale: 1 } : { opacity: 0.15, scale: 0.98 }
                   }
                   transition={{ delay: i * 0.1 }}
-                  className="grid h-14 flex-1 place-items-center rounded-xl bg-white text-ink-300 dark:bg-ink-900 dark:text-ink-700"
+                  className="surface grid h-14 flex-1 place-items-center rounded-xl text-ink-300 dark:text-ink-600"
                 >
                   <Camera size={16} />
                 </motion.span>
@@ -177,9 +183,9 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
           </div>
 
           {/* Points ticking up as the review fills out */}
-          <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl bg-ink-900 px-4 py-3 text-white dark:bg-white dark:text-ink-900">
+          <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl bg-root-50 px-4 py-3 text-ink-800 dark:bg-root-500/10 dark:text-ink-100">
             <span className="flex min-w-0 items-center gap-2 text-sm">
-              <Trophy size={15} className="shrink-0 text-saffron-500" />
+              <Trophy size={15} className="shrink-0 text-root-500" />
               <AnimatePresence mode="wait">
                 <motion.span
                   key={shown}
@@ -187,7 +193,7 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
                   animate={{ opacity: 1, y: 0 }}
                   exit={reduceMotion ? undefined : { opacity: 0, y: -6 }}
                   transition={{ duration: 0.2 }}
-                  className="truncate opacity-80"
+                  className="truncate"
                 >
                   {shown === 0 ? "Start a review" : STEPS[Math.max(0, shown - 1)].label}
                 </motion.span>
@@ -197,7 +203,7 @@ export function ReviewInvite({ restaurants = [] }: { restaurants?: Restaurant[] 
               key={total}
               initial={reduceMotion ? false : { scale: 1.25 }}
               animate={{ scale: 1 }}
-              className="shrink-0 font-display text-xl font-bold tabular-nums"
+              className="shrink-0 font-display text-xl font-bold tabular-nums text-root-600 dark:text-root-400"
             >
               +{total}
             </motion.span>

@@ -102,7 +102,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       const code = (err as { code?: string })?.code;
       setError(
         code === "auth/email-already-in-use"
-          ? "The admin account already exists. Sign in with it instead — this form can't change its password."
+          ? "The admin account already exists. Sign in with it instead. This form can't change its password."
           : authErrorMessage(err)
       );
     } finally {
@@ -286,7 +286,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                   </p>
                   <p className="mt-1 text-sm text-white/90">
                     Choose a password for <strong>{OWNER_EMAIL}</strong>. This
-                    works once — after the account exists, sign in normally.
+                    works once. After the account exists, sign in normally.
                   </p>
                   {/* The field carrying the code is hidden while this panel is
                       up, so there has to be a way back out of it. */}
@@ -300,7 +300,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
                     }}
                     className="mt-2 text-sm font-semibold text-white/80 underline underline-offset-2"
                   >
-                    Not this — go back
+                    Not this, go back
                   </button>
                 </div>
               ) : (

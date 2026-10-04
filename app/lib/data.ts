@@ -93,7 +93,7 @@ export const seedRestaurants: Restaurant[] = [
     rating: 4.2,
     reviewCount: 512,
     description:
-      "Fried chicken chain with branches on both islands. Consistent rather than exciting — you know exactly what you're getting, which is the point when it's late and you're hungry.",
+      "Fried chicken chain with branches on both islands. Consistent rather than exciting: you know exactly what you're getting, which is the point when it's late and you're hungry.",
     location: "Hulhumalé",
     address: "Nirolhu Magu, Hulhumalé",
     coords: { lat: 4.2105, lng: 73.5406 },
@@ -282,7 +282,7 @@ export const seedRestaurants: Restaurant[] = [
     rating: 4.8,
     reviewCount: 199,
     description:
-      "Mezze and grilled fish a few steps from the water. Book the outside tables — the room inside is fine but the point is the view and the breeze.",
+      "Mezze and grilled fish a few steps from the water. Book the outside tables. The room inside is fine but the point is the view and the breeze.",
     location: "Malé",
     address: "Rah Dhebai Hingun, Malé",
     coords: { lat: 4.1767, lng: 73.5081 },
@@ -328,7 +328,7 @@ export const seedRestaurants: Restaurant[] = [
     rating: 4.4,
     reviewCount: 263,
     description:
-      "North Indian cooking with a tandoor that gets properly hot. Ask for it Maldivian-spicy if you mean it — the default is toned down for tourists.",
+      "North Indian cooking with a tandoor that gets properly hot. Ask for it Maldivian-spicy if you mean it. The default is toned down for tourists.",
     location: "Hulhumalé",
     address: "Beach Road, Hulhumalé",
     coords: { lat: 4.2098, lng: 73.5423 },

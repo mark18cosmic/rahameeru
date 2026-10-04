@@ -216,7 +216,7 @@ function PhotoManager({
         <Input
           value={image}
           onChange={(e) => setImage(e.target.value)}
-          placeholder="https://… — leave empty to use the automatic lookup"
+          placeholder="https://… (leave empty to use the automatic lookup)"
         />
         <p className="mt-1.5 text-xs text-ink-400">
           Clearing this hands the listing back to the photo search, which finds

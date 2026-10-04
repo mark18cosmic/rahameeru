@@ -57,12 +57,15 @@ export function RestaurantRail({
   restaurants,
   loading,
   href,
+  toolbar,
 }: {
   title: string;
   subtitle?: string;
   restaurants: Restaurant[];
   loading?: boolean;
   href?: string;
+  /** Sits between the heading and the cards, e.g. the occasion tabs. */
+  toolbar?: React.ReactNode;
 }) {
   const scroller = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
@@ -130,6 +133,8 @@ export function RestaurantRail({
           })}
         </div>
       </RailHeader>
+
+      {toolbar}
 
       {/* Cards are plain divs on purpose. Animating each one into view fires
           mid-swipe on a horizontal scroller — every card that crosses the edge

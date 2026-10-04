@@ -47,7 +47,7 @@ export function todayHoursLabel(hours: OpeningHours[] | undefined, now = new Dat
   const today = hours.find((h) => h.day === now.getDay());
   if (!today) return "Closed today";
   if (today.open === "00:00" && today.close === "23:59") return "Open 24 hours";
-  return `${DAY_NAMES[today.day]} · ${today.open} – ${today.close}`;
+  return `${DAY_NAMES[today.day]}, ${today.open} - ${today.close}`;
 }
 
 export function distanceKm(

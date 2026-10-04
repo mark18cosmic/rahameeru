@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Geist, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/Navbar";
@@ -11,8 +11,10 @@ import { AuthProvider } from "./providers/AuthProvider";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { SearchProvider } from "./providers/SearchProvider";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const poppins = Poppins({
+// Geist for the interface, Bricolage Grotesque for headlines: a sans with
+// enough warmth in its shapes to feel like a food guide rather than a SaaS app.
+const sans = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const display = Bricolage_Grotesque({
   subsets: ["latin"],
   weight: ["600", "700"],
   variable: "--font-display",
@@ -45,8 +47,8 @@ export const viewport: Viewport = {
   // Deliberately not capping maximumScale — blocking zoom fails WCAG 1.4.4.
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#171512" },
+    { media: "(prefers-color-scheme: light)", color: "#f8f8f7" },
+    { media: "(prefers-color-scheme: dark)", color: "#151515" },
   ],
 };
 
@@ -62,7 +64,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
+      <body className={`${sans.variable} ${display.variable} font-sans`}>
         <ThemeProvider>
           <AuthProvider>
             <SearchProvider>

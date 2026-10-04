@@ -90,7 +90,7 @@ export function UserManager() {
           Showing accounts that have signed in since this build, or that have
           app state. To list <strong>every</strong> account, set{" "}
           <code className="font-mono text-xs">FIREBASE_SERVICE_ACCOUNT</code> in
-          the environment — the admin route needs it to read Firebase Auth.
+          the environment. The admin route needs it to read Firebase Auth.
         </p>
       )}
 

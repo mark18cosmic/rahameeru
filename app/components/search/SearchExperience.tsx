@@ -93,7 +93,7 @@ export function SearchExperience() {
         Search restaurants
       </h1>
       <p className="mt-1 text-ink-500">
-        Fuzzy search across names, cuisines, tags and areas — then refine.
+        Fuzzy search across names, cuisines, tags and areas, then refine.
       </p>
 
       <div className="mt-6 flex gap-2">
