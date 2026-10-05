@@ -6,15 +6,18 @@ import { saveSiteSettings, type SiteSettings } from "@/app/lib/admin";
 import { cx } from "@/app/lib/utils";
 import { Input, Label } from "../../ui/Field";
 
-/** The home page rails an admin can turn on and off, in display order. */
+/**
+ * The home page sections an admin can turn on and off. Their order is set by
+ * the time of day (see HomeContent), so this list only decides what appears.
+ */
 const RAILS: { key: string; label: string }[] = [
   { key: "featured", label: "Worth the walk" },
   { key: "popularDishes", label: "Dishes worth ordering" },
   { key: "openNow", label: "Open right now" },
   { key: "cheapDishes", label: "Eat well for less" },
-  { key: "dateSpots", label: "Good for a date" },
-  { key: "cafes", label: "Coffee and breakfast" },
-  { key: "fastFood", label: "In and out in twenty minutes" },
+  { key: "dateSpots", label: "Date night tab" },
+  { key: "cafes", label: "Coffee and breakfast tab" },
+  { key: "fastFood", label: "In and out fast tab" },
   { key: "recent", label: "Recently added" },
 ];
 
@@ -86,6 +89,52 @@ export function SiteSettingsPanel({
       </div>
 
       <div className="surface rounded-3xl p-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="font-display text-lg font-bold text-ink-900 dark:text-white">
+              Ramadan mode
+            </h3>
+            <p className="mt-1 max-w-md text-sm text-ink-500">
+              Uses each listing&apos;s Ramadan hours, leads the home page with
+              iftar spreads and counts down to iftar. Update the times from the
+              official Malé timetable as they shift.
+            </p>
+          </div>
+          <Switch
+            on={draft.ramadan.enabled}
+            label="Ramadan mode"
+            onClick={() =>
+              setDraft((d) => ({ ...d, ramadan: { ...d.ramadan, enabled: !d.ramadan.enabled } }))
+            }
+          />
+        </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div>
+            <Label htmlFor="iftar-time">Iftar</Label>
+            <Input
+              id="iftar-time"
+              type="time"
+              value={draft.ramadan.iftar}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, ramadan: { ...d.ramadan, iftar: e.target.value } }))
+              }
+            />
+          </div>
+          <div>
+            <Label htmlFor="suhoor-time">Suhoor ends</Label>
+            <Input
+              id="suhoor-time"
+              type="time"
+              value={draft.ramadan.suhoor}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, ramadan: { ...d.ramadan, suhoor: e.target.value } }))
+              }
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="surface rounded-3xl p-5">
         <h3 className="font-display text-lg font-bold text-ink-900 dark:text-white">
           Sections
         </h3>
@@ -104,19 +153,7 @@ export function SiteSettingsPanel({
                   </span>
                   <span className="block text-xs text-ink-400">{t.hint}</span>
                 </span>
-                <span
-                  className={cx(
-                    "grid h-7 w-12 shrink-0 items-center rounded-full px-1 transition",
-                    on ? "fill-root" : "surface"
-                  )}
-                >
-                  <span
-                    className={cx(
-                      "h-5 w-5 rounded-full bg-white shadow transition-transform",
-                      on ? "translate-x-5" : "translate-x-0"
-                    )}
-                  />
-                </span>
+                <Knob on={on} />
               </button>
             );
           })}
@@ -124,7 +161,7 @@ export function SiteSettingsPanel({
       </div>
 
       <div className="surface rounded-3xl p-5">
-        <Label>Home page rails</Label>
+        <Label>Home page sections</Label>
         <div className="mt-2 flex flex-wrap gap-2">
           {RAILS.map((r) => {
             const on = draft.rails.includes(r.key);
@@ -160,5 +197,31 @@ export function SiteSettingsPanel({
         )}
       </div>
     </div>
+  );
+}
+
+function Knob({ on }: { on: boolean }) {
+  return (
+    <span
+      className={cx(
+        "grid h-7 w-12 shrink-0 items-center rounded-full px-1 transition",
+        on ? "fill-root" : "surface"
+      )}
+    >
+      <span
+        className={cx(
+          "h-5 w-5 rounded-full bg-white shadow transition-transform",
+          on ? "translate-x-5" : "translate-x-0"
+        )}
+      />
+    </span>
+  );
+}
+
+function Switch({ on, label, onClick }: { on: boolean; label: string; onClick: () => void }) {
+  return (
+    <button role="switch" aria-checked={on} aria-label={label} onClick={onClick} className="shrink-0">
+      <Knob on={on} />
+    </button>
   );
 }

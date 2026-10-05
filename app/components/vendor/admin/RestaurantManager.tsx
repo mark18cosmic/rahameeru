@@ -31,6 +31,7 @@ import {
 import { cx } from "@/app/lib/utils";
 import { Input, Label, Textarea } from "../../ui/Field";
 import { Photo } from "../../ui/Photo";
+import { ListingEditor } from "../ListingEditor";
 
 const EMPTY: RestaurantDraft = {
   name: "",
@@ -421,7 +422,7 @@ function DetailsEditor({
 /* Manager                                                                    */
 /* -------------------------------------------------------------------------- */
 
-type Panel = "details" | "menu" | "photos";
+type Panel = "details" | "hours" | "menu" | "photos";
 
 export function RestaurantManager({
   settings,
@@ -662,6 +663,7 @@ export function RestaurantManager({
                 {(
                   [
                     ["details", "Details", UtensilsCrossed],
+                    ["hours", "Hours", UtensilsCrossed],
                     ["menu", "Menu", UtensilsCrossed],
                     ["photos", "Photos", ImagePlus],
                   ] as const
@@ -743,6 +745,7 @@ export function RestaurantManager({
               {open && panel === "details" && (
                 <DetailsEditor restaurant={r} onDone={() => setOpenId(null)} />
               )}
+              {open && panel === "hours" && <ListingEditor restaurant={r} bare />}
               {open && panel === "menu" && (
                 <MenuEditor restaurant={r} onDone={() => setOpenId(null)} />
               )}

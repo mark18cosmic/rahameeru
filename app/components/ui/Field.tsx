@@ -1,8 +1,7 @@
 import React from "react";
 import { cx } from "@/app/lib/utils";
 
-// Inputs are wells pressed into the page rather than raised cards — the one
-// place in a surface system where the shadow points inward.
+// Inputs are wells: a recessed fill, so a field never reads as a card.
 const inputBase =
   "well w-full rounded-2xl px-4 py-3 text-ink-900 placeholder-ink-400 outline-none transition focus:ring-4 focus:ring-root-200 dark:text-white dark:placeholder-ink-400 dark:focus:ring-root-900/40";
 
@@ -24,12 +23,17 @@ export function Textarea({
 export function Label({
   children,
   className,
+  htmlFor,
 }: {
   children: React.ReactNode;
   className?: string;
+  htmlFor?: string;
 }) {
   return (
-    <label className={cx("mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-200", className)}>
+    <label
+      htmlFor={htmlFor}
+      className={cx("mb-1.5 block text-sm font-medium text-ink-700 dark:text-ink-200", className)}
+    >
       {children}
     </label>
   );

@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { MapPin, UtensilsCrossed, Star } from "lucide-react";
 import type { Restaurant } from "@/app/lib/types";
-import { priceString, isOpenNow, cx } from "@/app/lib/utils";
+import { priceString, cx } from "@/app/lib/utils";
+import { openLabel, openState } from "@/app/lib/clock";
+import { useNow } from "@/app/lib/useClock";
 import { Photo } from "./ui/Photo";
 import { FavoriteButton } from "./FavoriteButton";
 
@@ -17,7 +19,12 @@ export function RestaurantCard({
   /** The large first card of a lead grid: the photo fills the spare height. */
   lead?: boolean;
 }) {
-  const open = isOpenNow(r.hours);
+  // Null until mounted: the page HTML is built ahead of time, so the status
+  // is filled in from the visitor's clock rather than the build machine's.
+  const now = useNow();
+  const state = now ? openState(r.hours, now) : null;
+  const status = state && openLabel(state);
+  const closingSoon = state?.kind === "open" && !state.allDay && state.closesInMin <= 60;
   const dishes = r.menu?.reduce((n, s) => n + s.items.length, 0) ?? 0;
 
   return (
@@ -45,10 +52,19 @@ export function RestaurantCard({
           sizes={lead ? "(max-width: 768px) 70vw, 640px" : "(max-width: 768px) 70vw, 320px"}
           className="duration-700 md:group-hover:scale-[1.03]"
         />
-        {open && (
+        {status && (
           <span className="surface absolute left-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold text-ink-800 dark:text-ink-100 md:text-xs">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            Open
+            <span
+              className={cx(
+                "h-1.5 w-1.5 rounded-full",
+                state?.kind !== "open"
+                  ? "bg-ink-400"
+                  : closingSoon
+                    ? "bg-root-500"
+                    : "bg-emerald-500"
+              )}
+            />
+            {status}
           </span>
         )}
         <FavoriteButton

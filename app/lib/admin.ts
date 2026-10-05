@@ -13,6 +13,7 @@ import {
 } from "firebase/auth";
 import { auth, db } from "@/app/firebase/firebaseConfig";
 import type { MenuSection, Restaurant } from "./types";
+import type { Ramadan } from "./clock";
 import { refreshRestaurants } from "./restaurants";
 import { slugify } from "./utils";
 
@@ -113,6 +114,12 @@ export type SiteSettings = {
   showReviewInvite: boolean;
   /** Banner across the top of the home page. Empty string hides it. */
   announcement: string;
+  /**
+   * Ramadan mode: swaps in each listing's Ramadan hours and turns the home
+   * page around the fast. The times are entered by hand from the official
+   * Malé timetable, since they move a minute or so every day.
+   */
+  ramadan: Ramadan;
   updatedAt?: number;
 };
 
@@ -134,6 +141,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   showCategories: true,
   showReviewInvite: true,
   announcement: "",
+  ramadan: { enabled: false, iftar: "18:15", suhoor: "04:40" },
 };
 
 const SETTINGS_DOC = ["config", "site"] as const;

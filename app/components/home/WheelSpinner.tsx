@@ -13,7 +13,12 @@ import {
   Star,
   ShieldCheck,
   Ban,
+  Loader2,
+  Users,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/providers/AuthProvider";
+import { createGroupWheel, loadMe } from "@/app/lib/groupWheel";
 import type { Restaurant, PriceLevel } from "@/app/lib/types";
 import { priceString, isOpenNow, cx } from "@/app/lib/utils";
 import { flagsFor } from "@/app/lib/diet";
@@ -21,17 +26,12 @@ import { usePreferences } from "@/app/lib/usePreferences";
 import { Photo } from "../ui/Photo";
 import { Stars } from "../ui/Stars";
 import { Button, ButtonLink } from "../ui/Button";
-
-const WHEEL_COLORS = [
-  "#F84B3B",
-  "#F5A623",
-  "#E52E1D",
-  "#FF7D71",
-  "#C12314",
-  "#FFA8A0",
-  "#A02014",
-  "#FFC24B",
-];
+import {
+  LABEL_LIMIT,
+  SPIN_MS,
+  targetRotation,
+  usePaintWheel,
+} from "../wheel/wheelCanvas";
 
 interface Props {
   restaurants: Restaurant[];
@@ -49,17 +49,6 @@ const RATINGS = [
   { label: "4.0+", value: 4 },
   { label: "4.5+", value: 4.5 },
 ];
-
-/** The pointer sits at the top of the wheel; canvas angle 0 points right. */
-const POINTER_ANGLE = 270;
-const SPIN_MS = 4200;
-/**
- * Every match goes on the wheel — capping it silently excluded places people
- * had explicitly filtered for. Labels adapt instead: they shorten as slices
- * multiply, and past LABEL_LIMIT the wheel is drawn as colour alone, with the
- * winner named on the card underneath.
- */
-const LABEL_LIMIT = 22;
 
 type Prefs = {
   areas: string[];
@@ -183,68 +172,8 @@ export function WheelSpinner({ restaurants }: Props) {
 
   /* ----------------------------------------------------------------- paint */
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || pool.length === 0) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = size * dpr;
-    canvas.height = size * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, size, size);
-
-    const cx = size / 2;
-    const cy = size / 2;
-    const radius = size / 2 - 6;
-    const slice = (2 * Math.PI) / pool.length;
-    const hub = Math.max(18, size * 0.075);
-    // Type and label length track how many slices there are, so a big pool
-    // stays legible instead of turning into overlapping text.
-    const dense = pool.length > 12;
-    const fontSize = Math.max(
-      8,
-      Math.round(size * (dense ? 0.032 : 0.042) * (pool.length > 18 ? 0.85 : 1))
-    );
-    const maxChars = pool.length > 18 ? 6 : pool.length > 12 ? 9 : pool.length > 8 ? 11 : 14;
-    const showLabels = pool.length <= LABEL_LIMIT;
-
-    pool.forEach((r, i) => {
-      const start = i * slice;
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.arc(cx, cy, radius, start, start + slice);
-      ctx.closePath();
-      ctx.fillStyle = WHEEL_COLORS[i % WHEEL_COLORS.length];
-      ctx.fill();
-      ctx.strokeStyle = "rgba(255,255,255,0.85)";
-      ctx.lineWidth = pool.length > 18 ? 1 : 2;
-      ctx.stroke();
-
-      if (!showLabels) return;
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(start + slice / 2);
-      ctx.textAlign = "right";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = "#fff";
-      // next/font hashes family names, so read the real one off the page.
-      ctx.font = `600 ${fontSize}px ${getComputedStyle(document.body).fontFamily}`;
-      const label =
-        r.name.length > maxChars ? r.name.slice(0, maxChars - 1) + "…" : r.name;
-      ctx.fillText(label, radius - (dense ? 8 : 12), 0);
-      ctx.restore();
-    });
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, hub, 0, 2 * Math.PI);
-    ctx.fillStyle = "#151515";
-    ctx.fill();
-    ctx.strokeStyle = "#fff";
-    ctx.lineWidth = 3;
-    ctx.stroke();
-  }, [pool, size]);
+  const names = useMemo(() => pool.map((r) => r.name), [pool]);
+  usePaintWheel(canvasRef, names, size);
 
   /* ------------------------------------------------------------------ spin */
 
@@ -255,13 +184,11 @@ export function WheelSpinner({ restaurants }: Props) {
 
     if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(15);
 
-    const slice = 360 / pool.length;
     const winIndex = Math.floor(Math.random() * pool.length);
-    const jitter = (Math.random() - 0.5) * slice * 0.7;
-    const sliceCentre = (winIndex + 0.5) * slice + jitter;
-    const targetMod = (((POINTER_ANGLE - sliceCentre) % 360) + 360) % 360;
-    const turns = 5 + Math.floor(Math.random() * 3);
-    const final = (Math.floor(rotation / 360) + turns) * 360 + targetMod;
+    const final = targetRotation(rotation, pool.length, winIndex, {
+      turns: 5 + Math.floor(Math.random() * 3),
+      jitter: Math.random() - 0.5,
+    });
 
     setRotation(final);
 
@@ -420,6 +347,44 @@ export function WheelSpinner({ restaurants }: Props) {
       : `${matches.length} ${matches.length === 1 ? "place" : "places"} on the wheel` +
         (matches.length > LABEL_LIMIT ? ", too many to label. Spin to see" : "");
 
+  /*
+   * Deciding as a group: the current matches become a shared wheel that
+   * everyone with the link can veto from and spin.
+   */
+  const router = useRouter();
+  const { user } = useAuth();
+  const [starting, setStarting] = useState(false);
+  const [groupFailed, setGroupFailed] = useState(false);
+  const startGroup = async () => {
+    setStarting(true);
+    setGroupFailed(false);
+    try {
+      const me = loadMe(user?.displayName?.split(" ")[0]);
+      const id = await createGroupWheel(pool.map((r) => r.id), me);
+      router.push(`/wheel/${id}`);
+    } catch {
+      setGroupFailed(true);
+      setStarting(false);
+    }
+  };
+  const groupButton = (
+    <>
+      <button
+        onClick={startGroup}
+        disabled={starting || pool.length < 2}
+        className="inline-flex min-h-[44px] items-center gap-2 rounded-full px-3 text-sm font-semibold text-root-600 transition hover:text-root-700 disabled:opacity-50 dark:text-root-400"
+      >
+        {starting ? <Loader2 size={16} className="animate-spin" /> : <Users size={16} />}
+        Decide with friends
+      </button>
+      {groupFailed && (
+        <p className="text-sm text-root-600 dark:text-root-400">
+          Couldn&apos;t start a shared wheel. Try again in a moment.
+        </p>
+      )}
+    </>
+  );
+
   const winnerCard = winner && (
     <motion.div
       initial={{ opacity: 0, y: 12, scale: 0.95 }}
@@ -489,15 +454,13 @@ export function WheelSpinner({ restaurants }: Props) {
             )}
           </div>
 
-          <Button
-            onClick={spin}
-            disabled={spinning || pool.length === 0}
-            size="lg"
-            className="mt-3 hidden md:inline-flex"
-          >
-            <RotateCw size={18} className={spinning ? "animate-spin" : ""} />
-            {spinning ? "Spinning…" : winner ? "Spin again" : "Spin the wheel"}
-          </Button>
+          <div className="mt-3 hidden flex-wrap items-center gap-2 md:flex">
+            <Button onClick={spin} disabled={spinning || pool.length === 0} size="lg">
+              <RotateCw size={18} className={spinning ? "animate-spin" : ""} />
+              {spinning ? "Spinning…" : winner ? "Spin again" : "Spin the wheel"}
+            </Button>
+            {groupButton}
+          </div>
         </div>
 
         <div className="order-2 flex w-full flex-col items-center gap-3 md:order-none">
@@ -578,6 +541,7 @@ export function WheelSpinner({ restaurants }: Props) {
               {spinning ? "Spinning…" : winner ? "Again" : "Spin"}
             </Button>
           </div>
+          <div className="md:hidden">{groupButton}</div>
 
           <div aria-live="polite" className="w-full">
             <AnimatePresence>{winnerCard}</AnimatePresence>

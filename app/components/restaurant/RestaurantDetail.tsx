@@ -18,7 +18,6 @@ import {
 import type { Restaurant } from "@/app/lib/types";
 import {
   priceString,
-  isOpenNow,
   todayHoursLabel,
   mapsUrl,
   galleryUrls,
@@ -34,6 +33,9 @@ import { ScanSheet } from "../scan/ScanSheet";
 import { Reviews } from "./Reviews";
 import { Menu } from "./Menu";
 import { RestaurantCard } from "../RestaurantCard";
+import { openLabel, openState } from "@/app/lib/clock";
+import { useNow } from "@/app/lib/useClock";
+import { useSiteSettings } from "@/app/lib/useSiteSettings";
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -65,7 +67,13 @@ export function RestaurantDetail({
     // Arriving from a dish card: open the menu rather than the about tab.
     if (params.get("dish")) setTab("menu");
   }, [params]);
-  const open = isOpenNow(restaurant.hours);
+  // Read after mount: this page is pre-rendered, and a clock reading baked
+  // into the HTML would be the build machine's.
+  const now = useNow();
+  const state = now ? openState(restaurant.hours, now) : null;
+  const open = state?.kind === "open";
+  const { ramadan } = useSiteSettings();
+  const ramadanHours = ramadan.enabled && Boolean(restaurant.ramadanHours?.length);
   const reduceMotion = useReducedMotion();
   const hasMenu = Boolean(restaurant.menu?.length);
 
@@ -137,15 +145,16 @@ export function RestaurantDetail({
       {/* Title block */}
       <div className="mt-6 md:mt-8">
         <div className="flex flex-wrap items-center gap-2">
-          {open ? (
-            <Badge tone="success">
-              <Clock size={12} /> Open now
-            </Badge>
-          ) : (
-            <Badge tone="neutral">
-              <Clock size={12} /> Closed
-            </Badge>
-          )}
+          {state &&
+            (open ? (
+              <Badge tone="success">
+                <Clock size={12} /> {openLabel(state)}
+              </Badge>
+            ) : (
+              <Badge tone="neutral">
+                <Clock size={12} /> {openLabel(state) ?? "Closed now"}
+              </Badge>
+            ))}
           <Badge>{priceString(restaurant.priceLevel)}</Badge>
           {restaurant.cuisine.map((c) => (
             <Badge key={c} tone="outline">
@@ -325,8 +334,8 @@ export function RestaurantDetail({
               )}
               <Row
                 icon={<Clock size={16} />}
-                label={todayHoursLabel(restaurant.hours)}
-                accent={open ? "open" : "closed"}
+                label={now ? todayHoursLabel(restaurant.hours, now) : "Opening hours below"}
+                accent={state ? (open ? "open" : "closed") : undefined}
               />
               {restaurant.phone && (
                 <a href={`tel:${restaurant.phone}`} className="block">
@@ -340,10 +349,26 @@ export function RestaurantDetail({
               )}
             </div>
 
+            {ramadan.enabled && restaurant.iftar && (
+              <div className="mt-5 rounded-2xl bg-root-50 p-4 dark:bg-root-500/10">
+                <p className="flex items-baseline justify-between gap-3">
+                  <span className="font-semibold text-ink-900 dark:text-white">Iftar spread</span>
+                  {restaurant.iftar.price ? (
+                    <span className="font-semibold tabular-nums text-root-600 dark:text-root-400">
+                      MVR {restaurant.iftar.price.toLocaleString()}
+                    </span>
+                  ) : null}
+                </p>
+                {restaurant.iftar.note && (
+                  <p className="mt-1 text-sm text-ink-600 dark:text-ink-300">{restaurant.iftar.note}</p>
+                )}
+              </div>
+            )}
+
             {restaurant.hours && (
               <div className="mt-5 border-t border-ink-100 pt-4 dark:border-ink-800">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-400">
-                  Opening hours
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-ink-400">
+                  {ramadanHours ? "Ramadan hours" : "Opening hours"}
                 </p>
                 <ul className="space-y-1 text-sm">
                   {restaurant.hours.map((h) => (
@@ -351,7 +376,7 @@ export function RestaurantDetail({
                       key={h.day}
                       className={cx(
                         "flex justify-between",
-                        h.day === new Date().getDay()
+                        h.day === now?.getDay()
                           ? "font-semibold text-ink-900 dark:text-white"
                           : "text-ink-500"
                       )}

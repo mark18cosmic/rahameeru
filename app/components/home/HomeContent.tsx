@@ -1,13 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, type ReactNode } from "react";
 import { useRestaurants } from "@/app/lib/useRestaurants";
-import { isOpenNow } from "@/app/lib/utils";
-import {
-  DEFAULT_SETTINGS,
-  watchSiteSettings,
-  type SiteSettings,
-} from "@/app/lib/admin";
+import { useSiteSettings } from "@/app/lib/useSiteSettings";
+import { useNow } from "@/app/lib/useClock";
+import { daypartOf, openState, type Daypart } from "@/app/lib/clock";
 import { popularDishes, cheapDishes } from "@/app/lib/dishes";
 import { DishRail } from "./DishRail";
 import { Hero } from "./Hero";
@@ -16,14 +13,61 @@ import { WheelSpinner } from "./WheelSpinner";
 import { RestaurantRail } from "./RestaurantRail";
 import { ReviewInvite } from "./ReviewInvite";
 import { CompactList, FeaturedGrid, MenuList, OccasionRail } from "./HomeSections";
+import { IftarSection } from "./IftarSection";
+
+type Section =
+  | "iftar"
+  | "featured"
+  | "popularDishes"
+  | "wheel"
+  | "cheapDishes"
+  | "openNow"
+  | "invite"
+  | "occasion"
+  | "recent";
+
+/**
+ * What the page leads with, by time of day. Each order keeps neighbouring
+ * sections in different layouts (rail, grid, list, panel), so reordering
+ * never stacks two of the same shape on top of each other.
+ */
+const ORDER: Record<Daypart, Section[]> = {
+  morning: ["occasion", "featured", "openNow", "cheapDishes", "popularDishes", "wheel", "recent", "invite"],
+  lunch: ["openNow", "featured", "popularDishes", "cheapDishes", "occasion", "wheel", "recent", "invite"],
+  afternoon: ["featured", "occasion", "wheel", "cheapDishes", "popularDishes", "invite", "openNow", "recent"],
+  evening: ["featured", "popularDishes", "wheel", "cheapDishes", "openNow", "invite", "occasion", "recent"],
+  late: ["openNow", "featured", "wheel", "cheapDishes", "popularDishes", "invite", "occasion", "recent"],
+  fasting: ["iftar", "featured", "popularDishes", "wheel", "cheapDishes", "openNow", "invite", "occasion", "recent"],
+  iftar: ["iftar", "featured", "popularDishes", "wheel", "cheapDishes", "openNow", "invite", "occasion", "recent"],
+  suhoor: ["openNow", "iftar", "featured", "wheel", "cheapDishes", "popularDishes", "invite", "occasion", "recent"],
+};
+
+/** Which occasion tab is up first. */
+const OCCASION_FIRST: Record<Daypart, string> = {
+  morning: "cafes",
+  lunch: "fastFood",
+  afternoon: "cafes",
+  evening: "dateSpots",
+  late: "fastFood",
+  fasting: "dateSpots",
+  iftar: "dateSpots",
+  suhoor: "fastFood",
+};
+
+const OPEN_COPY: Partial<Record<Daypart, { title: string; subtitle: string }>> = {
+  late: { title: "Still open late", subtitle: "Sorted by who closes last" },
+  suhoor: { title: "Open for suhoor", subtitle: "Sorted by who closes last" },
+};
 
 export function HomeContent() {
   const { restaurants: all, loading } = useRestaurants();
-  const [settings, setSettings] = useState<SiteSettings>(DEFAULT_SETTINGS);
-
   // Live, so hiding a listing in the admin console takes effect on open tabs
   // rather than waiting for a reload.
-  useEffect(() => watchSiteSettings(setSettings), []);
+  const settings = useSiteSettings();
+  // Null until mounted, so the pre-rendered page leads with the evening
+  // layout and switches to the visitor's actual time of day on load.
+  const now = useNow();
+  const daypart: Daypart = now ? daypartOf(now, settings.ramadan) : "evening";
 
   const restaurants = useMemo(
     () => all.filter((r) => !settings.hidden.includes(r.id)),
@@ -50,7 +94,6 @@ export function HomeContent() {
     const cafes = restaurants.filter(
       (r) => r.cuisine.includes("Café") || r.tags.includes("Cafés")
     );
-    const openNow = restaurants.filter((r) => isOpenNow(r.hours));
     const recent = [...restaurants].sort(
       (a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0)
     );
@@ -60,10 +103,24 @@ export function HomeContent() {
       fastFood,
       dateSpots,
       cafes,
-      openNow,
       recent,
     };
   }, [restaurants, settings.pinned]);
+
+  // Open places, with how long each has left. Late at night the useful order
+  // is "who's open longest", so the list is sorted by closing time then.
+  const openNow = useMemo(() => {
+    if (!now) return [];
+    const withState = restaurants
+      .map((r) => ({ r, s: openState(r.hours, now) }))
+      .filter((x) => x.s.kind === "open");
+    if (daypart === "late" || daypart === "suhoor") {
+      const left = (x: (typeof withState)[number]) =>
+        x.s.kind === "open" ? x.s.closesInMin : 0;
+      withState.sort((a, b) => left(b) - left(a));
+    }
+    return withState.map((x) => x.r);
+  }, [restaurants, now, daypart]);
 
   const dishes = useMemo(
     () => ({
@@ -74,6 +131,112 @@ export function HomeContent() {
   );
 
   const railOn = (key: string) => settings.rails.includes(key);
+  const openCopy = OPEN_COPY[daypart] ?? {
+    title: "Open right now",
+    subtitle: "Kitchens still running as of this minute",
+  };
+
+  const sections: Record<Section, ReactNode> = {
+    iftar: settings.ramadan.enabled && now && (
+      <IftarSection
+        now={now}
+        ramadan={settings.ramadan}
+        restaurants={restaurants.filter((r) => r.iftar)}
+      />
+    ),
+
+    featured: railOn("featured") && (
+      <FeaturedGrid
+        title="Worth the walk"
+        subtitle="The ones we send people to first"
+        // The lead grid has exactly five cells, so top up the picks with
+        // the best-rated places rather than leave a hole in it.
+        restaurants={[
+          ...rails.featured,
+          ...rails.byRating.filter((r) => !rails.featured.includes(r)),
+        ]}
+        loading={loading}
+        href="/explore?sort=rating"
+      />
+    ),
+
+    popularDishes: railOn("popularDishes") && (
+      <DishRail
+        title="Dishes worth ordering"
+        subtitle="What kitchens put their name to"
+        dishes={dishes.popular}
+        href="/explore?view=dishes"
+      />
+    ),
+
+    wheel: settings.showWheel && (
+      <div className="mt-12 md:mt-20">
+        <WheelSpinner restaurants={restaurants} />
+      </div>
+    ),
+
+    cheapDishes: railOn("cheapDishes") && (
+      <MenuList
+        title="Eat well for less"
+        subtitle="The cheapest plates on any menu right now"
+        dishes={dishes.cheap}
+        href="/explore?view=dishes&sort=price-asc"
+      />
+    ),
+
+    openNow: railOn("openNow") && (
+      <RestaurantRail
+        title={openCopy.title}
+        subtitle={openCopy.subtitle}
+        restaurants={openNow}
+        href="/search"
+      />
+    ),
+
+    invite: settings.showReviewInvite && <ReviewInvite restaurants={rails.byRating} />,
+
+    // Three occasion rails share one row with tabs; each tab still follows
+    // its own admin toggle. Keyed on the daypart so the first tab follows it.
+    occasion: (
+      <OccasionRail
+        key={daypart}
+        loading={loading}
+        initial={OCCASION_FIRST[daypart]}
+        occasions={[
+          {
+            key: "dateSpots",
+            label: "Date night",
+            subtitle: "Quiet enough to hear each other",
+            restaurants: rails.dateSpots,
+            href: "/search?q=Date%20Spots",
+          },
+          {
+            key: "cafes",
+            label: "Coffee and breakfast",
+            subtitle: "For mornings, and for working through them",
+            restaurants: rails.cafes,
+            href: "/search?q=Caf%C3%A9s",
+          },
+          {
+            key: "fastFood",
+            label: "In and out fast",
+            subtitle: "When you just need feeding",
+            restaurants: rails.fastFood,
+            href: "/search?q=Fast%20food",
+          },
+        ].filter((o) => railOn(o.key))}
+      />
+    ),
+
+    recent: railOn("recent") && (
+      <CompactList
+        title="Recently added"
+        subtitle="New on the list, not many reviews yet"
+        restaurants={rails.recent}
+        href="/explore"
+      />
+    ),
+  };
 
   return (
     <>
@@ -85,105 +248,16 @@ export function HomeContent() {
         </div>
       )}
 
-      <Hero restaurants={restaurants} />
+      <Hero restaurants={restaurants} daypart={now ? daypart : null} />
 
-      {settings.showCategories && (
-        <div>
-          <CategoryStrip />
-        </div>
-      )}
+      {settings.showCategories && <CategoryStrip />}
 
       <main className="mx-auto max-w-7xl px-5 md:px-6">
-        {railOn("featured") && (
-          <FeaturedGrid
-            title="Worth the walk"
-            subtitle="The ones we send people to first"
-            // The lead grid has exactly five cells, so top up the picks with
-            // the best-rated places rather than leave a hole in it.
-            restaurants={[
-              ...rails.featured,
-              ...rails.byRating.filter((r) => !rails.featured.includes(r)),
-            ]}
-            loading={loading}
-            href="/explore?sort=rating"
-          />
-        )}
-
-        {/* Dishes sit high on the page on purpose: plenty of people arrive
-            knowing what they want to eat before they know where. */}
-        {railOn("popularDishes") && (
-          <DishRail
-            title="Dishes worth ordering"
-            subtitle="What kitchens put their name to"
-            dishes={dishes.popular}
-            href="/explore?view=dishes"
-          />
-        )}
-
-        {settings.showWheel && (
-          <div className="mt-12 md:mt-20">
-            <WheelSpinner restaurants={restaurants} />
+        {ORDER[daypart].map((key) => (
+          <div key={key} className="contents">
+            {sections[key]}
           </div>
-        )}
-
-        {railOn("cheapDishes") && (
-          <MenuList
-            title="Eat well for less"
-            subtitle="The cheapest plates on any menu right now"
-            dishes={dishes.cheap}
-            href="/explore?view=dishes&sort=price-asc"
-          />
-        )}
-
-        {railOn("openNow") && (
-          <RestaurantRail
-            title="Open right now"
-            subtitle="Kitchens still running as of this minute"
-            restaurants={rails.openNow}
-            loading={loading}
-            href="/search"
-          />
-        )}
-
-        {settings.showReviewInvite && <ReviewInvite restaurants={rails.byRating} />}
-
-        {/* Three occasion rails share one row with tabs; each tab still
-            follows its own admin toggle. */}
-        <OccasionRail
-          loading={loading}
-          occasions={[
-            {
-              key: "dateSpots",
-              label: "Date night",
-              subtitle: "Quiet enough to hear each other",
-              restaurants: rails.dateSpots,
-              href: "/search?q=Date%20Spots",
-            },
-            {
-              key: "cafes",
-              label: "Coffee and breakfast",
-              subtitle: "For mornings, and for working through them",
-              restaurants: rails.cafes,
-              href: "/search?q=Caf%C3%A9s",
-            },
-            {
-              key: "fastFood",
-              label: "In and out fast",
-              subtitle: "When you just need feeding",
-              restaurants: rails.fastFood,
-              href: "/search?q=Fast%20food",
-            },
-          ].filter((o) => railOn(o.key))}
-        />
-
-        {railOn("recent") && (
-          <CompactList
-            title="Recently added"
-            subtitle="New on the list, not many reviews yet"
-            restaurants={rails.recent}
-            href="/explore"
-          />
-        )}
+        ))}
       </main>
     </>
   );

@@ -107,6 +107,26 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    // Shared "decide together" wheels. No account needed: the unguessable id
+    // in the link is the invitation. Once created, the pool is fixed; people
+    // may only add their name, their vetoes and a spin result.
+    match /wheels/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['poolIds', 'names', 'vetoes', 'createdAt'])
+        && request.resource.data.poolIds is list
+        && request.resource.data.poolIds.size() >= 2
+        && request.resource.data.poolIds.size() <= 30
+        && request.resource.data.names is map
+        && request.resource.data.names.size() == 1
+        && request.resource.data.vetoes is map
+        && request.resource.data.createdAt is int;
+      allow update: if request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['names', 'vetoes', 'result'])
+        && request.resource.data.names.size() <= 50
+        && request.resource.data.vetoes.size() <= 50;
+      allow delete: if isAdmin();
+    }
+
     // One document per person per venue per day, written on a verified scan.
     match /scans/{id} {
       allow read: if signedIn();

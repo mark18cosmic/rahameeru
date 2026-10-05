@@ -8,30 +8,109 @@ import type { Restaurant } from "@/app/lib/types";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { useSearch } from "@/app/providers/SearchProvider";
 import { Photo } from "../ui/Photo";
+import type { Daypart } from "@/app/lib/clock";
 
-/** Cycled through the search placeholder so the field doesn't read as dead. */
-const HINTS = ["biryani", "open now", "rooftop", "cheap and quick", "coffee"];
+type Copy = {
+  /** Headline, plain part then the coral part. */
+  lead: string;
+  accent: string;
+  /** For a signed-in visitor: greeting, then a short question in coral. */
+  greet: (name: string) => string;
+  ask: string;
+  /** Cycled through the search placeholder so the field doesn't read as dead. */
+  hints: string[];
+};
+
+/** The headline answers the meal people are actually deciding on right now. */
+const COPY: Record<Daypart, Copy> = {
+  morning: {
+    lead: "Where are we having",
+    accent: "breakfast?",
+    greet: (n) => `Morning, ${n}.`,
+    ask: "Breakfast?",
+    hints: ["coffee", "breakfast", "mas huni", "open now"],
+  },
+  lunch: {
+    lead: "Where are we having",
+    accent: "lunch?",
+    greet: (n) => `Lunchtime, ${n}.`,
+    ask: "Hungry?",
+    hints: ["biryani", "cheap and quick", "fried chicken", "open now"],
+  },
+  afternoon: {
+    lead: "Coffee, or",
+    accent: "an early dinner?",
+    greet: (n) => `Afternoon, ${n}.`,
+    ask: "Coffee?",
+    hints: ["coffee", "cake", "short eats", "rooftop"],
+  },
+  evening: {
+    lead: "Where are we",
+    accent: "eating tonight?",
+    greet: (n) => `Evening, ${n}.`,
+    ask: "Hungry?",
+    hints: ["biryani", "open now", "rooftop", "cheap and quick", "coffee"],
+  },
+  late: {
+    lead: "Who's still",
+    accent: "serving?",
+    greet: (n) => `Still up, ${n}?`,
+    ask: "Still hungry?",
+    hints: ["open now", "burgers", "fried chicken", "cheap and quick"],
+  },
+  fasting: {
+    lead: "Where are we",
+    accent: "breaking fast?",
+    greet: (n) => `Ramadan Mubarak, ${n}.`,
+    ask: "Iftar plans?",
+    hints: ["grilled fish", "biryani", "rooftop", "open now"],
+  },
+  iftar: {
+    lead: "Where are we",
+    accent: "eating tonight?",
+    greet: (n) => `Evening, ${n}.`,
+    ask: "Hungry?",
+    hints: ["biryani", "grilled fish", "coffee", "open now"],
+  },
+  suhoor: {
+    lead: "Where's",
+    accent: "suhoor tonight?",
+    greet: (n) => `Still up, ${n}?`,
+    ask: "Suhoor?",
+    hints: ["open now", "fried chicken", "coffee", "burgers"],
+  },
+};
 
 /**
  * The home page's opening. Sized to its content rather than the viewport: on a
  * phone the first rail should already be peeking above the tab bar, because
  * the places are the point and the hero is only the way in.
  */
-export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
+export function Hero({
+  restaurants = [],
+  daypart,
+}: {
+  restaurants?: Restaurant[];
+  /** Null before the visitor's clock is known, which reads as evening. */
+  daypart: Daypart | null;
+}) {
+  const copy = COPY[daypart ?? "evening"];
   const { user } = useAuth();
   const { open } = useSearch();
   const reduceMotion = useReducedMotion();
-  const [hint, setHint] = useState(HINTS[0]);
+  const hints = copy.hints;
+  const [hint, setHint] = useState(hints[0]);
 
   useEffect(() => {
+    setHint(hints[0]);
     if (reduceMotion) return;
     let i = 0;
     const id = setInterval(() => {
-      i = (i + 1) % HINTS.length;
-      setHint(HINTS[i]);
+      i = (i + 1) % hints.length;
+      setHint(hints[i]);
     }, 2600);
     return () => clearInterval(id);
-  }, [reduceMotion]);
+  }, [reduceMotion, hints]);
 
   // The three best-rated places, shown as the desktop mosaic. Real listings
   // that link through, so the picture is also the first thing you can tap.
@@ -67,12 +146,11 @@ export function Hero({ restaurants = [] }: { restaurants?: Restaurant[] }) {
         >
           {firstName ? (
             <>
-              Evening, {firstName}.{" "}
-              <span className="text-root-500">Hungry?</span>
+              {copy.greet(firstName)} <span className="text-root-500">{copy.ask}</span>
             </>
           ) : (
             <>
-              Where are we <span className="text-root-500">eating tonight?</span>
+              {copy.lead} <span className="text-root-500">{copy.accent}</span>
             </>
           )}
         </motion.h1>

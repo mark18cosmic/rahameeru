@@ -8,7 +8,8 @@ import {
   getCachedRestaurants,
   getSeedRestaurants,
 } from "@/app/lib/restaurants";
-import { slugify } from "@/app/lib/utils";
+import { slugify, withSeason } from "@/app/lib/utils";
+import { useSiteSettings } from "@/app/lib/useSiteSettings";
 import { recordVisit } from "@/app/lib/metrics";
 import { ChiliLoader } from "../ui/ChiliLoader";
 import { RestaurantDetail } from "./RestaurantDetail";
@@ -80,5 +81,14 @@ export function RestaurantLoader({ slug }: { slug: string }) {
     notFound();
   }
 
-  return <RestaurantDetail restaurant={state.r} similar={state.similar} />;
+  return <SeasonalDetail restaurant={state.r} similar={state.similar} />;
+}
+
+/** Applies Ramadan hours, so the page's hours table and badge follow the mode. */
+function SeasonalDetail({ restaurant, similar }: { restaurant: Restaurant; similar: Restaurant[] }) {
+  const { ramadan } = useSiteSettings();
+  const [r] = withSeason([restaurant], ramadan);
+  return (
+    <RestaurantDetail restaurant={r} similar={withSeason(similar, ramadan)} />
+  );
 }

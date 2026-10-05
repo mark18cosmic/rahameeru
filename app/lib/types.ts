@@ -1,5 +1,12 @@
 export type PriceLevel = 1 | 2 | 3 | 4; // $, $$, $$$, $$$$
 
+export interface IftarOffer {
+  /** Per person, in MVR. Optional: some places only say "ask". */
+  price?: number;
+  /** What the spread includes, in the restaurant's words. */
+  note?: string;
+}
+
 export interface OpeningHours {
   // 0 = Sunday ... 6 = Saturday
   day: number;
@@ -49,6 +56,16 @@ export interface Restaurant {
   phone?: string;
   email?: string;
   hours?: OpeningHours[];
+  /** Replaces `hours` while the admin has Ramadan mode switched on. */
+  ramadanHours?: OpeningHours[];
+  /**
+   * Client-side only: the normal schedule, kept while `hours` holds the
+   * Ramadan one. Editors read this so saving never writes Ramadan hours over
+   * the regular ones.
+   */
+  regularHours?: OpeningHours[];
+  /** An iftar spread, if the place serves one during Ramadan. */
+  iftar?: IftarOffer;
   menu?: MenuSection[];
   featured?: boolean;
   createdAt?: number;

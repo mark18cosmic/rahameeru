@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { Restaurant, OpeningHours, PriceLevel } from "./types";
+import { maldivesNow, openState, type Ramadan } from "./clock";
 
 export function slugify(input: string): string {
   return input
@@ -25,24 +26,20 @@ export function priceString(level: PriceLevel): string {
   return "$".repeat(level);
 }
 
-/** Returns true if the restaurant is open at the given date (defaults now). */
-export function isOpenNow(hours: OpeningHours[] | undefined, now = new Date()): boolean {
-  if (!hours || hours.length === 0) return false;
-  const day = now.getDay();
-  const today = hours.find((h) => h.day === day);
-  if (!today) return false;
-  const mins = now.getHours() * 60 + now.getMinutes();
-  const [oh, om] = today.open.split(":").map(Number);
-  const [ch, cm] = today.close.split(":").map(Number);
-  const openM = oh * 60 + om;
-  let closeM = ch * 60 + cm;
-  if (closeM <= openM) closeM += 24 * 60; // overnight
-  return mins >= openM && mins <= closeM;
+/** Open at the given moment, read in Malé time. See `openState` for detail. */
+export function isOpenNow(
+  hours: OpeningHours[] | undefined,
+  now: Date = maldivesNow()
+): boolean {
+  return openState(hours, now).kind === "open";
 }
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export function todayHoursLabel(hours: OpeningHours[] | undefined, now = new Date()): string {
+export function todayHoursLabel(
+  hours: OpeningHours[] | undefined,
+  now: Date = maldivesNow()
+): string {
   if (!hours) return "Hours unavailable";
   const today = hours.find((h) => h.day === now.getDay());
   if (!today) return "Closed today";
@@ -129,4 +126,16 @@ export function mapsUrl(r: Restaurant): string {
   }
   const q = encodeURIComponent(`${r.name} ${r.address ?? r.location} Maldives`);
   return `https://www.google.com/maps/search/?api=1&query=${q}`;
+}
+
+/**
+ * Swaps in Ramadan hours where a listing has them, while the admin has the
+ * mode on. Applied where restaurants are loaded, so every "open now" check
+ * downstream (cards, search, the wheel) is right without knowing about it.
+ */
+export function withSeason(list: Restaurant[], ramadan: Ramadan): Restaurant[] {
+  if (!ramadan.enabled) return list;
+  return list.map((r) =>
+    r.ramadanHours?.length ? { ...r, hours: r.ramadanHours, regularHours: r.hours } : r
+  );
 }

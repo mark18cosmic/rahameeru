@@ -142,12 +142,15 @@ export type Occasion = {
 export function OccasionRail({
   occasions,
   loading,
+  initial,
 }: {
   occasions: Occasion[];
   loading?: boolean;
+  /** The tab to open on, e.g. coffee in the morning. */
+  initial?: string;
 }) {
   const usable = occasions.filter((o) => o.restaurants.length > 0);
-  const [active, setActive] = useState(usable[0]?.key);
+  const [active, setActive] = useState(initial ?? usable[0]?.key);
   const current = usable.find((o) => o.key === active) ?? usable[0];
   if (!current) return null;
 

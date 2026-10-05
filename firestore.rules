@@ -40,6 +40,11 @@ service cloud.firestore {
       allow write: if true;
     }
 
+    // Shared "decide together" wheels, joined by link without an account.
+    match /wheels/{id} {
+      allow read, write: if true;
+    }
+
     match /{document=**} {
       allow read, write: if true;
     }

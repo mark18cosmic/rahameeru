@@ -44,6 +44,8 @@ function normalize(id: string, d: Record<string, any>): Restaurant {
     phone: d.phone,
     email: d.email,
     hours: d.hours,
+    ramadanHours: Array.isArray(d.ramadanHours) ? d.ramadanHours : undefined,
+    iftar: d.iftar && typeof d.iftar === "object" ? d.iftar : undefined,
     menu: Array.isArray(d.menu) ? d.menu : undefined,
     featured: Boolean(d.featured),
     createdAt: d.createdAt,

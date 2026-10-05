@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Restaurant } from "./types";
 import {
   getRestaurants,
@@ -8,6 +8,8 @@ import {
   getSeedRestaurants,
   REFRESH_EVENT,
 } from "./restaurants";
+import { withSeason } from "./utils";
+import { useSiteSettings } from "./useSiteSettings";
 
 /**
  * Restaurants, rendered immediately and corrected in the background.
@@ -43,5 +45,8 @@ export function useRestaurants() {
     };
   }, []);
 
-  return { restaurants, loading };
+  const { ramadan } = useSiteSettings();
+  const seasonal = useMemo(() => withSeason(restaurants, ramadan), [restaurants, ramadan]);
+
+  return { restaurants: seasonal, loading };
 }
