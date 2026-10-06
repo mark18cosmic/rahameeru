@@ -1,4 +1,4 @@
-import { cx } from "@/app/lib/utils";
+import { cn } from "@/app/lib/utils";
 import { CardSkeleton } from "../RestaurantCard";
 
 /*
@@ -7,8 +7,9 @@ import { CardSkeleton } from "../RestaurantCard";
  * reads as "nearly there" rather than "something is happening somewhere".
  */
 
+/** `cn`, not `cx`: a caller's radius (rounded-full) has to beat the default. */
 export function Bar({ className }: { className?: string }) {
-  return <div className={cx("skeleton rounded-lg", className)} />;
+  return <div className={cn("skeleton rounded-lg", className)} />;
 }
 
 function Status({ label }: { label: string }) {
