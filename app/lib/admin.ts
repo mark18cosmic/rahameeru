@@ -56,7 +56,7 @@ export async function createAdminAccount(password: string): Promise<void> {
     OWNER_EMAIL,
     password
   );
-  await updateProfile(cred.user, { displayName: "Rahameeru Admin" });
+  await updateProfile(cred.user, { displayName: "Decide.mv Admin" });
   await setDoc(
     doc(db, "users", cred.user.uid),
     {
@@ -112,6 +112,8 @@ export type SiteSettings = {
   showWheel: boolean;
   showCategories: boolean;
   showReviewInvite: boolean;
+  /** The "What's on" row of guides and specials. */
+  showCards: boolean;
   /** Banner across the top of the home page. Empty string hides it. */
   announcement: string;
   /**
@@ -140,6 +142,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   showWheel: true,
   showCategories: true,
   showReviewInvite: true,
+  showCards: true,
   announcement: "",
   ramadan: { enabled: false, iftar: "18:15", suhoor: "04:40" },
 };

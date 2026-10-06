@@ -108,7 +108,7 @@ export function InstallPrompt() {
       {visible && (
         <motion.div
           role="dialog"
-          aria-label="Install Rahameeru"
+          aria-label="Install Decide.mv"
           initial={reduceMotion ? { opacity: 0 } : { y: 120, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={reduceMotion ? { opacity: 0 } : { y: 120, opacity: 0 }}
@@ -134,7 +134,7 @@ export function InstallPrompt() {
               />
               <div className="min-w-0">
                 <p className="font-display font-bold text-ink-900 dark:text-white">
-                  Add Rahameeru to your home screen
+                  Add Decide.mv to your home screen
                 </p>
                 <p className="mt-0.5 text-sm text-ink-500">
                   Opens full screen and works offline for the places you&apos;ve

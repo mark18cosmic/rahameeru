@@ -1,14 +1,14 @@
 import type { MetadataRoute } from "next";
 
 /**
- * Replaces the empty public/site.webmanifest. Next serves this at
+ * The web app manifest. Next serves this at
  * /manifest.webmanifest and links it from every page automatically, which is
  * what makes the app installable (and the install prompt fire at all).
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Rahameeru: Maldives food guide",
-    short_name: "Rahameeru",
+    name: "Decide.mv: where to eat in the Maldives",
+    short_name: "Decide.mv",
     description:
       "Find somewhere to eat in Malé and Hulhumalé. Menus, reviews, and a wheel to spin when nobody can decide.",
     start_url: "/",

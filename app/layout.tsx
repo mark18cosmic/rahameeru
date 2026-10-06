@@ -21,21 +21,22 @@ const display = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://rahameeru.com"),
+  // The public address, for absolute share-image URLs. Override per deploy.
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://decide.mv"),
   title: {
-    default: "Rahameeru · Where to eat in the Maldives",
-    template: "%s · Rahameeru",
+    default: "Decide.mv · Where to eat in Malé and Hulhumalé",
+    template: "%s · Decide.mv",
   },
   description:
     "Find somewhere to eat in Malé and Hulhumalé. Menus, opening hours, honest reviews, and a wheel to spin when nobody can decide.",
   keywords: ["Maldives restaurants", "Malé food", "Hulhumalé dining", "restaurant menus"],
   appleWebApp: {
     capable: true,
-    title: "Rahameeru",
+    title: "Decide.mv",
     statusBarStyle: "default",
   },
   openGraph: {
-    title: "Rahameeru · Where to eat in the Maldives",
+    title: "Decide.mv · Where are we eating tonight?",
     description: "Menus, reviews and opening hours for Malé and Hulhumalé.",
     type: "website",
   },

@@ -24,7 +24,7 @@ import {
   type VendorStatus,
 } from "@/app/lib/vendor";
 import { cx } from "@/app/lib/utils";
-import { ChiliLoader } from "../ui/ChiliLoader";
+import { PanelSkeleton } from "../ui/Skeletons";
 
 const FILTERS: { key: VendorStatus | "all"; label: string }[] = [
   { key: "pending", label: "Pending" },
@@ -95,9 +95,7 @@ export function AdminConsole({
 
   if (authLoading || vendorLoading) {
     return (
-      <div className="py-24">
-        <ChiliLoader label="Checking your access…" />
-      </div>
+      <PanelSkeleton label="Checking your access" />
     );
   }
 

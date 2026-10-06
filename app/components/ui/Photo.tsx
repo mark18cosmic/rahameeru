@@ -13,26 +13,6 @@ import { photoUrl, apiPhotoUrl, cx } from "@/app/lib/utils";
 export const BLUR =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAIAAAA7ljmRAAAAHElEQVQI12N88uQJAxJgYmBg+P//PxMDAwMDAwMAJg0F/2vBHQMAAAAASUVORK5CYII=";
 
-/**
- * Rendered when even the lookup endpoint has nothing — never a broken icon.
- * Inlined as a data URI on purpose: `next/image` passes those through
- * untouched, so it works without loosening the SVG rules in next.config.
- */
-const PLACEHOLDER =
-  "data:image/svg+xml;charset=utf-8," +
-  encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
-      <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#f4f1ec"/><stop offset="1" stop-color="#e3ddd3"/>
-      </linearGradient></defs>
-      <rect width="400" height="300" fill="url(#g)"/>
-      <g fill="none" stroke="#b9ae9c" stroke-width="6" stroke-linecap="round">
-        <path d="M172 118v64M186 118v64M179 182v42"/>
-        <path d="M214 224v-42c-10 0-18-8-18-18v-30c0-9 8-16 18-16s18 7 18 16v90"/>
-      </g>
-    </svg>`
-  );
-
 type Props = {
   r: Restaurant;
   /** Gallery slot. 0 is the primary photo. */
@@ -66,7 +46,7 @@ export function Photo({
   const stored = photoUrl(r, index);
   const looked = apiPhotoUrl(r, index);
   // De-duplicated: when the doc has no image, photoUrl already is the lookup.
-  const chain = stored === looked ? [looked, PLACEHOLDER] : [stored, looked, PLACEHOLDER];
+  const chain = stored === looked ? [looked] : [stored, looked];
 
   const [step, setStep] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -77,31 +57,60 @@ export function Photo({
     setLoaded(false);
   }, [r.id, index]);
 
-  const next = () => setStep((s) => Math.min(s + 1, chain.length - 1));
+  // Past the last source means nothing was found: show the name tile.
+  const next = () => setStep((s) => s + 1);
+
+  if (step >= chain.length) return <NameTile name={r.name} />;
 
   return (
-    <Image
-      src={chain[step]}
-      alt={alt ?? r.name}
-      fill
-      sizes={sizes}
-      priority={priority}
-      loading={priority ? "eager" : "lazy"}
-      placeholder="blur"
-      blurDataURL={BLUR}
-      onError={next}
-      onLoad={(e) => {
-        // /api/photo answers with a 1×1 gif when every candidate host fails;
-        // treat that as a failure rather than showing an empty box.
-        const img = e.currentTarget;
-        if (img.naturalWidth <= 2 && step < chain.length - 1) next();
-        else setLoaded(true);
-      }}
-      className={cx(
-        "object-cover transition-all duration-500",
-        loaded ? "opacity-100" : "opacity-0",
-        className
-      )}
-    />
+    <>
+      {/* Shimmer until the photo arrives, so a card never sits as a flat
+          grey box wondering whether anything is coming. */}
+      {!loaded && <span aria-hidden className="skeleton absolute inset-0" />}
+      <Image
+        src={chain[step]}
+        alt={alt ?? r.name}
+        fill
+        sizes={sizes}
+        priority={priority}
+        loading={priority ? "eager" : "lazy"}
+        placeholder="blur"
+        blurDataURL={BLUR}
+        onError={next}
+        onLoad={(e) => {
+          const img = e.currentTarget;
+          if (img.naturalWidth <= 2) next();
+          else setLoaded(true);
+        }}
+        className={cx(
+          "object-cover transition-all duration-500",
+          loaded ? "opacity-100" : "opacity-0",
+          className
+        )}
+      />
+    </>
+);
+}
+
+/**
+ * When no photo exists anywhere: the place's initials on a soft coral tile.
+ * Reads as deliberate, unlike a generic drawing of cutlery repeated on every
+ * listing that hasn't been photographed yet.
+ */
+function NameTile({ name }: { name: string }) {
+  const initials = name
+    .split(/\s+/)
+    .filter((w) => /^[\p{L}\p{N}]/u.test(w))
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join("");
+  return (
+    <span
+      aria-hidden
+      className="absolute inset-0 grid place-items-center bg-root-50 font-display font-bold text-root-300 dark:bg-root-500/10 dark:text-root-400/60"
+      style={{ containerType: "size" }}
+    >
+      <span style={{ fontSize: "clamp(1rem, 30cqmin, 5rem)" }}>{initials}</span>
+    </span>
   );
 }

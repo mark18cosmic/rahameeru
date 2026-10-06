@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   LayoutDashboard,
   MessageSquare,
+  Newspaper,
   Settings,
   ShieldAlert,
   ShieldCheck,
@@ -19,18 +20,20 @@ import {
   type SiteSettings,
 } from "@/app/lib/admin";
 import { cx } from "@/app/lib/utils";
-import { ChiliLoader } from "../../ui/ChiliLoader";
+import { PanelSkeleton } from "../../ui/Skeletons";
 import { AdminConsole } from "../AdminConsole";
 import { RestaurantManager } from "./RestaurantManager";
 import { UserManager } from "./UserManager";
 import { SiteSettingsPanel } from "./SiteSettingsPanel";
 import { AddVendor } from "./AddVendor";
 import { FeedbackManager } from "./FeedbackManager";
+import { CardsManager } from "./CardsManager";
 
 const TABS = [
   { key: "restaurants", label: "Restaurants", icon: Store },
   { key: "users", label: "Users", icon: Users },
   { key: "vendors", label: "Vendors", icon: LayoutDashboard },
+  { key: "cards", label: "Cards", icon: Newspaper },
   { key: "feedback", label: "Feedback", icon: MessageSquare },
   { key: "settings", label: "Settings", icon: Settings },
 ] as const;
@@ -63,9 +66,7 @@ export function AdminHome() {
 
   if (authLoading || vendorLoading) {
     return (
-      <div className="py-24">
-        <ChiliLoader label="Checking your access…" />
-      </div>
+      <PanelSkeleton label="Checking your access" />
     );
   }
 
@@ -143,6 +144,7 @@ export function AdminHome() {
             <AdminConsole key={vendorsKey} embedded />
           </div>
         )}
+        {tab === "cards" && <CardsManager />}
         {tab === "feedback" && <FeedbackManager />}
         {tab === "settings" && (
           <SiteSettingsPanel settings={settings} onSaved={loadSettings} />

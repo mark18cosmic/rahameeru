@@ -1,10 +1,6 @@
-import { ChiliLoader } from "./components/ui/ChiliLoader";
+import { GridSkeleton } from "./components/ui/Skeletons";
 
-/** Shown while a route segment streams in. */
+/** Shown while a route segment streams in: the shape of a page, not a spinner. */
 export default function Loading() {
-  return (
-    <div className="flex min-h-[70vh] items-center justify-center px-4">
-      <ChiliLoader />
-    </div>
-  );
+  return <GridSkeleton />;
 }

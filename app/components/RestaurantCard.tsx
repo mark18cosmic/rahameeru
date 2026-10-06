@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { MapPin, UtensilsCrossed, Star } from "lucide-react";
+import { MapPin, Moon, UtensilsCrossed, Star } from "lucide-react";
 import type { Restaurant } from "@/app/lib/types";
 import { priceString, cx } from "@/app/lib/utils";
 import { openLabel, openState } from "@/app/lib/clock";
 import { useNow } from "@/app/lib/useClock";
+import { useSiteSettings } from "@/app/lib/useSiteSettings";
 import { Photo } from "./ui/Photo";
 import { FavoriteButton } from "./FavoriteButton";
 
@@ -24,6 +25,7 @@ export function RestaurantCard({
   const now = useNow();
   const state = now ? openState(r.hours, now) : null;
   const status = state && openLabel(state);
+  const ramadanOn = useSiteSettings().ramadan.enabled;
   const closingSoon = state?.kind === "open" && !state.allDay && state.closesInMin <= 60;
   const dishes = r.menu?.reduce((n, s) => n + s.items.length, 0) ?? 0;
 
@@ -54,16 +56,23 @@ export function RestaurantCard({
         />
         {status && (
           <span className="surface absolute left-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold text-ink-800 dark:text-ink-100 md:text-xs">
-            <span
-              className={cx(
-                "h-1.5 w-1.5 rounded-full",
-                state?.kind !== "open"
-                  ? "bg-ink-400"
-                  : closingSoon
-                    ? "bg-root-500"
-                    : "bg-emerald-500"
+            <span className="relative flex h-1.5 w-1.5">
+              {/* Pulses only when it's urgent: a whole page of pulsing dots
+                  would just be noise. */}
+              {closingSoon && (
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-root-400 opacity-75" />
               )}
-            />
+              <span
+                className={cx(
+                  "relative inline-flex h-1.5 w-1.5 rounded-full",
+                  state?.kind !== "open"
+                    ? "bg-ink-400"
+                    : closingSoon
+                      ? "bg-root-500"
+                      : "bg-emerald-500"
+                )}
+              />
+            </span>
             {status}
           </span>
         )}
@@ -94,6 +103,12 @@ export function RestaurantCard({
           {priceString(r.priceLevel)}
           {r.cuisine.length > 0 && <> · {r.cuisine.join(", ")}</>}
         </p>
+        {ramadanOn && r.iftar && (
+          <p className="flex items-center gap-1 text-[13px] font-medium text-root-600 dark:text-root-400">
+            <Moon size={12} className="shrink-0" />
+            Iftar{r.iftar.price ? ` MVR ${r.iftar.price.toLocaleString()}` : " spread"}
+          </p>
+        )}
         <p className="flex items-center gap-1 text-[13px] text-ink-500 dark:text-ink-400">
           <MapPin size={12} className="shrink-0" />
           <span className="truncate">{r.location}</span>

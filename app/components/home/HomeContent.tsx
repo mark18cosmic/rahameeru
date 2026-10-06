@@ -13,10 +13,13 @@ import { WheelSpinner } from "./WheelSpinner";
 import { RestaurantRail } from "./RestaurantRail";
 import { ReviewInvite } from "./ReviewInvite";
 import { CompactList, FeaturedGrid, MenuList, OccasionRail } from "./HomeSections";
-import { IftarSection } from "./IftarSection";
+import { IftarSection, RamadanStrip } from "./IftarSection";
+import { WhatsOn } from "../cards/ContentCards";
+import { Reveal } from "../ui/Reveal";
 
 type Section =
   | "iftar"
+  | "cards"
   | "featured"
   | "popularDishes"
   | "wheel"
@@ -32,14 +35,14 @@ type Section =
  * never stacks two of the same shape on top of each other.
  */
 const ORDER: Record<Daypart, Section[]> = {
-  morning: ["occasion", "featured", "openNow", "cheapDishes", "popularDishes", "wheel", "recent", "invite"],
-  lunch: ["openNow", "featured", "popularDishes", "cheapDishes", "occasion", "wheel", "recent", "invite"],
-  afternoon: ["featured", "occasion", "wheel", "cheapDishes", "popularDishes", "invite", "openNow", "recent"],
-  evening: ["featured", "popularDishes", "wheel", "cheapDishes", "openNow", "invite", "occasion", "recent"],
-  late: ["openNow", "featured", "wheel", "cheapDishes", "popularDishes", "invite", "occasion", "recent"],
-  fasting: ["iftar", "featured", "popularDishes", "wheel", "cheapDishes", "openNow", "invite", "occasion", "recent"],
-  iftar: ["iftar", "featured", "popularDishes", "wheel", "cheapDishes", "openNow", "invite", "occasion", "recent"],
-  suhoor: ["openNow", "iftar", "featured", "wheel", "cheapDishes", "popularDishes", "invite", "occasion", "recent"],
+  morning: ["occasion", "featured", "cards", "openNow", "cheapDishes", "popularDishes", "wheel", "recent", "invite"],
+  lunch: ["openNow", "featured", "cards", "popularDishes", "cheapDishes", "occasion", "wheel", "recent", "invite"],
+  afternoon: ["featured", "cards", "occasion", "wheel", "cheapDishes", "popularDishes", "invite", "openNow", "recent"],
+  evening: ["featured", "cards", "popularDishes", "wheel", "cheapDishes", "openNow", "invite", "occasion", "recent"],
+  late: ["openNow", "featured", "cards", "wheel", "cheapDishes", "popularDishes", "invite", "occasion", "recent"],
+  fasting: ["iftar", "featured", "cards", "popularDishes", "wheel", "cheapDishes", "openNow", "invite", "occasion", "recent"],
+  iftar: ["iftar", "featured", "cards", "popularDishes", "wheel", "cheapDishes", "openNow", "invite", "occasion", "recent"],
+  suhoor: ["openNow", "iftar", "cards", "featured", "wheel", "cheapDishes", "popularDishes", "invite", "occasion", "recent"],
 };
 
 /** Which occasion tab is up first. */
@@ -139,11 +142,12 @@ export function HomeContent() {
   const sections: Record<Section, ReactNode> = {
     iftar: settings.ramadan.enabled && now && (
       <IftarSection
-        now={now}
         ramadan={settings.ramadan}
         restaurants={restaurants.filter((r) => r.iftar)}
       />
     ),
+
+    cards: settings.showCards && <WhatsOn />,
 
     featured: railOn("featured") && (
       <FeaturedGrid
@@ -248,16 +252,16 @@ export function HomeContent() {
         </div>
       )}
 
+      {settings.ramadan.enabled && now && <RamadanStrip now={now} ramadan={settings.ramadan} />}
+
       <Hero restaurants={restaurants} daypart={now ? daypart : null} />
 
       {settings.showCategories && <CategoryStrip />}
 
       <main className="mx-auto max-w-7xl px-5 md:px-6">
-        {ORDER[daypart].map((key) => (
-          <div key={key} className="contents">
-            {sections[key]}
-          </div>
-        ))}
+        {ORDER[daypart].map((key) =>
+          sections[key] ? <Reveal key={key}>{sections[key]}</Reveal> : null
+        )}
       </main>
     </>
   );

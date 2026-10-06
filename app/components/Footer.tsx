@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { UtensilsCrossed, Instagram, Twitter, Facebook } from "lucide-react";
+import { Instagram, Twitter, Facebook } from "lucide-react";
+import { Wordmark } from "./brand/Logo";
 
 const COLS = [
   {
@@ -36,12 +37,7 @@ export default function Footer() {
     <footer className="mt-20 hidden border-t border-[var(--line)] md:block">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-5">
         <div className="md:col-span-2">
-          <div className="flex items-center gap-2 text-xl font-bold text-ink-900 dark:text-white">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-root-500 text-white">
-              <UtensilsCrossed size={18} />
-            </span>
-            Rahameeru
-          </div>
+          <Wordmark />
           <p className="mt-3 max-w-sm text-sm text-ink-500">
             Menus, opening hours and reviews for places to eat in Malé and
             Hulhumalé. Spin the wheel when nobody can decide.
@@ -81,7 +77,7 @@ export default function Footer() {
       </div>
       {/* Extra bottom padding clears the mobile tab bar. */}
       <div className="flex flex-col items-center gap-1 border-t border-ink-100 py-5 pb-[calc(5rem+env(safe-area-inset-bottom))] text-center text-sm text-ink-400 dark:border-ink-800 md:flex-row md:justify-between md:px-6 md:pb-5">
-        <p>© {new Date().getFullYear()} Rahameeru Reviews. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Decide.mv. All rights reserved.</p>
         <p>
           Created by{" "}
           <span className="font-semibold text-ink-600 dark:text-ink-300">

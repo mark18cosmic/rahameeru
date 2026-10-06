@@ -3,7 +3,7 @@ import { ButtonLink } from "@/app/components/ui/Button";
 
 export const metadata = {
   title: "About",
-  description: "What Rahameeru is, and who keeps it up to date.",
+  description: "What Decide.mv is, and who keeps it up to date.",
 };
 
 const VALUES = [
@@ -40,7 +40,7 @@ export default function AboutPage() {
           Nobody should have to ask the group chat.
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-lg text-ink-500">
-          Rahameeru started as a shared note of places worth eating at in Malé.
+          Decide.mv started as a shared note of places worth eating at in Malé.
           It&apos;s now a proper list of menus, opening hours and what people
           thought, covering Malé and Hulhumalé.
         </p>

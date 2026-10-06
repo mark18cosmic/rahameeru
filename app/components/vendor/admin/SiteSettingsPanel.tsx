@@ -25,6 +25,7 @@ const TOGGLES: { key: keyof SiteSettings; label: string; hint: string }[] = [
   { key: "showCategories", label: "Category strip", hint: "The eight tiles under the hero" },
   { key: "showWheel", label: "Spin the wheel", hint: "The picker on the home page" },
   { key: "showReviewInvite", label: "Review invite", hint: "The prompt to write a review" },
+  { key: "showCards", label: "What's on", hint: "Guides and today's specials" },
 ];
 
 export function SiteSettingsPanel({
@@ -108,7 +109,18 @@ export function SiteSettingsPanel({
             }
           />
         </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          <div>
+            <Label htmlFor="ramadan-start">First day</Label>
+            <Input
+              id="ramadan-start"
+              type="date"
+              value={draft.ramadan.startDate ?? ""}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, ramadan: { ...d.ramadan, startDate: e.target.value } }))
+              }
+            />
+          </div>
           <div>
             <Label htmlFor="iftar-time">Iftar</Label>
             <Input

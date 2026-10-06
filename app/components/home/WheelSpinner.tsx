@@ -14,8 +14,10 @@ import {
   ShieldCheck,
   Ban,
   Loader2,
+  Moon,
   Users,
 } from "lucide-react";
+import { useSiteSettings } from "@/app/lib/useSiteSettings";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { createGroupWheel, loadMe } from "@/app/lib/groupWheel";
@@ -58,6 +60,7 @@ type Prefs = {
   openNow: boolean;
   minRating: number;
   suitsDiet: boolean;
+  iftar: boolean;
   skipSeen: boolean;
 };
 
@@ -69,6 +72,7 @@ const EMPTY: Prefs = {
   openNow: false,
   minRating: 0,
   suitsDiet: false,
+  iftar: false,
   skipSeen: true,
 };
 
@@ -81,6 +85,7 @@ export function WheelSpinner({ restaurants }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const { diet } = usePreferences();
+  const ramadanOn = useSiteSettings().ramadan.enabled;
 
   const [prefs, setPrefs] = useState<Prefs>(EMPTY);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -122,6 +127,7 @@ export function WheelSpinner({ restaurants }: Props) {
         return false;
       if (prefs.openNow && !isOpenNow(r.hours)) return false;
       if (prefs.minRating && r.rating < prefs.minRating) return false;
+      if (prefs.iftar && !r.iftar) return false;
       if (prefs.skipSeen && seen.includes(r.id)) return false;
 
       if (prefs.suitsDiet && diet.length > 0) {
@@ -145,7 +151,8 @@ export function WheelSpinner({ restaurants }: Props) {
     prefs.tags.length +
     (prefs.openNow ? 1 : 0) +
     (prefs.minRating ? 1 : 0) +
-    (prefs.suitsDiet ? 1 : 0);
+    (prefs.suitsDiet ? 1 : 0) +
+    (prefs.iftar ? 1 : 0);
 
   /* ------------------------------------------------------------------ size */
 
@@ -326,6 +333,15 @@ export function WheelSpinner({ restaurants }: Props) {
             onClick={() => setPrefs((p) => ({ ...p, suitsDiet: !p.suitsDiet }))}
           >
             <ShieldCheck size={13} /> Has dishes for me
+          </Chip>
+        )}
+        {ramadanOn && (
+          <Chip
+            on={prefs.iftar}
+            disabled={spinning}
+            onClick={() => setPrefs((p) => ({ ...p, iftar: !p.iftar }))}
+          >
+            <Moon size={13} /> Iftar spread
           </Chip>
         )}
       </Group>

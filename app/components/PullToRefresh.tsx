@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { refreshRestaurants, REFRESH_EVENT } from "@/app/lib/restaurants";
-import { ChiliMark } from "./ui/ChiliMark";
+import { LogoMark } from "./brand/Logo";
 
 /** How far you have to drag before letting go actually refreshes. */
 const THRESHOLD = 72;
@@ -119,8 +119,8 @@ export function PullToRefresh() {
         transition={{ duration: 0.15 }}
         className="float grid h-10 w-10 place-items-center rounded-full"
       >
-        {/* The same chili as every other loading state: it fills as you pull,
-            then spins while the data reloads. */}
+        {/* The logo's wheel: it turns as you pull, then spins while the data
+            reloads. */}
         <motion.div
           className="text-root-500"
           animate={
@@ -132,7 +132,7 @@ export function PullToRefresh() {
               : { duration: 0.1 }
           }
         >
-          <ChiliMark size={19} fill={busy ? 0.9 : progress * 0.9} />
+          <LogoMark size={22} />
         </motion.div>
       </motion.span>
     </div>

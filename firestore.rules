@@ -40,6 +40,14 @@ service cloud.firestore {
       allow write: if true;
     }
 
+    // Shareable lists and home page content cards.
+    match /lists/{id} {
+      allow read, write: if true;
+    }
+    match /cards/{id} {
+      allow read, write: if true;
+    }
+
     // Shared "decide together" wheels, joined by link without an account.
     match /wheels/{id} {
       allow read, write: if true;

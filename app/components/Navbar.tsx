@@ -18,7 +18,7 @@ import {
   ShoppingBag,
   ShieldCheck,
 } from "lucide-react";
-import logo from "@/public/rahameeruLogo.png";
+import { Wordmark } from "./brand/Logo";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { useSearch } from "@/app/providers/SearchProvider";
 import { useTheme } from "@/app/providers/ThemeProvider";
@@ -67,14 +67,8 @@ export default function Navbar() {
       )}
     >
       <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-2 px-4 md:h-[68px] md:gap-3 md:px-6">
-        <Link href="/" className="flex shrink-0 items-center gap-2">
-          <Image
-            src={logo}
-            alt="Rahameeru"
-            width={140}
-            priority
-            className="h-auto w-[104px] dark:brightness-0 dark:invert md:w-[140px]"
-          />
+        <Link href="/" aria-label="Decide.mv home" className="flex shrink-0 items-center gap-2">
+          <Wordmark />
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">

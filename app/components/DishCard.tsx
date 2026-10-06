@@ -35,6 +35,7 @@ export function DishCard({ entry, className = "" }: { entry: DishEntry; classNam
       )}
     >
       <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800">
+        {!loaded && <span aria-hidden className="skeleton absolute inset-0" />}
         <Image
           src={src}
           alt={item.name}

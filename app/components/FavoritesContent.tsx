@@ -6,6 +6,8 @@ import { useRestaurants } from "@/app/lib/useRestaurants";
 import { useFavorites } from "@/app/lib/useFavorites";
 import { RestaurantCard, CardSkeleton } from "./RestaurantCard";
 import { ButtonLink } from "./ui/Button";
+import { MyLists } from "./lists/MyLists";
+import { StaggerItem } from "./ui/Reveal";
 
 export function FavoritesContent() {
   const { restaurants, loading } = useRestaurants();
@@ -50,11 +52,17 @@ export function FavoritesContent() {
         </div>
       ) : (
         <div className="mt-6 grid grid-cols-2 gap-3 md:mt-8 md:grid-cols-4 md:gap-4">
-          {saved.map((r) => (
-            <RestaurantCard key={r.id} r={r} />
+          {saved.map((r, i) => (
+            <StaggerItem key={r.id} index={i}>
+              <RestaurantCard r={r} />
+            </StaggerItem>
           ))}
         </div>
       )}
+
+      <div className="mt-14 border-t border-[var(--line)] pt-10">
+        <MyLists />
+      </div>
     </div>
   );
 }

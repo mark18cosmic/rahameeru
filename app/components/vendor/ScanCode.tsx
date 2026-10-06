@@ -30,7 +30,7 @@ import {
  *
  * The QR encodes an ordinary URL, so it is scanned with the phone's own camera
  * app — no app install, no in-app scanner, and it works for someone who has
- * never heard of Rahameeru. The code changes every Monday, and each person can
+ * never heard of Decide.mv. The code changes every Monday, and each person can
  * only claim a given week's code once, so a photo passed around a group chat
  * earns nobody anything they couldn't get by turning up.
  */
@@ -166,7 +166,7 @@ export function ScanCode({
         <li><b>2</b><span>Tap the link that pops up.</span></li>
         <li><b>3</b><span>Your points land straight away, and your review will show as a verified visit.</span></li>
       </ol>
-      <div class="note">Rahameeru · this code expires ${expiryLabel}</div>`);
+      <div class="note">Decide.mv · this code expires ${expiryLabel}</div>`);
     w.document.close();
     w.focus();
     w.print();

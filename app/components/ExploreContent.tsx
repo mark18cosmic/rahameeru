@@ -14,6 +14,7 @@ import {
 import { cx } from "@/app/lib/utils";
 import { RestaurantCard, CardSkeleton } from "./RestaurantCard";
 import { DishCard } from "./DishCard";
+import { StaggerItem } from "./ui/Reveal";
 import { Select } from "./ui/Select";
 import { Input } from "./ui/Field";
 
@@ -180,7 +181,11 @@ export function ExploreContent() {
               set means that is almost never. */}
           {loading && sorted.length === 0
             ? Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />)
-            : sorted.map((r) => <RestaurantCard key={r.id} r={r} />)}
+            : sorted.map((r, i) => (
+                <StaggerItem key={r.id} index={i}>
+                  <RestaurantCard r={r} />
+                </StaggerItem>
+              ))}
         </div>
       ) : dishes.length === 0 ? (
         <p className="well mt-6 rounded-2xl p-10 text-center text-ink-500">
@@ -188,8 +193,10 @@ export function ExploreContent() {
         </p>
       ) : (
         <div className="mt-5 grid grid-cols-2 gap-3 md:mt-6 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-          {dishes.map((d) => (
-            <DishCard key={d.id} entry={d} />
+          {dishes.map((d, i) => (
+            <StaggerItem key={d.id} index={i}>
+              <DishCard entry={d} />
+            </StaggerItem>
           ))}
         </div>
       )}

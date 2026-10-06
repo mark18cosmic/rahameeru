@@ -22,9 +22,10 @@ import { getReviews, replyToReview } from "@/app/lib/reviews";
 import { getVisits, dailySeries, type VisitDoc } from "@/app/lib/metrics";
 import { setVendorPlan, PLAN_BY_ID, type PlanId } from "@/app/lib/vendor";
 import { cx } from "@/app/lib/utils";
-import { ChiliLoader } from "../ui/ChiliLoader";
+import { PanelSkeleton } from "../ui/Skeletons";
 import { PlanCards } from "./PlanCards";
 import { ListingEditor } from "./ListingEditor";
+import { SpecialPoster } from "./SpecialPoster";
 import { ScanCode } from "./ScanCode";
 
 function Sparkline({ data }: { data: { day: string; count: number }[] }) {
@@ -149,9 +150,7 @@ export function VendorDashboard() {
 
   if (loading || authLoading) {
     return (
-      <div className="py-24">
-        <ChiliLoader label="Opening your dashboard…" />
-      </div>
+      <PanelSkeleton label="Opening your dashboard" />
     );
   }
 
@@ -301,6 +300,7 @@ export function VendorDashboard() {
                       {owned.map((r) => (
                         <div key={r.id}>
                           <ListingEditor restaurant={r} />
+                          <SpecialPoster restaurant={r} />
                           <Link
                             href={`/restaurant/${r.slug}`}
                             className="mt-1.5 inline-flex items-center gap-1 px-1 text-sm font-semibold text-root-600"

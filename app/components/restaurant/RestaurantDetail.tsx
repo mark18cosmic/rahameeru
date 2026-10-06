@@ -35,6 +35,8 @@ import { Menu } from "./Menu";
 import { RestaurantCard } from "../RestaurantCard";
 import { openLabel, openState } from "@/app/lib/clock";
 import { useNow } from "@/app/lib/useClock";
+import { AddToList } from "../lists/AddToList";
+import { TodaysSpecial } from "../cards/ContentCards";
 import { useSiteSettings } from "@/app/lib/useSiteSettings";
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -178,7 +180,10 @@ export function RestaurantDetail({
           <span className="flex items-center gap-1">
             <MapPin size={16} /> {restaurant.location}
           </span>
+          <AddToList restaurant={restaurant} />
         </div>
+
+        <TodaysSpecial restaurantId={restaurant.id} />
       </div>
 
       <div className="mt-6 grid gap-8 md:mt-8 lg:grid-cols-[1fr_320px] lg:gap-10">

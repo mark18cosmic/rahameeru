@@ -97,7 +97,7 @@ async function main() {
   try {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     uid = cred.user.uid;
-    await updateProfile(cred.user, { displayName: "Rahameeru Admin" });
+    await updateProfile(cred.user, { displayName: "Decide.mv Admin" });
     console.log("✓ Account created.");
   } catch (err) {
     const code = (err as { code?: string }).code;

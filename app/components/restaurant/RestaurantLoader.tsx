@@ -11,7 +11,7 @@ import {
 import { slugify, withSeason } from "@/app/lib/utils";
 import { useSiteSettings } from "@/app/lib/useSiteSettings";
 import { recordVisit } from "@/app/lib/metrics";
-import { ChiliLoader } from "../ui/ChiliLoader";
+import { RestaurantSkeleton } from "../ui/Skeletons";
 import { RestaurantDetail } from "./RestaurantDetail";
 
 /**
@@ -64,18 +64,7 @@ export function RestaurantLoader({ slug }: { slug: string }) {
     };
   }, [slug]);
 
-  if (state.status === "loading") {
-    return (
-      <div className="mx-auto max-w-6xl px-4 py-10 md:px-6">
-        <ChiliLoader label="Setting the table…" className="py-16" />
-        <div className="mt-2 space-y-3 opacity-60">
-          <div className="skeleton h-8 w-1/2 rounded" />
-          <div className="skeleton h-4 w-1/3 rounded" />
-          <div className="skeleton h-24 w-full rounded-2xl" />
-        </div>
-      </div>
-    );
-  }
+  if (state.status === "loading") return <RestaurantSkeleton />;
 
   if (state.status === "missing") {
     notFound();

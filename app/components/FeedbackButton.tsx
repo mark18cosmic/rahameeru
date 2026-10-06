@@ -104,7 +104,7 @@ function FeedbackPanel({
             Thank you
           </h3>
           <p className="mt-1.5 text-sm text-ink-500">
-            It goes straight to the people who run Rahameeru.
+            It goes straight to the people who run Decide.mv.
           </p>
           <Button onClick={close} className="mt-5">
             Done

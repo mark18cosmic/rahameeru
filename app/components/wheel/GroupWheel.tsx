@@ -20,7 +20,7 @@ import {
 import { cx, priceString } from "@/app/lib/utils";
 import { Photo } from "../ui/Photo";
 import { Button, ButtonLink } from "../ui/Button";
-import { ChiliLoader } from "../ui/ChiliLoader";
+import { WheelSkeleton } from "../ui/Skeletons";
 import { SPIN_MS, targetRotation, usePaintWheel } from "./wheelCanvas";
 
 type State = { status: "loading" } | { status: "missing" } | { status: "error" } | { status: "ready"; wheel: Wheel };
@@ -156,7 +156,7 @@ export function GroupWheel({ id }: { id: string }) {
   /* ---------------------------------------------------------------- views */
 
   if (state.status === "loading" || !me) {
-    return <ChiliLoader label="Finding the wheel…" className="py-24" />;
+    return <WheelSkeleton />;
   }
   if (state.status === "missing" || state.status === "error") {
     return (

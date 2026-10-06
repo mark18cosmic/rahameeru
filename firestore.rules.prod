@@ -107,6 +107,50 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    // Named lists of places. Public to read, so they can be shared by link;
+    // only the owner may change one, and never hand it to someone else.
+    match /lists/{id} {
+      function validList(d) {
+        return d.title is string && d.title.size() > 0 && d.title.size() <= 80
+          && d.description is string && d.description.size() <= 280
+          && d.restaurantIds is list && d.restaurantIds.size() <= 50;
+      }
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.ownerId == request.auth.uid
+        && request.resource.data.keys().hasOnly(
+             ['title', 'description', 'restaurantIds', 'ownerId', 'ownerName', 'createdAt', 'updatedAt'])
+        && validList(request.resource.data);
+      allow update: if signedIn()
+        && resource.data.ownerId == request.auth.uid
+        && request.resource.data.ownerId == resource.data.ownerId
+        && validList(request.resource.data);
+      allow delete: if isAdmin()
+        || (signedIn() && resource.data.ownerId == request.auth.uid);
+    }
+
+    // Home page content cards. Guides are the admin's. A special may be
+    // written only by the approved owner of that restaurant, only at its one
+    // fixed id (so it replaces rather than piles up), and for about a day.
+    match /cards/{id} {
+      function ownsRestaurant(rid) {
+        return signedIn()
+          && get(/databases/$(database)/documents/restaurants/$(rid)).data.ownerId == request.auth.uid
+          && get(/databases/$(database)/documents/vendors/$(request.auth.uid)).data.status == 'approved';
+      }
+      allow read: if true;
+      allow create, update: if isAdmin()
+        || (request.resource.data.kind == 'special'
+            && id == 'special-' + request.resource.data.restaurantId
+            && ownsRestaurant(request.resource.data.restaurantId)
+            && request.resource.data.authorId == request.auth.uid
+            && request.resource.data.title is string
+            && request.resource.data.title.size() <= 80
+            && request.resource.data.expiresAt <= request.time.toMillis() + 25 * 60 * 60 * 1000);
+      allow delete: if isAdmin()
+        || (resource.data.kind == 'special' && ownsRestaurant(resource.data.restaurantId));
+    }
+
     // Shared "decide together" wheels. No account needed: the unguessable id
     // in the link is the invitation. Once created, the pool is fixed; people
     // may only add their name, their vetoes and a spin result.

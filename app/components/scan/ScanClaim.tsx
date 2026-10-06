@@ -17,7 +17,7 @@ import { db } from "@/app/firebase/firebaseConfig";
 import { useAuth } from "@/app/providers/AuthProvider";
 import { usePoints } from "@/app/lib/usePoints";
 import { SCAN_POINTS, FIRST_SCAN_BONUS, weekKey, scanDocId } from "@/app/lib/scan";
-import { ChiliLoader } from "../ui/ChiliLoader";
+import { Loader2 } from "lucide-react";
 
 type State =
   | { status: "checking" }
@@ -129,8 +129,10 @@ export function ScanClaim({ restaurantId }: { restaurantId: string }) {
 
   if (state.status === "checking") {
     return (
-      <div className="py-24">
-        <ChiliLoader label="Checking you in…" />
+      // A short check-in, not a page load: a status line suits it better
+      // than a skeleton of a screen that is about to change anyway.
+      <div role="status" className="flex items-center justify-center gap-2 py-24 text-ink-600 dark:text-ink-300">
+        <Loader2 size={18} className="animate-spin text-root-500" /> Checking you in…
       </div>
     );
   }

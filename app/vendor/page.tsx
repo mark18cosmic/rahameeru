@@ -12,7 +12,7 @@ import { PlanCards } from "@/app/components/vendor/PlanCards";
 export const metadata = {
   title: "For restaurants",
   description:
-    "Claim your listing on Rahameeru, keep your menu and hours right, and see what people actually do with your page.",
+    "Claim your listing on Decide.mv, keep your menu and hours right, and see what people actually do with your page.",
 };
 
 const VALUE = [
@@ -53,7 +53,7 @@ export default function VendorLandingPage() {
             <span className="text-root-500">Decide what they find.</span>
           </h1>
           <p className="mt-4 max-w-xl text-base text-ink-500 md:text-lg">
-            Rahameeru lists restaurants across Malé and Hulhumalé whether or not
+            Decide.mv lists restaurants across Malé and Hulhumalé whether or not
             they know about it. Claim yours and the hours, menu and photos come
             from you instead of from the internet&apos;s best guess.
           </p>

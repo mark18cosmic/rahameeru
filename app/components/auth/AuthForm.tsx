@@ -59,7 +59,10 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const router = useRouter();
   const params = useSearchParams();
   // Sending people back where they were beats dumping everyone on the home page.
-  const next = params.get("next") ?? "/";
+  // Only ever an in-app path: an absolute URL here would make the login page
+  // an open redirect to anywhere.
+  const rawNext = params.get("next") ?? "/";
+  const next = rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/";
   const isLogin = mode === "login";
 
   const [username, setUsername] = useState("");

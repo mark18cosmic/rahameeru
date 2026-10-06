@@ -9,6 +9,7 @@ import { cx, priceString } from "@/app/lib/utils";
 import { RestaurantCard, CardSkeleton } from "../RestaurantCard";
 import { Photo } from "../ui/Photo";
 import { RailHeader, RestaurantRail } from "./RestaurantRail";
+import { StaggerItem } from "../ui/Reveal";
 
 /*
  * The home page's non-rail sections. Eight identical swipe rows in a column
@@ -59,12 +60,13 @@ export function FeaturedGrid({
                 </div>
               ))
             : picks.map((r, i) => (
-                <RestaurantCard
+                <StaggerItem
                   key={r.id}
-                  r={r}
-                  lead={i === 0}
-                  className={i === 0 ? "col-span-2 row-span-2" : ""}
-                />
+                  index={i}
+                  className={i === 0 ? "col-span-2 row-span-2 flex" : "flex"}
+                >
+                  <RestaurantCard r={r} lead={i === 0} className="w-full" />
+                </StaggerItem>
               ))}
         </div>
       </section>
@@ -98,7 +100,7 @@ export function MenuList({
       <ul className="surface grid gap-x-12 rounded-3xl px-5 py-2 md:grid-cols-2 md:px-8 md:py-4">
         {dishes.slice(0, 10).map((d, i) => (
           // Ten fill two columns on wide screens; six is plenty on a phone.
-          <li key={d.id} className={i >= 6 ? "hidden md:block" : undefined}>
+          <StaggerItem as="li" key={d.id} index={i} columns={2} className={i >= 6 ? "hidden md:block" : undefined}>
             <Link
               href={`/restaurant/${d.restaurant.slug}?dish=${encodeURIComponent(d.item.name)}`}
               className="group block min-h-[56px] py-3"
@@ -119,7 +121,7 @@ export function MenuList({
                 {d.restaurant.name}
               </span>
             </Link>
-          </li>
+          </StaggerItem>
         ))}
       </ul>
     </section>
@@ -218,8 +220,8 @@ export function CompactList({
     <section className="mt-12 md:mt-20">
       <RailHeader title={title} subtitle={subtitle} href={href} />
       <ul className="grid gap-x-8 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
-        {restaurants.slice(0, 6).map((r) => (
-          <li key={r.id}>
+        {restaurants.slice(0, 6).map((r, i) => (
+          <StaggerItem as="li" key={r.id} index={i} columns={3}>
             <Link
               href={`/restaurant/${r.slug}`}
               className="group flex items-center gap-3.5 rounded-2xl py-2.5"
@@ -243,7 +245,7 @@ export function CompactList({
                 {r.rating.toFixed(1)}
               </span>
             </Link>
-          </li>
+          </StaggerItem>
         ))}
       </ul>
     </section>

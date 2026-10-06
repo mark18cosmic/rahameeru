@@ -112,12 +112,20 @@ export function Hero({
     return () => clearInterval(id);
   }, [reduceMotion, hints]);
 
-  // The three best-rated places, shown as the desktop mosaic. Real listings
-  // that link through, so the picture is also the first thing you can tap.
-  const top = useMemo(
-    () => [...restaurants].sort((a, b) => b.rating - a.rating).slice(0, 3),
+  // The best-rated places, shown as the desktop mosaic. Real listings that
+  // link through, so the picture is also the first thing you can tap. The
+  // tiles rotate through the top five, so the hero shows more than three.
+  const ranked = useMemo(
+    () => [...restaurants].sort((a, b) => b.rating - a.rating).slice(0, 5),
     [restaurants]
   );
+  const [turn, setTurn] = useState(0);
+  useEffect(() => {
+    if (reduceMotion || ranked.length <= 3) return;
+    const id = setInterval(() => setTurn((t) => (t + 1) % ranked.length), 5000);
+    return () => clearInterval(id);
+  }, [reduceMotion, ranked.length]);
+  const top = ranked.length >= 3 ? [0, 1, 2].map((k) => ranked[(turn + k) % ranked.length]) : [];
 
   const firstName = user?.displayName?.split(" ")[0];
 
@@ -202,25 +210,39 @@ export function Hero({
           className="hidden h-[460px] grid-cols-[1.25fr_1fr] grid-rows-2 gap-3 lg:grid"
         >
           {top.map((r, i) => (
-            <Link
-              key={r.id}
-              href={`/restaurant/${r.slug}`}
-              className={`group relative overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800 ${
+            <div
+              key={i}
+              className={`relative overflow-hidden rounded-2xl bg-ink-100 dark:bg-ink-800 ${
                 i === 0 ? "row-span-2" : ""
               }`}
             >
-              <Photo
-                r={r}
-                priority
-                sizes="(min-width: 1024px) 360px, 0px"
-                className="duration-700 group-hover:scale-[1.03]"
-              />
-              <span className="surface absolute bottom-3 left-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-ink-900 dark:text-white">
-                <span className="truncate">{r.name}</span>
-                <Star size={11} className="shrink-0 fill-saffron-500 text-saffron-500" />
-                {r.rating.toFixed(1)}
-              </span>
-            </Link>
+              {/* Crossfade as the tiles rotate; keyed by place so the new
+                  photo fades in over the old rather than snapping. */}
+              <AnimatePresence initial={false}>
+                <motion.div
+                  key={r.id}
+                  initial={{ opacity: 0, scale: 1.04 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.9, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute inset-0"
+                >
+                  <Link href={`/restaurant/${r.slug}`} className="group absolute inset-0">
+                    <Photo
+                      r={r}
+                      priority
+                      sizes="(min-width: 1024px) 360px, 0px"
+                      className="duration-700 group-hover:scale-[1.03]"
+                    />
+                    <span className="surface absolute bottom-3 left-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-ink-900 dark:text-white">
+                      <span className="truncate">{r.name}</span>
+                      <Star size={11} className="shrink-0 fill-saffron-500 text-saffron-500" />
+                      {r.rating.toFixed(1)}
+                    </span>
+                  </Link>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           ))}
         </motion.div>
       )}

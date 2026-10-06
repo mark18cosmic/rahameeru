@@ -96,7 +96,20 @@ export type Ramadan = {
   iftar: string;
   /** End of suhoor (dawn), "HH:MM". */
   suhoor: string;
+  /** First day of the fast, "YYYY-MM-DD", for "Day 12". Optional. */
+  startDate?: string;
 };
+
+/** Which day of Ramadan it is in Malé, or null without a start date. */
+export function ramadanDay(now: Date, ramadan: Ramadan): number | null {
+  if (!ramadan.startDate) return null;
+  const [y, m, d] = ramadan.startDate.split("-").map(Number);
+  if (!y || !m || !d) return null;
+  const start = new Date(y, m - 1, d);
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const day = Math.round((today.getTime() - start.getTime()) / 86_400_000) + 1;
+  return day >= 1 && day <= 30 ? day : null;
+}
 
 /* ------------------------------------------------------------ dayparts */
 
